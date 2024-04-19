@@ -1,16 +1,16 @@
-# academic_management
+# ✋Team 26.2
 
-A new Flutter project.
+### *"Application for the Graduation and Curriculum of Computer Engineering Students"*
 
-## Getting Started
+<br>
+<table>
+  <tr height="140px">
+    <td width="130px">
+      <a href="https://github.com/seongm1n"><img height="100px" width="100px" src="https://avatars.githubusercontent.com/u/166149819?v=4"></a>
+      <br>
+      <a href="https://github.com/seongm1n">seongmin</a>
+    </td>
+  </tr>
+</table>
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# 👍Preview
