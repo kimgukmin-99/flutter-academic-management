@@ -2,6 +2,11 @@
 
 ### *"Application for the Graduation and Curriculum of Computer Engineering Students"*
 
+## 🐈 Stacks
+
+![Generic badge](https://img.shields.io/badge/flutter-3.19.6-blue.svg)
+
+## 👨‍👨‍👦‍👦 Member
 <br>
 <table>
   <tr height="140px">
@@ -32,5 +37,6 @@
     </td>
   </tr>
 </table>
+<br><br><br>
 
 # 👍Preview
