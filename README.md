@@ -16,19 +16,19 @@
       <a href="https://github.com/seongm1n">seongmin</a>
     </td>
     <td width="130px">
-      <a href="#"><img height="100px" width="100px" src="#"></a>
+      <a href="https://github.com/SEY0UNGK"><img height="100px" width="100px" src="https://avatars.githubusercontent.com/u/167311819?v=4"></a>
       <br>
-      <a href="#">seyoung</a>
+      <a href="https://github.com/SEY0UNGK">seyoung</a>
     </td>
     <td width="130px">
-      <a href="#"><img height="100px" width="100px" src="#"></a>
+      <a href="https://github.com/Byunjihun"><img height="100px" width="100px" src="https://avatars.githubusercontent.com/u/91594844?v=4"></a>
       <br>
-      <a href="#">jihoon</a>
+      <a href="https://github.com/Byunjihun">jihoon</a>
     </td>
     <td width="130px">
-      <a href="#"><img height="100px" width="100px" src="#"></a>
+      <a href="https://github.com/kimgukmin-99"><img height="100px" width="100px" src="https://avatars.githubusercontent.com/u/84234658?v=4"></a>
       <br>
-      <a href="#">gookmin</a>
+      <a href="https://github.com/kimgukmin-99">gookmin</a>
     </td>
     <td width="130px">
       <a href="#"><img height="100px" width="100px" src="#"></a>
