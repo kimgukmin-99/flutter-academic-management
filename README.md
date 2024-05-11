@@ -4,7 +4,7 @@
 
 ## 🐈 Stacks
 
-![Generic badge](https://img.shields.io/badge/flutter-3.19.6-blue.svg)
+![Generic badge](https://img.shields.io/badge/flutter-3.19.5-blue.svg)
 
 ## 👨‍👨‍👦‍👦 Member
 <br>
