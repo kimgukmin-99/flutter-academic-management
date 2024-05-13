@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:academic_management/screens/chat_screen.dart';
 
 class MainScreens extends StatefulWidget {
   @override
@@ -59,6 +60,20 @@ class _MainScreensState extends State<MainScreens> {
         selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // 여기에 채팅 기능을 시작하는 코드를 추가
+          print('Chat button pressed!');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatScreens()),
+          );
+        },
+        child: Icon(Icons.chat),
+        backgroundColor: Colors.blue,
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.endFloat, // 버튼 위치
     );
   }
 }
