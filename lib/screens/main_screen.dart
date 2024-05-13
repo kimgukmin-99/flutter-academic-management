@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:academic_management/screens/chat_screen.dart';
+import 'package:academic_management/screens/bulletin.dart';
+import 'package:academic_management/screens/graduation.dart';
+import 'package:academic_management/screens/mypage.dart';
+import 'package:academic_management/screens/home.dart';
 
 class MainScreens extends StatefulWidget {
   @override
@@ -10,14 +14,11 @@ class _MainScreensState extends State<MainScreens> {
   int _selectedIndex = 0; // 현재 선택된 탭의 인덱스를 추적합니다.
 
   // 각 탭에 해당하는 위젯을 리스트로 관리합니다.
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('Home', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-    Text('Graduation',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-    Text('Bulletin Board',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-    Text('My Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+  final List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
+    GraduationScreen(),
+    BulletinBoardScreen(),
+    MyPageScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -29,9 +30,6 @@ class _MainScreensState extends State<MainScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Academic Management'),
-      ),
       body: Center(
         // 선택된 탭에 해당하는 위젯을 표시합니다.
         child: _widgetOptions.elementAt(_selectedIndex),

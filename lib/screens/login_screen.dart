@@ -19,7 +19,11 @@ class _LoginPageState extends State<LoginPage> {
       _formKey.currentState!.save();
       print(
           'Student ID: $_studentId, Password: $_password, Remember Me: $_rememberMe');
-      // 로그인 로직을 여기에 추가하세요.
+      // todo login logic
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreens()),
+      );
     }
   }
 

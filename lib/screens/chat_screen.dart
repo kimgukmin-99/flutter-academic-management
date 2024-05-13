@@ -23,6 +23,21 @@ class _ChatScreenState extends State<ChatScreen> {
   List<ChatMessage> _messages = []; // ChatMessage 객체의 리스트로 선언
   final TextEditingController _controller = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    // 앱 시작 시 초기 메시지 추가
+    _messages.insert(
+      0,
+      ChatMessage(
+        text: '안녕, 나는 컴퓨터공학과 4학년 국민이야. 한남대학교에 궁금한게 있으면 뭐든지 물어봐!',
+        isMe: false,
+        username: 'Gookmin',
+        avatarUrl: 'https://via.placeholder.com/150',
+      ),
+    );
+  }
+
   void _handleSubmitted(String text) {
     setState(() {
       bool isMe = _messages.length % 2 == 0;
@@ -31,7 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ChatMessage(
             text: text,
             isMe: isMe,
-            username: isMe ? "Me" : "Hannam",
+            username: isMe ? "Me" : "Gookmin",
             avatarUrl:
                 isMe ? null : "https://via.placeholder.com/150", // 예시 URL
           ));
@@ -51,37 +66,51 @@ class _ChatScreenState extends State<ChatScreen> {
       children: [
         if (!message.isMe) ...[
           CircleAvatar(
-            backgroundImage: NetworkImage(message.avatarUrl ??
-                'https://via.placeholder.com/150'), // 기본 이미지 처리
+            backgroundImage: NetworkImage(
+                message.avatarUrl ?? 'https://via.placeholder.com/150'),
           ),
           SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(message.username ?? "Anonymous",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              Container(
-                margin: const EdgeInsets.all(4.0),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(12),
+          Flexible(
+            // Flexible을 사용하여 텍스트가 차지할 수 있는 최대 공간을 유동적으로 조절
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(message.username ?? "Anonymous",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Container(
+                  margin: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 8.0),
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    message.text,
+                    softWrap: true, // 자동 줄바꿈 활성화
+                    style: TextStyle(fontSize: 16), // 텍스트 크기 설정
+                  ),
                 ),
-                child: Text(message.text),
-              ),
-            ],
+              ],
+            ),
           ),
         ] else ...[
-          Container(
-            margin: const EdgeInsets.all(4.0),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(12),
+          Flexible(
+            // 마찬가지로 Flexible 사용
+            child: Container(
+              margin: const EdgeInsets.all(4.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                message.text,
+                softWrap: true, // 자동 줄바꿈 활성화
+                style: TextStyle(fontSize: 16),
+              ),
             ),
-            child: Text(message.text),
           ),
         ],
       ],
