@@ -33,22 +33,21 @@ class _ChatScreenState extends State<ChatScreen> {
         text: '안녕, 나는 컴퓨터공학과 4학년 국민이야. 한남대학교에 궁금한게 있으면 뭐든지 물어봐!',
         isMe: false,
         username: 'Gookmin',
-        avatarUrl: 'https://via.placeholder.com/150',
+        avatarUrl: 'assets/avatar.png',
       ),
     );
   }
 
   void _handleSubmitted(String text) {
     setState(() {
-      bool isMe = _messages.length % 2 == 0;
+      bool isMe = _messages.length % 2 == 1;
       _messages.insert(
           0,
           ChatMessage(
             text: text,
             isMe: isMe,
             username: isMe ? "Me" : "Gookmin",
-            avatarUrl:
-                isMe ? null : "https://via.placeholder.com/150", // 예시 URL
+            avatarUrl: isMe ? null : "assets/avatar.png",
           ));
       _controller.clear();
     });
@@ -66,8 +65,9 @@ class _ChatScreenState extends State<ChatScreen> {
       children: [
         if (!message.isMe) ...[
           CircleAvatar(
-            backgroundImage: NetworkImage(
-                message.avatarUrl ?? 'https://via.placeholder.com/150'),
+            backgroundImage: message.avatarUrl != null
+                ? AssetImage(message.avatarUrl!)
+                : AssetImage('assets/avatar.png'),
           ),
           SizedBox(width: 10),
           Flexible(
