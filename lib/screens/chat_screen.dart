@@ -22,13 +22,13 @@ class ChatMessage {
 class _ChatScreenState extends State<ChatScreen> {
   List<ChatMessage> _messages = []; // ChatMessage 객체의 리스트로 선언
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     // 앱 시작 시 초기 메시지 추가
-    _messages.insert(
-      0,
+    _messages.add(
       ChatMessage(
         text: '안녕, 나는 컴퓨터공학과 4학년 국민이야. 한남대학교에 궁금한게 있으면 뭐든지 물어봐!',
         isMe: false,
@@ -41,15 +41,21 @@ class _ChatScreenState extends State<ChatScreen> {
   void _handleSubmitted(String text) {
     setState(() {
       bool isMe = _messages.length % 2 == 1;
-      _messages.insert(
-          0,
-          ChatMessage(
-            text: text,
-            isMe: isMe,
-            username: isMe ? "Me" : "Gookmin",
-            avatarUrl: isMe ? null : "assets/avatar.png",
-          ));
+      _messages.add(
+        ChatMessage(
+          text: text,
+          isMe: isMe,
+          username: isMe ? "Me" : "Gookmin",
+          avatarUrl: isMe ? null : "assets/avatar.png",
+        ),
+      );
       _controller.clear();
+      // 새 메시지가 추가되면 스크롤을 맨 아래로 이동
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
     });
   }
 
@@ -148,8 +154,8 @@ class _ChatScreenState extends State<ChatScreen> {
         children: <Widget>[
           Expanded(
             child: ListView.builder(
+              controller: _scrollController,
               padding: const EdgeInsets.all(8.0),
-              reverse: true,
               itemBuilder: (_, int index) =>
                   _buildMessageItem(_messages[index]),
               itemCount: _messages.length,
@@ -157,7 +163,9 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           Divider(height: 1.0),
           _buildTextComposer(),
-          Container(height: 50),
+          SizedBox(
+            height: 30,
+          ),
         ],
       ),
     );
