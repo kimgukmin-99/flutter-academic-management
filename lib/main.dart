@@ -10,7 +10,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Academic Management Login',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+      ),
+      home: LoginPage(),
     );
   }
 }

@@ -1,48 +1,112 @@
 import 'package:flutter/material.dart';
 
-class ChatScreens extends StatefulWidget {
+class ChatScreen extends StatefulWidget {
   @override
-  _ChatScreensState createState() => _ChatScreensState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatScreensState extends State<ChatScreens> {
-  final List<String> _messages = []; // 채팅 메시지를 저장하는 리스트
-  final TextEditingController _textController =
-      TextEditingController(); // 텍스트 입력을 관리하는 컨트롤러
+class ChatMessage {
+  String text;
+  bool isMe; // 메시지가 사용자 본인의 것인지 여부
+  String? username; // 사용자 이름
+  String? avatarUrl; // 프로필 사진 URL
 
-  // 메시지를 보내는 함수
+  ChatMessage({
+    required this.text,
+    required this.isMe,
+    this.username,
+    this.avatarUrl,
+  });
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  List<ChatMessage> _messages = []; // ChatMessage 객체의 리스트로 선언
+  final TextEditingController _controller = TextEditingController();
+
   void _handleSubmitted(String text) {
-    _textController.clear();
     setState(() {
-      _messages.insert(0, text); // 새 메시지를 리스트의 시작 부분에 추가
+      bool isMe = _messages.length % 2 == 0;
+      _messages.insert(
+          0,
+          ChatMessage(
+            text: text,
+            isMe: isMe,
+            username: isMe ? "Me" : "Hannam",
+            avatarUrl:
+                isMe ? null : "https://via.placeholder.com/150", // 예시 URL
+          ));
+      _controller.clear();
     });
   }
 
-  // 입력 필드와 전송 버튼을 만드는 위젯
+  Widget _buildMessageItem(ChatMessage message) {
+    final alignment =
+        message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
+    final messageAlignment =
+        message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start;
+    final color = message.isMe ? Colors.blue[100] : Colors.grey[200];
+
+    return Row(
+      mainAxisAlignment: messageAlignment,
+      children: [
+        if (!message.isMe) ...[
+          CircleAvatar(
+            backgroundImage: NetworkImage(message.avatarUrl ??
+                'https://via.placeholder.com/150'), // 기본 이미지 처리
+          ),
+          SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(message.username ?? "Anonymous",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Container(
+                margin: const EdgeInsets.all(4.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(message.text),
+              ),
+            ],
+          ),
+        ] else ...[
+          Container(
+            margin: const EdgeInsets.all(4.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(message.text),
+          ),
+        ],
+      ],
+    );
+  }
+
   Widget _buildTextComposer() {
-    return IconTheme(
-      data: IconThemeData(color: Theme.of(context).colorScheme.secondary),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Row(
-          children: <Widget>[
-            Flexible(
-              child: TextField(
-                controller: _textController,
-                onSubmitted: _handleSubmitted,
-                decoration:
-                    InputDecoration.collapsed(hintText: "Send a message"),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              onSubmitted: _handleSubmitted,
+              decoration: InputDecoration.collapsed(
+                hintText: "Send a message...",
               ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: IconButton(
-                icon: const Icon(Icons.send),
-                onPressed: () => _handleSubmitted(_textController.text),
-              ),
-            ),
-          ],
-        ),
+          ),
+          IconButton(
+            icon: Icon(Icons.send),
+            onPressed: () => _handleSubmitted(_controller.text),
+          ),
+        ],
       ),
     );
   }
@@ -50,26 +114,21 @@ class _ChatScreensState extends State<ChatScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat Room'),
-      ),
+      appBar: AppBar(title: Text('Chat')),
       body: Column(
         children: <Widget>[
-          Flexible(
+          Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.all(8.0),
-              reverse: true, // 메시지를 화면 하단부터 쌓아 올림
-              itemBuilder: (_, int index) => ListTile(
-                title: Text(_messages[index]),
-              ),
+              padding: const EdgeInsets.all(8.0),
+              reverse: true,
+              itemBuilder: (_, int index) =>
+                  _buildMessageItem(_messages[index]),
               itemCount: _messages.length,
             ),
           ),
           Divider(height: 1.0),
-          Container(
-            decoration: BoxDecoration(color: Theme.of(context).cardColor),
-            child: _buildTextComposer(),
-          ),
+          _buildTextComposer(),
+          Container(height: 50),
         ],
       ),
     );

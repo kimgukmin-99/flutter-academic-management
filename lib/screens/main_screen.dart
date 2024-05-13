@@ -66,7 +66,7 @@ class _MainScreensState extends State<MainScreens> {
           print('Chat button pressed!');
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ChatScreens()),
+            MaterialPageRoute(builder: (context) => ChatScreen()),
           );
         },
         child: Icon(Icons.chat),

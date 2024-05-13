@@ -3,207 +3,93 @@ import 'package:flutter/services.dart';
 import 'package:academic_management/utilities/constants.dart';
 import 'package:academic_management/screens/main_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+  String _studentId = '';
+  String _password = '';
   bool _rememberMe = false;
 
-  Widget _buildEmailTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Student ID',
-          style: kLabelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.email,
-                color: Colors.white,
-              ),
-              hintText: 'Enter your Student ID',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPasswordTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Password',
-          style: kLabelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            obscureText: true,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.lock,
-                color: Colors.white,
-              ),
-              hintText: 'Enter your Password',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: () => print('Forgot Password Button Pressed'),
-        child: Text(
-          'Forgot Password?',
-          style: kLabelStyle,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRememberMeCheckbox() {
-    return Row(
-      children: <Widget>[
-        Checkbox(
-          value: _rememberMe,
-          checkColor: Colors.green,
-          activeColor: Colors.white,
-          onChanged: (bool? value) {
-            setState(() {
-              _rememberMe = value ?? false;
-            });
-          },
-        ),
-        Text(
-          'Remember me',
-          style: kLabelStyle,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLoginBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          print('Login Button Pressed');
-          // 로그인 버튼을 누르면 MainScreens 페이지로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => MainScreens()),
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.all(15.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          backgroundColor: Colors.white,
-        ),
-        child: Text(
-          'LOGIN',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
+  void _submit() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      print(
+          'Student ID: $_studentId, Password: $_password, Remember Me: $_rememberMe');
+      // 로그인 로직을 여기에 추가하세요.
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF73AEF5),
-                      Color(0xFF61A4F1),
-                      Color(0xFF478DE0),
-                      Color(0xFF398AE5),
-                    ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
+      appBar: AppBar(
+        title: Text("Login Page"),
+        backgroundColor: Colors.blue,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Image.asset(
+                  'assets/logo.png', // 로고 이미지 파일 경로 확인 필요
+                  height: 150.0,
+                ),
+                SizedBox(height: 20.0),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Student ID',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.person),
                   ),
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter your student ID' : null,
+                  onSaved: (value) => _studentId = value!,
                 ),
-              ),
-              ListView(
-                // SingleChildScrollView를 ListView로 대체
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 40.0,
-                  vertical: 120.0,
+                SizedBox(height: 10.0),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.lock),
+                  ),
+                  obscureText: true,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter your password' : null,
+                  onSaved: (value) => _password = value!,
                 ),
-                children: <Widget>[
-                  Text(
-                    'Sign In',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
+                SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _rememberMe,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _rememberMe = value!;
+                        });
+                      },
                     ),
+                    Text('Remember me'),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: _submit,
+                  child: Text('Login'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
                   ),
-                  SizedBox(height: 30.0),
-                  _buildEmailTF(),
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  _buildPasswordTF(),
-                  _buildForgotPasswordBtn(),
-                  _buildRememberMeCheckbox(),
-                  _buildLoginBtn(),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
