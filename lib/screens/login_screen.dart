@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:academic_management/utilities/constants.dart';
+import 'package:academic_management/screens/main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -119,7 +120,14 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () => print('Login Button Pressed'),
+        onPressed: () {
+          print('Login Button Pressed');
+          // 로그인 버튼을 누르면 MainScreens 페이지로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MainScreens()),
+          );
+        },
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.all(15.0),
           shape: RoundedRectangleBorder(
@@ -167,7 +175,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              ListView( // SingleChildScrollView를 ListView로 대체
+              ListView(
+                // SingleChildScrollView를 ListView로 대체
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(
                   horizontal: 40.0,
