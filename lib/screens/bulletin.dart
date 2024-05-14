@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class Post {
   final String title;
   final String content;
+  final File? image;
 
-  Post({required this.title, required this.content});
+  Post({required this.title, required this.content, this.image});
 }
 
 class BulletinBoardScreen extends StatefulWidget {
@@ -14,10 +17,13 @@ class BulletinBoardScreen extends StatefulWidget {
 
 class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
   final List<Post> _posts = [];
+  final ImagePicker _picker = ImagePicker();
+  File? _selectedImage;
 
-  void _addPost(String title, String content) {
+  void _addPost(String title, String content, File? image) {
     setState(() {
-      _posts.add(Post(title: title, content: content));
+      _posts.add(Post(title: title, content: content, image: image));
+      _selectedImage = null;
     });
   }
 
@@ -45,18 +51,40 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                   content = value;
                 },
               ),
+              SizedBox(height: 10),
+              _selectedImage == null
+                  ? TextButton(
+                      onPressed: () async {
+                        final pickedFile = await _picker.pickImage(
+                            source: ImageSource.gallery);
+                        if (pickedFile != null) {
+                          setState(() {
+                            _selectedImage = File(pickedFile.path);
+                          });
+                        }
+                      },
+                      child: Text('Select Image'),
+                    )
+                  : Image.file(
+                      _selectedImage!,
+                      height: 100,
+                      width: 100,
+                    ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () {
+                setState(() {
+                  _selectedImage = null;
+                });
                 Navigator.of(context).pop();
               },
               child: Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () {
-                _addPost(title, content);
+                _addPost(title, content, _selectedImage);
                 Navigator.of(context).pop();
               },
               child: Text('Add'),
@@ -71,7 +99,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bulletin Board'),
+        backgroundColor: Colors.white,
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -92,6 +120,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                 final post = _posts[index];
                 return ListTile(
                   title: Text(post.title),
+                  subtitle: post.image != null ? Image.file(post.image!) : null,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -120,7 +149,17 @@ class PostDetailScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Text(post.content),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              post.content,
+              style: TextStyle(fontSize: 16.0),
+            ),
+            SizedBox(height: 10),
+            post.image != null ? Image.file(post.image!) : Container(),
+          ],
+        ),
       ),
     );
   }

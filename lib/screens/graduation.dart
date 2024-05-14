@@ -18,9 +18,6 @@ class GraduationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Graduation Requirements'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(

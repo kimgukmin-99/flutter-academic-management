@@ -4,26 +4,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // 요소들을 양 끝으로 분배
-          children: <Widget>[
-            Image.asset(
-              'assets/logo.png', // 로고 이미지 파일 경로
-              fit: BoxFit.cover,
-              height: 40, // 로고의 높이 조정
-            ),
-            Text('한남대학교'), // 중간에 텍스트 제목이 있으면 이를 추가
-            IconButton(
-              icon: Icon(Icons.notifications), // 알람 아이콘
-              onPressed: () {
-                // 알람 아이콘 클릭 이벤트 처리
-                print('Notification icon tapped!');
-              },
-            ),
-          ],
-        ),
-      ),
       body: Center(
         child: Column(
           children: [
