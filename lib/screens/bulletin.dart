@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:academic_management/screens/creat_post.dart';
 
 class Post {
   final String title;
@@ -17,82 +18,11 @@ class BulletinBoardScreen extends StatefulWidget {
 
 class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
   final List<Post> _posts = [];
-  final ImagePicker _picker = ImagePicker();
-  File? _selectedImage;
 
   void _addPost(String title, String content, File? image) {
     setState(() {
       _posts.add(Post(title: title, content: content, image: image));
-      _selectedImage = null;
     });
-  }
-
-  void _showAddPostDialog() {
-    String title = '';
-    String content = '';
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('New Post'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: InputDecoration(labelText: 'Title'),
-                onChanged: (value) {
-                  title = value;
-                },
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Content'),
-                onChanged: (value) {
-                  content = value;
-                },
-              ),
-              SizedBox(height: 10),
-              _selectedImage == null
-                  ? TextButton(
-                      onPressed: () async {
-                        final pickedFile = await _picker.pickImage(
-                            source: ImageSource.gallery);
-                        if (pickedFile != null) {
-                          setState(() {
-                            _selectedImage = File(pickedFile.path);
-                          });
-                        }
-                      },
-                      child: Text('Select Image'),
-                    )
-                  : Image.file(
-                      _selectedImage!,
-                      height: 100,
-                      width: 100,
-                    ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _selectedImage = null;
-                });
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _addPost(title, content, _selectedImage);
-                Navigator.of(context).pop();
-              },
-              child: Text('Add'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -103,7 +33,15 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: _showAddPostDialog,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      CreatePostScreen(addPostCallback: _addPost),
+                ),
+              );
+            },
           ),
         ],
       ),
