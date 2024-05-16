@@ -1,86 +1,89 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
+  final List<Map<String, String>> schedule = [
+    {
+      'time': '09:00 - 10:00',
+      'subject': 'Mathematics',
+      'room': '090524',
+      'color': '0xff6A1B9A',
+    },
+    {
+      'time': '10:15 - 11:15',
+      'subject': 'Physics',
+      'room': '060321',
+      'color': '0xff0277BD',
+    },
+    {
+      'time': '11:30 - 12:30',
+      'subject': 'Chemistry',
+      'room': '260212',
+      'color': '0xff2E7D32',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              '오늘의 시간표',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             SizedBox(height: 20),
-            Text('Daily Schedule',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Table(
-                border: TableBorder.all(),
-                columnWidths: const <int, TableColumnWidth>{
-                  0: FixedColumnWidth(100),
-                  1: FlexColumnWidth(),
-                  2: FixedColumnWidth(100),
+            Expanded(
+              child: ListView.builder(
+                itemCount: schedule.length,
+                itemBuilder: (context, index) {
+                  final item = schedule[index];
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 5,
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    color: Color(int.parse(item['color']!)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item['time']!,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            item['subject']!,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            'Room: ${item['room']}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 },
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: [
-                  TableRow(children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Time',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Subject',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Room',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('09:00 - 10:00'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Mathematics'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('101'),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('10:15 - 11:15'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Physics'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('102'),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('11:30 - 12:30'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Chemistry'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('103'),
-                    ),
-                  ]),
-                ],
               ),
             ),
           ],
@@ -89,3 +92,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+void main() => runApp(MaterialApp(
+      home: HomeScreen(),
+      debugShowCheckedModeBanner: false,
+    ));

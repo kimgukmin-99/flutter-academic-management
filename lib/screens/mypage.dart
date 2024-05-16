@@ -14,7 +14,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
   final String department = '컴퓨터공학과';
   final String year = '3학년';
   final String studentId = '20201234';
-  final double graduationProgress = 0.75; // 졸업 퍼센티지 예시 (75%)
+  int participationScore = 30; // 초기 학과 참여 점수
+  final int maxScore = 150; // 총 150점
 
   // 학과 행사 목록 예시
   final List<Map<String, String>> events = [
@@ -42,6 +43,9 @@ class _MyPageScreenState extends State<MyPageScreen> {
         'image': image?.path ?? 'assets/default_event.png',
       });
       _selectedImage = null;
+      if (participationScore + 10 <= maxScore) {
+        participationScore += 10; // 학과 참여 점수 10점 증가
+      }
     });
     Navigator.of(context).pop();
   }
@@ -166,18 +170,18 @@ class _MyPageScreenState extends State<MyPageScreen> {
               SizedBox(height: 20),
               Divider(),
               Text(
-                'Graduation Progress',
+                'Participation Score',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
               LinearProgressIndicator(
-                value: graduationProgress,
+                value: participationScore / maxScore,
                 backgroundColor: Colors.grey[300],
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
               ),
               SizedBox(height: 10),
               Text(
-                '${(graduationProgress * 100).toStringAsFixed(1)}% completed',
+                '$participationScore / $maxScore',
               ),
               SizedBox(height: 30),
               Text(
@@ -198,13 +202,21 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    GestureDetector(
+              GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, // 한 줄에 4개의 항목을 표시
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: events.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == events.length) {
+                    return GestureDetector(
                       onTap: _showAddEventDialog,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircleAvatar(
                             radius: 30,
@@ -214,29 +226,27 @@ class _MyPageScreenState extends State<MyPageScreen> {
                           Text('Add Event'),
                         ],
                       ),
-                    ),
-                    ...events.map((event) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () =>
-                                  _viewImage(event['image']!, event['name']!),
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundImage:
-                                    FileImage(File(event['image']!)),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Text(event['name']!),
-                          ],
+                    );
+                  }
+                  final event = events[index];
+                  return GestureDetector(
+                    onTap: () => _viewImage(event['image']!, event['name']!),
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundImage: AssetImage(event['image']!),
                         ),
-                      );
-                    }).toList(),
-                  ],
-                ),
+                        SizedBox(height: 5),
+                        Text(
+                          event['name']!,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),

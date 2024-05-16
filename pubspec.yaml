@@ -56,6 +56,10 @@ flutter:
   assets:
     - assets/logo.png
     - assets/avatar.png
+    - assets/event1.png
+    - assets/event2.png
+    - assets/event3.png
+    - assets/profile_placeholder.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

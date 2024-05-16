@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class CreatePostScreen extends StatefulWidget {
-  final Function(String, String, File?) addPostCallback;
+  final Function(String, String, File?, String) addPostCallback;
 
   CreatePostScreen({required this.addPostCallback});
 
@@ -13,8 +13,9 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   final ImagePicker _picker = ImagePicker();
-  String _title = '';
-  String _content = '';
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _authorController = TextEditingController();
   File? _selectedImage;
 
   void _pickImage() async {
@@ -27,8 +28,31 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _submitPost() {
-    widget.addPostCallback(_title, _content, _selectedImage);
-    Navigator.of(context).pop();
+    if (_titleController.text.isNotEmpty &&
+        _contentController.text.isNotEmpty &&
+        _authorController.text.isNotEmpty) {
+      widget.addPostCallback(
+        _titleController.text,
+        _contentController.text,
+        _selectedImage,
+        _authorController.text,
+      );
+      Navigator.of(context).pop();
+    } else {
+      // 모든 필드가 채워지지 않으면 경고 메시지를 표시할 수 있습니다.
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('모든 필드를 채워주세요'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('확인'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
@@ -43,17 +67,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              controller: _titleController,
               decoration: InputDecoration(labelText: 'Title'),
-              onChanged: (value) {
-                _title = value;
-              },
+            ),
+            TextField(
+              controller: _authorController,
+              decoration: InputDecoration(labelText: 'Author'),
             ),
             Expanded(
               child: TextField(
+                controller: _contentController,
                 decoration: InputDecoration(labelText: 'Content'),
-                onChanged: (value) {
-                  _content = value;
-                },
                 maxLines: null,
                 expands: true,
               ),
