@@ -113,7 +113,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          '작성자: ${post.author}',
+                          '${post.author}',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey,

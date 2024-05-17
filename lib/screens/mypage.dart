@@ -255,3 +255,22 @@ class _MyPageScreenState extends State<MyPageScreen> {
     );
   }
 }
+
+class ImageDetailScreen extends StatelessWidget {
+  final String imagePath;
+  final String eventName;
+
+  ImageDetailScreen({required this.imagePath, required this.eventName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(eventName),
+      ),
+      body: Center(
+        child: Image.asset(imagePath),
+      ),
+    );
+  }
+}
