@@ -31,9 +31,9 @@
       <a href="https://github.com/kimgukmin-99">gookmin</a>
     </td>
     <td width="130px">
-      <a href="#"><img height="100px" width="100px" src="#"></a>
+      <a href="https://github.com/lyseok"><img height="100px" width="100px" src="https://avatars.githubusercontent.com/u/115852659?v=4"></a>
       <br>
-      <a href="#">yoonseok</a>
+      <a href="https://github.com/lyseok">yoonseok</a>
     </td>
   </tr>
 </table>
