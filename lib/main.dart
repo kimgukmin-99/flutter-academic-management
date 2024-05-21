@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
       title: 'Academic Management Login',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: "Pretendard",
         colorScheme: ColorScheme(
           primary: Colors.blue[800]!, // 짙은 파란색을 주 색상으로 설정
           secondary: Colors.blue[400]!, // 밝은 파란색을 보조 색상으로 설정
