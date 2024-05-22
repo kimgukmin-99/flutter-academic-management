@@ -4,6 +4,7 @@ import 'package:academic_management/screens/bulletin.dart';
 import 'package:academic_management/screens/graduation.dart';
 import 'package:academic_management/screens/mypage.dart';
 import 'package:academic_management/screens/home.dart';
+import 'package:academic_management/utilities/dot_curved_bottom_nav.dart';
 
 class MainScreens extends StatefulWidget {
   @override
@@ -11,7 +12,8 @@ class MainScreens extends StatefulWidget {
 }
 
 class _MainScreensState extends State<MainScreens> {
-  int _selectedIndex = 0; // 현재 선택된 탭의 인덱스를 추적합니다.
+  int _currentPage = 0; // 현재 선택된 탭의 인덱스를 추적합니다.
+  ScrollController _scrollController = ScrollController();
 
   // 각 탭에 해당하는 위젯을 리스트로 관리합니다.
   final List<Widget> _widgetOptions = <Widget>[
@@ -23,7 +25,7 @@ class _MainScreensState extends State<MainScreens> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // 사용자가 탭을 선택하면 인덱스를 업데이트합니다.
+      _currentPage = index; // 사용자가 탭을 선택하면 인덱스를 업데이트합니다.
     });
   }
 
@@ -57,31 +59,40 @@ class _MainScreensState extends State<MainScreens> {
       ),
       body: Center(
         // 선택된 탭에 해당하는 위젯을 표시합니다.
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _widgetOptions.elementAt(_currentPage),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // 네 개 이상의 탭을 고정해서 표시
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      bottomNavigationBar: DotCurvedBottomNav(
+        scrollController: _scrollController,
+        hideOnScroll: true,
+        indicatorColor: Colors.blue,
+        backgroundColor: Colors.black,
+        animationDuration: const Duration(milliseconds: 300),
+        animationCurve: Curves.ease,
+        selectedIndex: _currentPage,
+        indicatorSize: 5,
+        borderRadius: 25,
+        height: 70,
+        onTap: (index) {
+          setState(() => _currentPage = index);
+        },
+        items: [
+          Icon(
+            Icons.home,
+            color: _currentPage == 0 ? Colors.blue : Colors.white,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Graduation',
+          Icon(
+            Icons.thumb_up,
+            color: _currentPage == 1 ? Colors.blue : Colors.white,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.description),
-            label: 'Board',
+          Icon(
+            Icons.forum,
+            color: _currentPage == 2 ? Colors.blue : Colors.white,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'My Page',
+          Icon(
+            Icons.person,
+            color: _currentPage == 3 ? Colors.blue : Colors.white,
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
