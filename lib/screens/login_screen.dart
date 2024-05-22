@@ -120,7 +120,10 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: Text(
                       'Forgot password?',
-                      style: TextStyle(color: Colors.blue, fontSize: 14.0),
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -132,9 +135,19 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
                       // todo Sign up
                     },
-                    child: Text(
-                      "Don't have an account? Sign up",
-                      style: TextStyle(color: Colors.blue, fontSize: 14.0),
+                    child: RichText(
+                      text: TextSpan(
+                        text: "Don't have an account? ",
+                        style: TextStyle(color: Colors.black, fontSize: 14.0),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Sign up',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
