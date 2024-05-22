@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:academic_management/utilities/constants.dart';
 import 'package:academic_management/screens/main_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,14 +11,12 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   String _studentId = '';
   String _password = '';
-  bool _rememberMe = false;
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print(
-          'Student ID: $_studentId, Password: $_password, Remember Me: $_rememberMe');
-      // todo login logic
+      print('Student ID: $_studentId, Password: $_password');
+      // todo login
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MainScreens()),
@@ -30,27 +27,54 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Login Page"),
-      ),
-      body: Center(
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(20.0),
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Image.asset(
-                  'assets/logo.png', // 로고 이미지 파일 경로 확인 필요
-                  height: 150.0,
+                SizedBox(height: 120.0),
+                Icon(
+                  Icons.all_inclusive,
+                  size: 100.0,
+                  color: Colors.blue,
                 ),
                 SizedBox(height: 20.0),
+                Text(
+                  "Let's sign you in",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  "Sign up and receive information from various \n computer engineering departments.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 60.0),
                 TextFormField(
+                  style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: 'Student ID',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.person),
+                    labelStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
+                    ),
+                    prefixIcon: Icon(Icons.person, color: Colors.grey),
                   ),
                   validator: (value) =>
                       value!.isEmpty ? 'Please enter your student ID' : null,
@@ -58,37 +82,73 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 10.0),
                 TextFormField(
+                  style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock),
+                    labelStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
+                    ),
+                    prefixIcon: Icon(Icons.lock, color: Colors.grey),
                   ),
                   obscureText: true,
                   validator: (value) =>
                       value!.isEmpty ? 'Please enter your password' : null,
                   onSaved: (value) => _password = value!,
                 ),
-                SizedBox(height: 10.0),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _rememberMe = value!;
-                        });
-                      },
-                    ),
-                    Text('Remember me'),
-                  ],
-                ),
+                SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: _submit,
                   child: Text('Login'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      // todo forgot password?
+                    },
+                    child: Text(
+                      'Forgot password?',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                Divider(color: Colors.grey),
+                SizedBox(height: 20.0),
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      // todo Sign up
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: "Don't have an account? ",
+                        style: TextStyle(color: Colors.black, fontSize: 14.0),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Sign up',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
