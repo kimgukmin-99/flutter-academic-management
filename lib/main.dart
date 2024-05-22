@@ -12,18 +12,36 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "Pretendard",
-        colorScheme: ColorScheme(
-          primary: Colors.blue[800]!, // 짙은 파란색을 주 색상으로 설정
-          secondary: Colors.blue[400]!, // 밝은 파란색을 보조 색상으로 설정
-          surface: Colors.grey[50]!, // 매우 연한 회색을 표면 색상으로 설정
-          background: Colors.white, // 배경을 흰색으로 설정
-          error: Colors.red, // 오류 색상은 레드로 유지
-          onPrimary: Colors.white, // 주 색상 위의 텍스트 색상은 흰색
-          onSecondary: Colors.white, // 보조 색상 위의 텍스트 색상도 흰색
-          onSurface: Colors.black, // 표면 위의 텍스트 색상은 검은색
-          onBackground: Colors.black, // 배경 위의 텍스트 색상은 검은색
-          onError: Colors.white, // 오류 색상 위의 텍스트 색상은 흰색
-          brightness: Brightness.light, // 전반적인 밝기는 밝게 설정
+        colorScheme: const ColorScheme(
+          brightness: Brightness.light,
+          primary: Color(0xff1565c0),
+          onPrimary: Color(0xffffffff),
+          primaryContainer: Color(0xff90caf9),
+          onPrimaryContainer: Color(0xff0c1114),
+          secondary: Color(0xff0277bd),
+          onSecondary: Color(0xffffffff),
+          secondaryContainer: Color(0xffbedcff),
+          onSecondaryContainer: Color(0xff101214),
+          tertiary: Color(0xff039be5),
+          onTertiary: Color(0xffffffff),
+          tertiaryContainer: Color(0xffcbe6ff),
+          onTertiaryContainer: Color(0xff111314),
+          error: Color(0xffb00020),
+          onError: Color(0xffffffff),
+          errorContainer: Color(0xfffcd8df),
+          onErrorContainer: Color(0xff141213),
+          background: Color(0xfff6f9fc),
+          onBackground: Color(0xff090909),
+          surface: Color(0xfff6f9fc),
+          onSurface: Color(0xff090909),
+          surfaceVariant: Color(0xffeef4fa),
+          onSurfaceVariant: Color(0xff121313),
+          outline: Color(0xff565656),
+          shadow: Color(0xff000000),
+          inverseSurface: Color(0xff111317),
+          onInverseSurface: Color(0xfff5f5f5),
+          inversePrimary: Color(0xffaedfff),
+          surfaceTint: Color(0xff1565c0),
         ),
       ),
       home: LoginPage(),

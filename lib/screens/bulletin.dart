@@ -61,7 +61,6 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('컴퓨터공학과 게시판', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
         actions: [
           IconButton(
             icon: Icon(Icons.add, color: Colors.black),
@@ -78,7 +77,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
         ],
       ),
       body: _posts.isEmpty
-          ? Center(
+          ? const Center(
               child: Text(
                 'No posts yet',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
