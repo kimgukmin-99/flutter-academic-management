@@ -27,7 +27,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    // 앱 시작 시 초기 메시지 추가
     _messages.add(
       ChatMessage(
         text: '안녕, 나는 컴퓨터공학과 4학년 국민이야. 한남대학교에 궁금한게 있으면 뭐든지 물어봐!',
@@ -125,7 +124,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _buildTextComposer() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         children: [
           Expanded(
@@ -134,11 +133,13 @@ class _ChatScreenState extends State<ChatScreen> {
               onSubmitted: _handleSubmitted,
               decoration: InputDecoration.collapsed(
                 hintText: "Send a message...",
+                hintStyle: TextStyle(color: Colors.grey[600]),
               ),
+              style: TextStyle(color: Colors.black),
             ),
           ),
           IconButton(
-            icon: Icon(Icons.send),
+            icon: Icon(Icons.send, color: Colors.blueGrey),
             onPressed: () => _handleSubmitted(_controller.text),
           ),
         ],
@@ -149,7 +150,10 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('GookPT')),
+      appBar: AppBar(
+        title: Text('GookPT'),
+        backgroundColor: Colors.blueGrey.withOpacity(0.5), // AppBar 배경색 설정
+      ),
       body: Column(
         children: <Widget>[
           Expanded(
