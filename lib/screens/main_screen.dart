@@ -64,8 +64,8 @@ class _MainScreensState extends State<MainScreens> {
       bottomNavigationBar: DotCurvedBottomNav(
         scrollController: _scrollController,
         hideOnScroll: true,
-        indicatorColor: Colors.blue,
-        backgroundColor: Colors.black,
+        indicatorColor: Colors.black,
+        backgroundColor: Colors.blueGrey.withOpacity(0.5),
         animationDuration: const Duration(milliseconds: 300),
         animationCurve: Curves.ease,
         selectedIndex: _currentPage,
@@ -78,19 +78,19 @@ class _MainScreensState extends State<MainScreens> {
         items: [
           Icon(
             Icons.home,
-            color: _currentPage == 0 ? Colors.blue : Colors.white,
+            color: _currentPage == 0 ? Colors.black : Colors.white,
           ),
           Icon(
             Icons.thumb_up,
-            color: _currentPage == 1 ? Colors.blue : Colors.white,
+            color: _currentPage == 1 ? Colors.black : Colors.white,
           ),
           Icon(
             Icons.forum,
-            color: _currentPage == 2 ? Colors.blue : Colors.white,
+            color: _currentPage == 2 ? Colors.black : Colors.white,
           ),
           Icon(
             Icons.person,
-            color: _currentPage == 3 ? Colors.blue : Colors.white,
+            color: _currentPage == 3 ? Colors.black : Colors.white,
           ),
         ],
       ),
@@ -103,8 +103,8 @@ class _MainScreensState extends State<MainScreens> {
             MaterialPageRoute(builder: (context) => ChatScreen()),
           );
         },
-        child: Icon(Icons.chat),
-        backgroundColor: Colors.blue,
+        child: Icon(Icons.sms),
+        backgroundColor: Colors.blueGrey.withOpacity(0.5),
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.endFloat, // 버튼 위치
