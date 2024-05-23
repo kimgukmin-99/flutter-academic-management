@@ -151,7 +151,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('GookPT'),
+        title: Text('Chat GookPT4o'),
         backgroundColor: Colors.blueGrey.withOpacity(0.5), // AppBar 배경색 설정
       ),
       body: Column(
