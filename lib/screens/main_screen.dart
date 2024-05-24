@@ -37,15 +37,25 @@ class _MainScreensState extends State<MainScreens> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
-              'Comman',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-              ),
+            Row(
+              children: <Widget>[
+                Icon(
+                  Icons.local_library,
+                  color: Colors.black,
+                ),
+                SizedBox(width: 3),
+                Text(
+                  'Comman',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
             IconButton(
-              icon: Icon(Icons.notifications),
+              icon: Icon(Icons.notifications, color: Colors.black),
               onPressed: () {
                 // 알람 아이콘 클릭 이벤트 처리
                 print('Notification icon tapped!');

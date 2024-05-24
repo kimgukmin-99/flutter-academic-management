@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:academic_management/screens/post_detail_screen.dart';
 import 'dart:io';
 import 'create_post.dart';
 
@@ -146,61 +147,6 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                   ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class PostDetailScreen extends StatelessWidget {
-  final Post post;
-
-  PostDetailScreen({required this.post});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.black),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Text(
-                    post.title,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            if (post.imagePath != null)
-              Image.asset(
-                post.imagePath!,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            SizedBox(height: 10),
-            Text(
-              post.content,
-              style: TextStyle(fontSize: 16.0),
-            ),
-            SizedBox(height: 5),
-            Text(
-              '${post.author}',
-              style: TextStyle(fontSize: 14.0, color: Colors.grey),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -15,12 +15,6 @@ class HomeScreen extends StatelessWidget {
       'room': '060321',
       'color': '0xff0277BD',
     },
-    {
-      'time': '11:30 - 12:30',
-      'subject': 'Chemistry',
-      'room': '260212',
-      'color': '0xff2E7D32',
-    },
   ];
 
   final PageController _controller = PageController();
@@ -28,9 +22,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('오늘의 시간표'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
