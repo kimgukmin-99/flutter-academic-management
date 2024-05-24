@@ -14,34 +14,37 @@ class MyApp extends StatelessWidget {
         fontFamily: "Pretendard",
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
-          primary: Color(0xff1565c0),
-          onPrimary: Color(0xffffffff),
-          primaryContainer: Color(0xff90caf9),
-          onPrimaryContainer: Color(0xff0c1114),
-          secondary: Color(0xff0277bd),
-          onSecondary: Color(0xffffffff),
-          secondaryContainer: Color(0xffbedcff),
-          onSecondaryContainer: Color(0xff101214),
-          tertiary: Color(0xff039be5),
-          onTertiary: Color(0xffffffff),
-          tertiaryContainer: Color(0xffcbe6ff),
-          onTertiaryContainer: Color(0xff111314),
-          error: Color(0xffb00020),
-          onError: Color(0xffffffff),
-          errorContainer: Color(0xfffcd8df),
-          onErrorContainer: Color(0xff141213),
-          background: Color(0xfff6f9fc),
-          onBackground: Color(0xff090909),
-          surface: Color(0xfff6f9fc),
-          onSurface: Color(0xff090909),
-          surfaceVariant: Color(0xffeef4fa),
-          onSurfaceVariant: Color(0xff121313),
-          outline: Color(0xff565656),
-          shadow: Color(0xff000000),
-          inverseSurface: Color(0xff111317),
-          onInverseSurface: Color(0xfff5f5f5),
-          inversePrimary: Color(0xffaedfff),
-          surfaceTint: Color(0xff1565c0),
+          primary: Color.fromRGBO(96, 125, 139, 1), // BlueGrey primary color
+          onPrimary: Color(0xffffffff), // Text on primary color
+          primaryContainer: Color(0xffCFD8DC), // Light variant of BlueGrey
+          onPrimaryContainer: Color(0xff0c1114), // Text on primary container
+          secondary: Color(0xff009688), // Teal secondary color
+          onSecondary: Color(0xffffffff), // Text on secondary color
+          secondaryContainer: Color(0xffB2DFDB), // Light variant of Teal
+          onSecondaryContainer:
+              Color(0xff101214), // Text on secondary container
+          tertiary: Color(0xff4CAF50), // Green tertiary color
+          onTertiary: Color(0xffffffff), // Text on tertiary color
+          tertiaryContainer: Color(0xffC8E6C9), // Light variant of Green
+          onTertiaryContainer: Color(0xff111314), // Text on tertiary container
+          error: Color(0xffb00020), // Error color
+          onError: Color(0xffffffff), // Text on error color
+          errorContainer: Color(0xfffcd8df), // Light variant of error color
+          onErrorContainer: Color(0xff141213), // Text on error container
+          background: Color(0xffF5F5F5), // Light grey background color
+          onBackground: Color(0xff090909), // Text on background color
+          surface: Color(0xffffffff), // White surface color
+          onSurface: Color(0xff090909), // Text on surface color
+          surfaceVariant:
+              Color(0xffECEFF1), // Light variant of BlueGrey for surface
+          onSurfaceVariant: Color(0xff121313), // Text on surface variant
+          outline: Color(0xffB0BEC5), // Light BlueGrey for outlines
+          shadow: Color(0xff000000), // Shadow color
+          inverseSurface:
+              Color(0xff263238), // Dark variant of BlueGrey for inverse surface
+          onInverseSurface: Color(0xffECEFF1), // Text on inverse surface
+          inversePrimary: Color(0xffCFD8DC), // Inverse primary color
+          surfaceTint: Color(0xff607D8B), // Tint color for surface
         ),
       ),
       home: LoginPage(),

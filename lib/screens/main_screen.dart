@@ -33,22 +33,29 @@ class _MainScreensState extends State<MainScreens> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey.withOpacity(0.5),
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // 요소들을 양 끝으로 분배
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Row(
               children: <Widget>[
-                Image.asset(
-                  'assets/logo.png', // 로고 이미지 파일 경로
-                  fit: BoxFit.cover,
-                  height: 50, // 로고의 높이 조정
+                Icon(
+                  Icons.local_library,
+                  color: Colors.black,
                 ),
-                SizedBox(width: 0), // 로고와 텍스트 사이의 간격
-                Text('한남대학교'), // 텍스트 제목
+                SizedBox(width: 3),
+                Text(
+                  'Comman',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                    color: Colors.black,
+                  ),
+                ),
               ],
             ),
             IconButton(
-              icon: Icon(Icons.notifications), // 알람 아이콘
+              icon: Icon(Icons.notifications, color: Colors.black),
               onPressed: () {
                 // 알람 아이콘 클릭 이벤트 처리
                 print('Notification icon tapped!');
@@ -64,8 +71,8 @@ class _MainScreensState extends State<MainScreens> {
       bottomNavigationBar: DotCurvedBottomNav(
         scrollController: _scrollController,
         hideOnScroll: true,
-        indicatorColor: Colors.blue,
-        backgroundColor: Colors.black,
+        indicatorColor: Colors.black,
+        backgroundColor: Colors.blueGrey.withOpacity(0.5),
         animationDuration: const Duration(milliseconds: 300),
         animationCurve: Curves.ease,
         selectedIndex: _currentPage,
@@ -78,33 +85,32 @@ class _MainScreensState extends State<MainScreens> {
         items: [
           Icon(
             Icons.home,
-            color: _currentPage == 0 ? Colors.blue : Colors.white,
+            color: _currentPage == 0 ? Colors.black : Colors.white,
           ),
           Icon(
             Icons.thumb_up,
-            color: _currentPage == 1 ? Colors.blue : Colors.white,
+            color: _currentPage == 1 ? Colors.black : Colors.white,
           ),
           Icon(
             Icons.forum,
-            color: _currentPage == 2 ? Colors.blue : Colors.white,
+            color: _currentPage == 2 ? Colors.black : Colors.white,
           ),
           Icon(
             Icons.person,
-            color: _currentPage == 3 ? Colors.blue : Colors.white,
+            color: _currentPage == 3 ? Colors.black : Colors.white,
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // 여기에 채팅 기능을 시작하는 코드를 추가
           print('Chat button pressed!');
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ChatScreen()),
           );
         },
-        child: Icon(Icons.chat),
-        backgroundColor: Colors.blue,
+        child: Icon(Icons.sms),
+        backgroundColor: Colors.blueGrey.withOpacity(0.5),
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.endFloat, // 버튼 위치

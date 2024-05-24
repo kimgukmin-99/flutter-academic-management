@@ -34,7 +34,7 @@ class GraduationScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
+                  color: Color(0xffECEFF1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -45,6 +45,7 @@ class GraduationScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                     SizedBox(height: 8),
@@ -52,7 +53,7 @@ class GraduationScreen extends StatelessWidget {
                       '$department | $year | $studentId',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.grey[700],
+                        color: Color(0xff546E7A),
                       ),
                     ),
                     SizedBox(height: 16),
@@ -61,6 +62,7 @@ class GraduationScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                     SizedBox(height: 8),
@@ -74,7 +76,7 @@ class GraduationScreen extends StatelessWidget {
                       '$graduationScore / $maxScore',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.grey[700],
+                        color: Color(0xff546E7A),
                       ),
                     ),
                   ],

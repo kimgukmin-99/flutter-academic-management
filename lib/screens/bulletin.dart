@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:academic_management/screens/post_detail_screen.dart';
 import 'dart:io';
 import 'create_post.dart';
 
@@ -8,12 +9,14 @@ class Post {
   final String content;
   final String? imagePath;
   final String author;
+  final DateTime createdAt;
 
   Post({
     required this.title,
     required this.content,
     this.imagePath,
     required this.author,
+    required this.createdAt,
   });
 }
 
@@ -29,17 +32,20 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
       content: '이것은 첫 번째 게시물의 내용입니다.',
       imagePath: 'assets/event1.png',
       author: '홍길동',
+      createdAt: DateTime.now().subtract(Duration(days: 1)),
     ),
     Post(
       title: '두 번째 게시물',
       content: '두 번째 게시물의 내용은 더 많은 정보를 담고 있습니다.',
       imagePath: 'assets/event2.png',
       author: '이순신',
+      createdAt: DateTime.now().subtract(Duration(days: 2)),
     ),
     Post(
       title: '세 번째 게시물',
       content: '세 번째 게시물의 내용입니다. 사진은 없습니다.',
       author: '김유신',
+      createdAt: DateTime.now().subtract(Duration(days: 3)),
     ),
   ];
 
@@ -47,12 +53,15 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
     String? imagePath = image?.path;
     setState(() {
       _posts.insert(
-          0,
-          Post(
-              title: title,
-              content: content,
-              imagePath: imagePath,
-              author: author));
+        0,
+        Post(
+          title: title,
+          content: content,
+          imagePath: imagePath,
+          author: author,
+          createdAt: DateTime.now(),
+        ),
+      );
     });
   }
 
@@ -60,7 +69,14 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('컴퓨터공학과 게시판', style: TextStyle(color: Colors.black)),
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            '컴퓨터공학과 게시판',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        backgroundColor: Color(0xffF5F5F5),
         actions: [
           IconButton(
             icon: Icon(Icons.add, color: Colors.black),
@@ -118,6 +134,13 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                             color: Colors.grey,
                           ),
                         ),
+                        Text(
+                          DateFormat('yyyy-MM-dd HH:mm').format(post.createdAt),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ],
                     ),
                     onTap: () {
@@ -132,45 +155,6 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                 );
               },
             ),
-    );
-  }
-}
-
-class PostDetailScreen extends StatelessWidget {
-  final Post post;
-
-  PostDetailScreen({required this.post});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(post.title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (post.imagePath != null)
-              Image.asset(
-                post.imagePath!,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            SizedBox(height: 10),
-            Text(
-              post.content,
-              style: TextStyle(fontSize: 16.0),
-            ),
-            SizedBox(height: 5),
-            Text(
-              '${post.author}',
-              style: TextStyle(fontSize: 14.0, color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

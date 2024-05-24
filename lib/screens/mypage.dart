@@ -14,8 +14,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
   final String department = '컴퓨터공학과';
   final String year = '3학년';
   final String studentId = '20201234';
-  int participationScore = 30; // 초기 학과 참여 점수
-  final int maxScore = 150; // 총 150점
+  int participationScore = 30;
+  final int maxScore = 150;
 
   // 학과 행사 목록 예시
   final List<Map<String, String>> events = [
@@ -117,7 +117,6 @@ class _MyPageScreenState extends State<MyPageScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          // 화면이 작은 기기에서 스크롤 가능하도록 수정
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
