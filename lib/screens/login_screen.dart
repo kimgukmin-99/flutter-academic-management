@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                 Icon(
                   Icons.all_inclusive,
                   size: 100.0,
-                  color: Colors.blue,
+                  color: Colors.deepPurple,
                 ),
                 SizedBox(height: 20.0),
                 Text(
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                      borderSide: BorderSide(color: Colors.deepPurple),
                     ),
                     prefixIcon: Icon(Icons.person, color: Colors.grey),
                   ),
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                      borderSide: BorderSide(color: Colors.deepPurple),
                     ),
                     prefixIcon: Icon(Icons.lock, color: Colors.grey),
                   ),
@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: _submit,
                   child: Text('Login'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.deepPurple,
                     foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(vertical: 12.0),
                     shape: RoundedRectangleBorder(
@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Forgot password?',
                       style: TextStyle(
-                          color: Colors.blue,
+                          color: Colors.deepPurple,
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold),
                     ),
@@ -144,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                             text: 'Sign up',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.blue),
+                                color: Colors.deepPurple),
                           ),
                         ],
                       ),

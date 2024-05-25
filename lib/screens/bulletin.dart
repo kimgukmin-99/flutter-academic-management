@@ -76,7 +76,6 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        backgroundColor: Color(0xffF5F5F5),
         actions: [
           IconButton(
             icon: Icon(Icons.add, color: Colors.black),

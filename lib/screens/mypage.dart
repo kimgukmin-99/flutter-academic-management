@@ -9,7 +9,6 @@ class MyPageScreen extends StatefulWidget {
 }
 
 class _MyPageScreenState extends State<MyPageScreen> {
-  // 사용자 정보를 여기에 추가
   final String userName = '홍길동';
   final String department = '컴퓨터공학과';
   final String year = '3학년';
@@ -17,7 +16,6 @@ class _MyPageScreenState extends State<MyPageScreen> {
   int participationScore = 30;
   final int maxScore = 150;
 
-  // 학과 행사 목록 예시
   final List<Map<String, String>> events = [
     {'name': '신입생 환영회', 'image': 'assets/event1.png'},
     {'name': 'MT', 'image': 'assets/event2.png'},
@@ -44,7 +42,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
       });
       _selectedImage = null;
       if (participationScore + 10 <= maxScore) {
-        participationScore += 10; // 학과 참여 점수 10점 증가
+        participationScore += 10;
       }
     });
     Navigator.of(context).pop();
@@ -94,6 +92,10 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 _addEvent(eventName, _selectedImage);
               },
               child: Text('Add'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple,
+                foregroundColor: Colors.white,
+              ),
             ),
           ],
         );
@@ -123,8 +125,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
               Center(
                 child: CircleAvatar(
                   radius: 50,
-                  backgroundImage: AssetImage(
-                      'assets/profile_placeholder.png'), // 프로필 이미지 경로
+                  backgroundImage: AssetImage('assets/profile_placeholder.png'),
                 ),
               ),
               SizedBox(height: 20),
@@ -147,22 +148,28 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      // Edit profile 기능
-                    },
+                    onPressed: () {},
                     child: Text('Edit Profile'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.white,
+                    ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      // Share profile 기능
-                    },
+                    onPressed: () {},
                     child: Text('Share Profile'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.white,
+                    ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      // Setting 기능
-                    },
+                    onPressed: () {},
                     child: Text('Setting'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.white,
+                    ),
                   ),
                 ],
               ),
@@ -176,7 +183,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
               LinearProgressIndicator(
                 value: participationScore / maxScore,
                 backgroundColor: Colors.grey[300],
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple),
               ),
               SizedBox(height: 10),
               Text(
@@ -191,9 +198,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
               ListTile(
                 leading: Icon(Icons.announcement),
                 title: Text('새로운 공지가 있습니다.'),
-                onTap: () {
-                  // 공지사항 상세 페이지로 이동
-                },
+                onTap: () {},
               ),
               SizedBox(height: 20),
               Text(
@@ -205,7 +210,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, // 한 줄에 4개의 항목을 표시
+                  crossAxisCount: 4,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
@@ -219,6 +224,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                         children: [
                           CircleAvatar(
                             radius: 30,
+                            backgroundColor: Colors.grey[300],
                             child: Icon(Icons.add),
                           ),
                           SizedBox(height: 5),

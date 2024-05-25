@@ -33,7 +33,6 @@ class _MainScreensState extends State<MainScreens> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey.withOpacity(0.5),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -41,15 +40,15 @@ class _MainScreensState extends State<MainScreens> {
               children: <Widget>[
                 Icon(
                   Icons.local_library,
-                  color: Colors.black,
+                  color: Colors.deepPurple,
                 ),
                 SizedBox(width: 3),
                 Text(
-                  'Comman',
+                  'COMMAN',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20.0,
-                    color: Colors.black,
+                    color: Colors.deepPurple,
                   ),
                 ),
               ],
