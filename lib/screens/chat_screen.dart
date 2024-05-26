@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -10,12 +11,14 @@ class ChatMessage {
   bool isMe; // 메시지가 사용자 본인의 것인지 여부
   String? username; // 사용자 이름
   String? avatarUrl; // 프로필 사진 URL
+  DateTime timestamp; // 메시지의 타임스탬프
 
   ChatMessage({
     required this.text,
     required this.isMe,
     this.username,
     this.avatarUrl,
+    required this.timestamp,
   });
 }
 
@@ -33,6 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
         isMe: false,
         username: 'Gookmin',
         avatarUrl: 'assets/avatar.png',
+        timestamp: DateTime.now(),
       ),
     );
   }
@@ -46,6 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
           isMe: isMe,
           username: isMe ? "Me" : "Gookmin",
           avatarUrl: isMe ? null : "assets/avatar.png",
+          timestamp: DateTime.now(),
         ),
       );
       _controller.clear();
@@ -64,6 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final messageAlignment =
         message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start;
     final color = message.isMe ? Colors.blue[100] : Colors.grey[200];
+    final timeFormat = DateFormat('HH:mm');
 
     return Row(
       mainAxisAlignment: messageAlignment,
@@ -75,49 +81,37 @@ class _ChatScreenState extends State<ChatScreen> {
                 : AssetImage('assets/avatar.png'),
           ),
           SizedBox(width: 10),
-          Flexible(
-            // Flexible을 사용하여 텍스트가 차지할 수 있는 최대 공간을 유동적으로 조절
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+        ],
+        Flexible(
+          // Flexible을 사용하여 텍스트가 차지할 수 있는 최대 공간을 유동적으로 조절
+          child: Column(
+            crossAxisAlignment: alignment,
+            children: [
+              if (!message.isMe)
                 Text(message.username ?? "Anonymous",
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                Container(
-                  margin: const EdgeInsets.all(4.0),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 8.0),
-                  decoration: BoxDecoration(
-                    color: color,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    message.text,
-                    softWrap: true, // 자동 줄바꿈 활성화
-                    style: TextStyle(fontSize: 16), // 텍스트 크기 설정
-                  ),
+              Container(
+                margin: const EdgeInsets.all(4.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ],
-            ),
-          ),
-        ] else ...[
-          Flexible(
-            // 마찬가지로 Flexible 사용
-            child: Container(
-              margin: const EdgeInsets.all(4.0),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(12),
+                child: Text(
+                  message.text,
+                  softWrap: true, // 자동 줄바꿈 활성화
+                  style: TextStyle(fontSize: 16), // 텍스트 크기 설정
+                ),
               ),
-              child: Text(
-                message.text,
-                softWrap: true, // 자동 줄바꿈 활성화
-                style: TextStyle(fontSize: 16),
+              Text(
+                timeFormat.format(message.timestamp),
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
+        if (message.isMe) SizedBox(width: 10),
       ],
     );
   }
@@ -167,9 +161,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           Divider(height: 1.0),
           _buildTextComposer(),
-          SizedBox(
-            height: 30,
-          ),
+          SizedBox(height: 30),
         ],
       ),
     );
