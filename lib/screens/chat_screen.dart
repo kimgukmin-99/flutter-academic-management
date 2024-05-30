@@ -1,9 +1,23 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
+}
+
+class ResponseMessage {
+  String responseMessage;
+
+  ResponseMessage({required this.responseMessage});
+
+  factory ResponseMessage.fromJson(Map<String, dynamic> json) {
+    return ResponseMessage(
+      responseMessage: json['response_message'],
+    );
+  }
 }
 
 class ChatMessage {
@@ -41,9 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _handleSubmitted(String text) {
-    if (text.isEmpty) return;
-
+  void _handleSubmitted(String text) async {
     setState(() {
       bool isMe = _messages.length % 2 == 1;
       _messages.add(
@@ -56,12 +68,52 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       );
       _controller.clear();
+      // 새 메시지가 추가되면 스크롤을 맨 아래로 이동
       _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent + 60,
+        _scrollController.position.maxScrollExtent,
         duration: Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
     });
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://3.25.85.108:8000/echo'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({'message': text}),
+      );
+
+      if (response.statusCode == 200) {
+        final responseBody =
+            json.decode(utf8.decode(response.bodyBytes)); // UTF-8로 디코딩
+        print(responseBody);
+        text = responseBody['response_message'];
+        setState(() {
+          _messages.add(
+            ChatMessage(
+              text: text,
+              isMe: false,
+              username: 'Gookmin',
+              avatarUrl: 'assets/avatar.png',
+              timestamp: DateTime.now(),
+            ),
+          );
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        });
+      } else {
+        // 서버 오류 처리
+        print('Server error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // 네트워크 오류 처리
+      print('Network error: $e');
+    }
   }
 
   Widget _buildMessageItem(ChatMessage message) {
@@ -69,78 +121,56 @@ class _ChatScreenState extends State<ChatScreen> {
         message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
     final messageAlignment =
         message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start;
-    final color = message.isMe ? Colors.blue[200] : Colors.grey[300];
+    final color = message.isMe ? Colors.blue[100] : Colors.grey[200];
     final timeFormat = DateFormat('HH:mm');
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Column(
-        crossAxisAlignment: alignment,
-        children: [
-          Row(
-            mainAxisAlignment: messageAlignment,
+    return Row(
+      mainAxisAlignment: messageAlignment,
+      children: [
+        if (!message.isMe) ...[
+          CircleAvatar(
+            backgroundImage: message.avatarUrl != null
+                ? AssetImage(message.avatarUrl!)
+                : AssetImage('assets/avatar.png'),
+          ),
+          SizedBox(width: 10),
+        ],
+        Flexible(
+          // Flexible을 사용하여 텍스트가 차지할 수 있는 최대 공간을 유동적으로 조절
+          child: Column(
+            crossAxisAlignment: alignment,
             children: [
-              if (!message.isMe) ...[
-                CircleAvatar(
-                  backgroundImage: message.avatarUrl != null
-                      ? AssetImage(message.avatarUrl!)
-                      : AssetImage('assets/avatar.png'),
+              if (!message.isMe)
+                Text(message.username ?? "Anonymous",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+              Container(
+                margin: const EdgeInsets.all(4.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                SizedBox(width: 10),
-              ],
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: alignment,
-                  children: [
-                    if (!message.isMe)
-                      Text(
-                        message.username ?? "Anonymous",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    Container(
-                      margin: const EdgeInsets.all(4.0),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 10.0),
-                      decoration: BoxDecoration(
-                        color: color,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        message.text,
-                        softWrap: true, // 자동 줄바꿈 활성화
-                        style: TextStyle(fontSize: 16), // 텍스트 크기 설정
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  message.text,
+                  softWrap: true, // 자동 줄바꿈 활성화
+                  style: TextStyle(fontSize: 16), // 텍스트 크기 설정
                 ),
               ),
-              if (message.isMe) SizedBox(width: 10),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: messageAlignment,
-            children: [
-              if (!message.isMe) SizedBox(width: 50), // 아바타 공간 확보
               Text(
                 timeFormat.format(message.timestamp),
                 style: TextStyle(fontSize: 12, color: Colors.grey[600]),
               ),
-              if (message.isMe) SizedBox(width: 10),
             ],
           ),
-        ],
-      ),
+        ),
+        if (message.isMe) SizedBox(width: 10),
+      ],
     );
   }
 
   Widget _buildTextComposer() {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(blurRadius: 3, color: Colors.black12, offset: Offset(0, -2))
-        ],
-      ),
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         children: [
@@ -156,7 +186,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.send, color: Colors.deepPurple),
+            icon: Icon(Icons.send, color: Colors.blueGrey),
             onPressed: () => _handleSubmitted(_controller.text),
           ),
         ],
@@ -195,7 +225,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           Divider(height: 1.0),
           _buildTextComposer(),
-          SizedBox(height: 10),
+          SizedBox(height: 30),
         ],
       ),
     );

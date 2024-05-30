@@ -79,25 +79,31 @@ class _MainScreensState extends State<MainScreens> {
         indicatorSize: 5,
         borderRadius: 25,
         height: 70,
-        onTap: (index) {
-          setState(() => _currentPage = index);
-        },
+        onTap: _onItemTapped,
         items: [
-          Icon(
-            Icons.home,
-            color: _currentPage == 0 ? Colors.black : Colors.white,
+          SvgPicture.asset(
+            'assets/icons/ic_home.svg',
+            color: _currentPage == 0 ? Colors.deepPurple : Colors.white,
+            width: 24,
+            height: 24,
           ),
-          Icon(
-            Icons.thumb_up,
-            color: _currentPage == 1 ? Colors.black : Colors.white,
+          SvgPicture.asset(
+            'assets/icons/ic_pin.svg',
+            color: _currentPage == 1 ? Colors.deepPurple : Colors.white,
+            width: 24,
+            height: 24,
           ),
-          Icon(
-            Icons.forum,
-            color: _currentPage == 2 ? Colors.black : Colors.white,
+          SvgPicture.asset(
+            'assets/icons/ic_setting.svg',
+            color: _currentPage == 2 ? Colors.deepPurple : Colors.white,
+            width: 24,
+            height: 24,
           ),
-          Icon(
-            Icons.person,
-            color: _currentPage == 3 ? Colors.black : Colors.white,
+          SvgPicture.asset(
+            'assets/icons/ic_user_check_1.svg',
+            color: _currentPage == 3 ? Colors.deepPurple : Colors.white,
+            width: 24,
+            height: 24,
           ),
         ],
       ),

@@ -75,8 +75,8 @@ class CurvedNavPainter extends CustomPainter {
 
     canvas.drawPath(path, paint);
 
-    canvas.drawCircle(
-        Offset(loc * width, indicatorSize), indicatorSize, circlePaint);
+    canvas.drawCircle(Offset(loc * width + 2, indicatorSize),
+        indicatorSize - 0.5, circlePaint);
   }
 
   @override
