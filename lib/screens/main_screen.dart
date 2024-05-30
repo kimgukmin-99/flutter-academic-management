@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // flutter_svg 패키지 추가
 import 'package:academic_management/screens/chat_screen.dart';
 import 'package:academic_management/screens/bulletin.dart';
 import 'package:academic_management/screens/graduation.dart';
@@ -108,10 +109,15 @@ class _MainScreensState extends State<MainScreens> {
             MaterialPageRoute(builder: (context) => ChatScreen()),
           );
         },
-        child: Icon(Icons.sms),
+        child: SvgPicture.asset(
+          'assets/icons/ic_message.svg',
+          color: Colors.white, // 아이콘 색상을 white로 설정
+          width: 24.0,
+          height: 24.0,
+        ),
         backgroundColor: Colors.deepPurple,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, // 버튼 위치
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

@@ -65,8 +65,10 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildMessageItem(ChatMessage message) {
-    final alignment = message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
-    final messageAlignment = message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start;
+    final alignment =
+        message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
+    final messageAlignment =
+        message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start;
     final color = message.isMe ? Colors.blue[200] : Colors.grey[300];
     final timeFormat = DateFormat('HH:mm');
 
@@ -94,7 +96,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 Container(
                   margin: const EdgeInsets.all(4.0),
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0, vertical: 10.0),
                   decoration: BoxDecoration(
                     color: color,
                     borderRadius: BorderRadius.circular(12),
@@ -128,7 +131,9 @@ class _ChatScreenState extends State<ChatScreen> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [BoxShadow(blurRadius: 3, color: Colors.black12, offset: Offset(0, -2))],
+        boxShadow: [
+          BoxShadow(blurRadius: 3, color: Colors.black12, offset: Offset(0, -2))
+        ],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
@@ -157,8 +162,19 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat GookPT4o'),
-        backgroundColor: Colors.deepPurple, // AppBar 배경색 설정
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Chat GookPT4o',
+            style: TextStyle(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.transparent, // AppBar 배경색 없앰
+        elevation: 0, // 그림자 없앰
+        iconTheme: IconThemeData(color: Colors.deepPurple), // 아이콘 색상 설정
       ),
       body: Column(
         children: <Widget>[
@@ -166,7 +182,8 @@ class _ChatScreenState extends State<ChatScreen> {
             child: ListView.builder(
               controller: _scrollController,
               padding: const EdgeInsets.all(8.0),
-              itemBuilder: (_, int index) => _buildMessageItem(_messages[index]),
+              itemBuilder: (_, int index) =>
+                  _buildMessageItem(_messages[index]),
               itemCount: _messages.length,
             ),
           ),
