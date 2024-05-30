@@ -74,54 +74,60 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        mainAxisAlignment: messageAlignment,
+      child: Column(
+        crossAxisAlignment: alignment,
         children: [
-          if (!message.isMe) ...[
-            CircleAvatar(
-              backgroundImage: message.avatarUrl != null
-                  ? AssetImage(message.avatarUrl!)
-                  : AssetImage('assets/avatar.png'),
-            ),
-            SizedBox(width: 10),
-          ],
-          Flexible(
-            child: Column(
-              crossAxisAlignment: alignment,
-              children: [
-                if (!message.isMe)
-                  Text(
-                    message.username ?? "Anonymous",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                Container(
-                  margin: const EdgeInsets.all(4.0),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0, vertical: 10.0),
-                  decoration: BoxDecoration(
-                    color: color,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: alignment,
-                    children: [
+          Row(
+            mainAxisAlignment: messageAlignment,
+            children: [
+              if (!message.isMe) ...[
+                CircleAvatar(
+                  backgroundImage: message.avatarUrl != null
+                      ? AssetImage(message.avatarUrl!)
+                      : AssetImage('assets/avatar.png'),
+                ),
+                SizedBox(width: 10),
+              ],
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: alignment,
+                  children: [
+                    if (!message.isMe)
                       Text(
+                        message.username ?? "Anonymous",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    Container(
+                      margin: const EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 10.0),
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
                         message.text,
                         softWrap: true, // 자동 줄바꿈 활성화
                         style: TextStyle(fontSize: 16), // 텍스트 크기 설정
                       ),
-                      SizedBox(height: 5),
-                      Text(
-                        timeFormat.format(message.timestamp),
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              if (message.isMe) SizedBox(width: 10),
+            ],
           ),
-          if (message.isMe) SizedBox(width: 10),
+          Row(
+            mainAxisAlignment: messageAlignment,
+            children: [
+              if (!message.isMe) SizedBox(width: 50), // 아바타 공간 확보
+              Text(
+                timeFormat.format(message.timestamp),
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              ),
+              if (message.isMe) SizedBox(width: 10),
+            ],
+          ),
         ],
       ),
     );
