@@ -103,7 +103,7 @@ class GraduationScreen extends StatelessWidget {
                           ? Icons.check_circle
                           : Icons.cancel,
                       color:
-                          recommendation.completed ? Colors.green : Colors.red,
+                      recommendation.completed ? Colors.green : Colors.red,
                     ),
                   );
                 },
