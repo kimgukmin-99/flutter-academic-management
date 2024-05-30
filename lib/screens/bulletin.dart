@@ -57,13 +57,15 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
 
   void _addPost(String title, String content, File? image, String author) {
     setState(() {
-      posts.insert(0, Post(
-        title: title,
-        content: content,
-        author: author,
-        createdAt: DateTime.now(),
-        imagePath: image?.path,
-      ));
+      posts.insert(
+          0,
+          Post(
+            title: title,
+            content: content,
+            author: author,
+            createdAt: DateTime.now(),
+            imagePath: image?.path,
+          ));
     });
   }
 
@@ -100,7 +102,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CreatePostScreen(addPostCallback: _addPost),
+                        builder: (context) =>
+                            CreatePostScreen(addPostCallback: _addPost),
                       ),
                     );
                   },
@@ -194,7 +197,9 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                   child: Row(
                     children: [
                       Icon(
-                        post.likes % 2 == 0 ? Icons.favorite_border : Icons.favorite,
+                        post.likes % 2 == 0
+                            ? Icons.favorite_border
+                            : Icons.favorite,
                         color: post.likes % 2 == 0 ? Colors.grey : Colors.red,
                       ),
                       SizedBox(width: 4.0),
