@@ -59,7 +59,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create New Post'),
+        title: Text('게시글 작성'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -68,16 +68,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: InputDecoration(labelText: '제목'),
             ),
             TextField(
               controller: _authorController,
-              decoration: InputDecoration(labelText: 'Author'),
+              decoration: InputDecoration(labelText: '작성자'),
             ),
             Expanded(
               child: TextField(
                 controller: _contentController,
-                decoration: InputDecoration(labelText: 'Content'),
+                decoration: InputDecoration(labelText: '내용'),
                 maxLines: null,
                 expands: true,
               ),
@@ -85,19 +85,23 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             SizedBox(height: 10),
             _selectedImage == null
                 ? TextButton(
-                    onPressed: _pickImage,
-                    child: Text('Select Image'),
-                  )
+              onPressed: _pickImage,
+              child: Text('이미지 첨부'),
+            )
                 : Image.file(
-                    _selectedImage!,
-                    height: 100,
-                    width: 100,
-                  ),
+              _selectedImage!,
+              height: 100,
+              width: 100,
+            ),
             SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: _submitPost,
-                child: Text('Submit'),
+                child: Text('등록'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple, // 배경색 딥퍼플
+                  foregroundColor: Colors.white, // 글씨 색상 흰색
+                ),
               ),
             ),
           ],

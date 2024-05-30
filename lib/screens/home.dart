@@ -240,6 +240,6 @@ class HomeScreen extends StatelessWidget {
 }
 
 void main() => runApp(MaterialApp(
-      home: HomeScreen(),
-      debugShowCheckedModeBanner: false,
-    ));
+  home: HomeScreen(),
+  debugShowCheckedModeBanner: false,
+));
