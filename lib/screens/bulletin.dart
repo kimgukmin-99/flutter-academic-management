@@ -128,6 +128,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
 
   Widget _buildPost(BuildContext context, Post post) {
     return Card(
+      // color: Colors.grey[100],
       margin: EdgeInsets.only(bottom: 16.0),
       child: Padding(
         padding: EdgeInsets.all(16.0),

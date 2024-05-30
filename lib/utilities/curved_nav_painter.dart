@@ -28,7 +28,7 @@ class CurvedNavPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final circlePaint = Paint()
-      ..color = indicatorColor
+      ..color = Colors.deepPurple
       ..style = PaintingStyle.fill;
 
     final height = size.height;
@@ -75,7 +75,7 @@ class CurvedNavPainter extends CustomPainter {
 
     canvas.drawPath(path, paint);
 
-    canvas.drawCircle(Offset(loc * width + 2, indicatorSize),
+    canvas.drawCircle(Offset(loc * width + 2, indicatorSize + 7),
         indicatorSize - 0.5, circlePaint);
   }
 
