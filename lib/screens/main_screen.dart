@@ -55,12 +55,17 @@ class _MainScreensState extends State<MainScreens> {
               ],
             ),
             IconButton(
-              icon: Icon(Icons.notifications, color: Colors.black),
+              icon: SvgPicture.asset(
+                'assets/icons/alarm.svg', // SVG 파일 경로
+                //color: Colors.black, // 아이콘 색상 설정
+                width: 24, // 아이콘 너비 설정
+                height: 24, // 아이콘 높이 설정
+              ),
               onPressed: () {
                 // 알람 아이콘 클릭 이벤트 처리
                 print('Notification icon tapped!');
               },
-            ),
+            )
           ],
         ),
       ),
