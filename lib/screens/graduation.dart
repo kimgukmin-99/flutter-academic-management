@@ -2,18 +2,34 @@ import 'package:flutter/material.dart';
 
 class GraduationRequirement {
   final String requirement;
+  final List<String> details; // 세부 정보 리스트 추가
   final bool completed;
 
-  GraduationRequirement({required this.requirement, required this.completed});
+  GraduationRequirement({required this.requirement, required this.completed,required this.details,});
 }
 
 class GraduationScreen extends StatelessWidget {
   final List<GraduationRequirement> recommendations = [
-    GraduationRequirement(requirement: '봉사 활동 1', completed: true),
-    GraduationRequirement(requirement: '봉사 활동 2', completed: false),
-    GraduationRequirement(requirement: '인턴십 1', completed: true),
-    GraduationRequirement(requirement: '동아리 활동', completed: false),
-  ];
+     GraduationRequirement(
+      requirement: '봉사 활동 1',
+      completed: true,
+      details: ['세부사항 1-1', '세부사항 1-2', '세부사항 1-3'],
+    ),
+    GraduationRequirement(
+      requirement: '봉사 활동 2',
+      completed: false,
+      details: ['세부사항 2-1', '세부사항 2-2'],
+    ),
+    GraduationRequirement(
+      requirement: '인턴십 1',
+      completed: true,
+      details: ['세부사항 인턴십 1-1', '세부사항 인턴십 1-2'],
+    ),
+    GraduationRequirement(
+      requirement: '동아리 활동',
+      completed: false,
+      details: ['세부사항 동아리 활동 1', '세부사항 동아리 활동 2'],
+    ),];
 
   final String userName = '홍길동';
   final String department = '컴퓨터공학과';
