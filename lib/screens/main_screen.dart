@@ -72,7 +72,7 @@ class _MainScreensState extends State<MainScreens> {
         scrollController: _scrollController,
         hideOnScroll: true,
         indicatorColor: Colors.black,
-        backgroundColor: Colors.blueGrey.withOpacity(0.5),
+        backgroundColor: Colors.white,
         animationDuration: const Duration(milliseconds: 300),
         animationCurve: Curves.ease,
         selectedIndex: _currentPage,
@@ -82,26 +82,26 @@ class _MainScreensState extends State<MainScreens> {
         onTap: _onItemTapped,
         items: [
           SvgPicture.asset(
-            'assets/icons/ic_home.svg',
-            color: _currentPage == 0 ? Colors.deepPurple : Colors.white,
+            'assets/icons/nav_home.svg',
+            color: _currentPage == 0 ? Colors.deepPurple : Colors.grey,
             width: 24,
             height: 24,
           ),
           SvgPicture.asset(
-            'assets/icons/ic_pin.svg',
-            color: _currentPage == 1 ? Colors.deepPurple : Colors.white,
+            'assets/icons/nav_suggest.svg',
+            color: _currentPage == 1 ? Colors.deepPurple : Colors.grey,
             width: 24,
             height: 24,
           ),
           SvgPicture.asset(
-            'assets/icons/ic_setting.svg',
-            color: _currentPage == 2 ? Colors.deepPurple : Colors.white,
+            'assets/icons/nav_post.svg',
+            color: _currentPage == 2 ? Colors.deepPurple : Colors.grey,
             width: 24,
             height: 24,
           ),
           SvgPicture.asset(
-            'assets/icons/ic_user_check_1.svg',
-            color: _currentPage == 3 ? Colors.deepPurple : Colors.white,
+            'assets/icons/nav_privacy.svg',
+            color: _currentPage == 3 ? Colors.deepPurple : Colors.grey,
             width: 24,
             height: 24,
           ),
@@ -116,7 +116,7 @@ class _MainScreensState extends State<MainScreens> {
           );
         },
         child: SvgPicture.asset(
-          'assets/icons/ic_message.svg',
+          'assets/icons/chat_button.svg',
           color: Colors.white, // 아이콘 색상을 white로 설정
           width: 24.0,
           height: 24.0,

@@ -10,6 +10,10 @@ class MyApp extends StatelessWidget {
       title: 'Academic Management Login',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Colors.deepPurple,
+          background: Colors.white, // 배경색 설정
+        ),
         fontFamily: "Pretendard",
       ),
       home: LoginPage(),
