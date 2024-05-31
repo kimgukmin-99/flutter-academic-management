@@ -64,13 +64,16 @@ flutter:
     - assets/event2.png
     - assets/event3.png
     - assets/profile_placeholder.png
-    - assets/icons/ic_message.svg
-    - assets/icons/ic_message_circle.svg
-    - assets/icons/ic_home.svg
-    - assets/icons/ic_pin.svg
-    - assets/icons/ic_setting.svg
-    - assets/icons/ic_user_check_1.svg
-
+    - assets/icons/alarm.svg
+    - assets/icons/chat_button.svg
+    - assets/icons/login_secret.svg
+    - assets/icons/nav_suggest.svg
+    - assets/icons/nav_home.svg
+    - assets/icons/nav_post.svg
+    - assets/icons/nav_privacy.svg
+    - assets/icons/post_comment.svg
+    - assets/icons/post_save.svg
+    - assets/icons/post_share.svg
   
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

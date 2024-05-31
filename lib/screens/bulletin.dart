@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // flutter_svg 패키지 추가
 import 'package:academic_management/screens/post_detail_screen.dart';
 import 'package:academic_management/screens/create_post.dart';
 import 'dart:io';
@@ -128,7 +129,6 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
 
   Widget _buildPost(BuildContext context, Post post) {
     return Card(
-      // color: Colors.grey[100],
       margin: EdgeInsets.only(bottom: 16.0),
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -220,7 +220,12 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                   splashColor: Colors.transparent,
                   child: Row(
                     children: [
-                      Icon(Icons.comment, color: Colors.purple),
+                      SvgPicture.asset(
+                        'assets/icons/post_comment.svg',
+                        color: Colors.purple,
+                        width: 20,
+                        height: 20,
+                      ),
                       SizedBox(width: 4.0),
                       Text('${post.comments}'),
                     ],
@@ -233,7 +238,12 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                   splashColor: Colors.transparent,
                   child: Row(
                     children: [
-                      Icon(Icons.bookmark, color: Colors.purple),
+                      SvgPicture.asset(
+                        'assets/icons/post_save.svg',
+                        color: Colors.purple,
+                        width: 20,
+                        height: 20,
+                      ),
                       SizedBox(width: 4.0),
                       Text('저장'),
                     ],
@@ -246,7 +256,12 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                   splashColor: Colors.transparent,
                   child: Row(
                     children: [
-                      Icon(Icons.share, color: Colors.purple),
+                      SvgPicture.asset(
+                        'assets/icons/post_share.svg',
+                        color: Colors.purple,
+                        width: 20,
+                        height: 20,
+                      ),
                       SizedBox(width: 4.0),
                       Text('공유하기'),
                     ],
