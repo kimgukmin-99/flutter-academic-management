@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: Colors.deepPurple,
+          primary: Color(0xFF8A50CE),
           background: Colors.white, // 배경색 설정
         ),
         fontFamily: "Pretendard",

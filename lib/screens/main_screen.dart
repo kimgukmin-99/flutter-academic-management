@@ -40,7 +40,7 @@ class _MainScreensState extends State<MainScreens> {
             Row(
               children: <Widget>[
                 SvgPicture.asset('assets/icons/logo.svg',
-                    width: 20, height: 20, color: Colors.deepPurple),
+                    width: 20, height: 20, color: Color(0xFF8A50CE)),
                 SizedBox(width: 3),
               ],
             ),
@@ -76,25 +76,25 @@ class _MainScreensState extends State<MainScreens> {
         items: [
           SvgPicture.asset(
             'assets/icons/nav_home.svg',
-            color: _currentPage == 0 ? Colors.deepPurple : Colors.grey,
+            color: _currentPage == 0 ? Color(0xFF8A50CE) : Colors.grey,
             width: 24,
             height: 24,
           ),
           SvgPicture.asset(
             'assets/icons/nav_suggest.svg',
-            color: _currentPage == 1 ? Colors.deepPurple : Colors.grey,
+            color: _currentPage == 1 ? Color(0xFF8A50CE) : Colors.grey,
             width: 24,
             height: 24,
           ),
           SvgPicture.asset(
             'assets/icons/nav_post.svg',
-            color: _currentPage == 2 ? Colors.deepPurple : Colors.grey,
+            color: _currentPage == 2 ? Color(0xFF8A50CE) : Colors.grey,
             width: 24,
             height: 24,
           ),
           SvgPicture.asset(
             'assets/icons/nav_privacy.svg',
-            color: _currentPage == 3 ? Colors.deepPurple : Colors.grey,
+            color: _currentPage == 3 ? Color(0xFF8A50CE) : Colors.grey,
             width: 24,
             height: 24,
           ),
@@ -114,7 +114,7 @@ class _MainScreensState extends State<MainScreens> {
           width: 24.0,
           height: 24.0,
         ),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Color(0xFFA2A2FF),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

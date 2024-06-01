@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:academic_management/screens/image_screen.dart';
-import 'server.dart';
+import 'package:academic_management/providers/person.dart';
 
 class MyPageScreen extends StatefulWidget {
   @override
@@ -43,7 +43,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
       });
       _selectedImage = null;
       if (graduationScore + 10 <= maxScore) {
-        graduationScore+= 10;
+        graduationScore += 10;
       }
     });
     Navigator.of(context).pop();
@@ -94,7 +94,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
               },
               child: Text('Add'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
+                backgroundColor: Color(0xFF8A50CE),
                 foregroundColor: Colors.white,
               ),
             ),
@@ -152,7 +152,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onPressed: () {},
                     child: Text('Edit Profile'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: Color(0xFF8A50CE),
                       foregroundColor: Colors.white,
                     ),
                   ),
@@ -160,7 +160,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onPressed: () {},
                     child: Text('Share Profile'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: Color(0xFF8A50CE),
                       foregroundColor: Colors.white,
                     ),
                   ),
@@ -168,7 +168,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onPressed: () {},
                     child: Text('Setting'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: Color(0xFF8A50CE),
                       foregroundColor: Colors.white,
                     ),
                   ),
@@ -184,7 +184,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
               LinearProgressIndicator(
                 value: graduationScore / maxScore,
                 backgroundColor: Colors.grey[300],
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple),
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF8A50CE)),
               ),
               SizedBox(height: 10),
               Text(

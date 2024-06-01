@@ -1,7 +1,5 @@
 import 'package:http/http.dart' as http;
 
-
-
 //유저데이터 백엔드랑 통신해서 받아올거니까 여기다 저장후 다른 페이지에도 적용하게끔
 class UserProfile {
   final String userName;
@@ -20,13 +18,13 @@ class UserProfile {
     required this.maxScore,
   });
 }
+
 //그냥 메모리에 작성한것 이부분을 로그인후 백엔드데이터에서 가저온 데이터로 바꿔치기
 final UserProfile userProfile = UserProfile(
-  userName: '홍길동',
+  userName: '김성민',
   department: '컴퓨터공학과',
-  year: '3-1',
-  studentId: '20201234',
-  graduationScore: 500,
-  maxScore: 1000,
+  year: '4-1',
+  studentId: '20180595',
+  graduationScore: 30,
+  maxScore: 100,
 );
-

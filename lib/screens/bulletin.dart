@@ -1,3 +1,4 @@
+import 'package:academic_management/providers/person.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:academic_management/screens/post_detail_screen.dart';
@@ -183,7 +184,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                         ),
                       ),
                       Text(
-                        '@${post.author} • ${_timeAgo(post.createdAt)}',
+                        '@${userProfile.studentId} • ${_timeAgo(post.createdAt)}',
                         style: TextStyle(
                           color: Colors.grey,
                         ),

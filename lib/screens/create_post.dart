@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:academic_management/providers/person.dart';
 import 'dart:io';
 
 class CreatePostScreen extends StatefulWidget {
@@ -17,6 +18,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _authorController = TextEditingController();
   File? _selectedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    _authorController.text = userProfile.userName ?? '알 수 없음';
+  }
 
   void _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -73,6 +80,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             TextField(
               controller: _authorController,
               decoration: InputDecoration(labelText: '작성자'),
+              enabled: false, // 사용자 이름 필드는 수정할 수 없게 설정
             ),
             Expanded(
               child: TextField(
@@ -84,23 +92,25 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ),
             SizedBox(height: 10),
             _selectedImage == null
-                ? TextButton(
-              onPressed: _pickImage,
-              child: Text('이미지 첨부'),
-            )
+                ? TextButton.icon(
+                    onPressed: _pickImage,
+                    icon: Icon(Icons.photo,
+                        color: Colors.deepPurple), // 사진 모양 아이콘
+                    label: Text('이미지 첨부'),
+                  )
                 : Image.file(
-              _selectedImage!,
-              height: 100,
-              width: 100,
-            ),
+                    _selectedImage!,
+                    height: 100,
+                    width: 100,
+                  ),
             SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: _submitPost,
                 child: Text('등록'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple, // 배경색 딥퍼플
-                  foregroundColor: Colors.white, // 글씨 색상 흰색
+                  backgroundColor: Color(0xFF8A50CE),
+                  foregroundColor: Colors.white,
                 ),
               ),
             ),

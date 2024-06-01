@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'server.dart';
+import 'package:academic_management/providers/person.dart';
 
 class GraduationScreen extends StatefulWidget {
- @override
- _GraduationScreenState createState() => _GraduationScreenState();
- 
-
+  @override
+  _GraduationScreenState createState() => _GraduationScreenState();
 }
+
 class GraduationRequirement {
   final String requirement;
   final bool completed;
@@ -21,63 +20,58 @@ class GraduationRequirement {
   });
 }
 
-class _GraduationScreenState extends State<GraduationScreen>{
-
-
+class _GraduationScreenState extends State<GraduationScreen> {
   List<GraduationRequirement> recommendations = [
-  GraduationRequirement(
-    requirement: '수강신청',
-    completed: true,
-    details: [
-      ],
-  ),
-  GraduationRequirement(
-    requirement: '봉사활동',
-    completed: false,
-    details: [
-     ],
-  ),
-  GraduationRequirement(
-    requirement: '채용공고',
-    completed: true,
-    details: [
-      ],
-  ),
-  GraduationRequirement(
-    requirement: '자격증',
-    completed: false,
-    details: [
-      ],
-  ),
-  GraduationRequirement(
-    requirement: '학교활동',
-    completed: false,
-    details: [
-     
-    ],
-  ),
-];
+    GraduationRequirement(
+      requirement: '수강신청',
+      completed: true,
+      details: [],
+    ),
+    GraduationRequirement(
+      requirement: '봉사활동',
+      completed: false,
+      details: [],
+    ),
+    GraduationRequirement(
+      requirement: '채용공고',
+      completed: true,
+      details: [],
+    ),
+    GraduationRequirement(
+      requirement: '자격증',
+      completed: false,
+      details: [],
+    ),
+    GraduationRequirement(
+      requirement: '학교활동',
+      completed: false,
+      details: [],
+    ),
+  ];
   final String userName = userProfile.userName;
   final String department = userProfile.department;
   final String year = "${userProfile.year[0]}학년 ${userProfile.year[2]}학기";
   final String studentId = userProfile.studentId;
   final int graduationScore = userProfile.graduationScore; // 졸업 진척도 예시 (750점)
   final int maxScore = userProfile.maxScore; // 총점 1000점
-  
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
     fetchData(); // initState에서 초기화 시점에 데이터 요청
   }
+
   Future<void> fetchData() async {
-  try {
-    final response = await http.get(Uri.parse('http://localhost:8000/submit-volunteer'));
-    if (response.statusCode == 200) {
-      setState(() {
-        final responseBody = utf8.decode(response.bodyBytes);
-        final jsonData = json.decode(responseBody);
-        if (jsonData != null && jsonData is List) {
-          List<Map<String, String>> details = jsonData.map<Map<String, String>>((item) {
+    try {
+      final response =
+          await http.get(Uri.parse('http://localhost:8000/submit-volunteer'));
+      if (response.statusCode == 200) {
+        setState(() {
+          final responseBody = utf8.decode(response.bodyBytes);
+          final jsonData = json.decode(responseBody);
+          if (jsonData != null && jsonData is List) {
+            List<Map<String, String>> details =
+                jsonData.map<Map<String, String>>((item) {
               return {
                 'title': item['title'] ?? '',
                 'period': item['모집기간'] ?? '',
@@ -92,23 +86,21 @@ class _GraduationScreenState extends State<GraduationScreen>{
               details: details,
             );
           } else {
-          print('Empty response data');
-        }
-      });
-    } else {
-      // 서버 오류 처리
-      print('Server error: ${response.statusCode}');
+            print('Empty response data');
+          }
+        });
+      } else {
+        // 서버 오류 처리
+        print('Server error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // 네트워크 오류 처리
+      print('Network error: $e');
     }
-  } catch (e) {
-    // 네트워크 오류 처리
-    print('Network error: $e');
   }
-}
-  
-
 
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -187,22 +179,22 @@ class _GraduationScreenState extends State<GraduationScreen>{
                       recommendation.completed
                           ? Icons.check_circle
                           : Icons.cancel,
-                      color: recommendation.completed
-                          ? Colors.green
-                          : Colors.red,
+                      color:
+                          recommendation.completed ? Colors.green : Colors.red,
                     ),
                     children: recommendation.details.map((detail) {
                       return ListTile(
                         title: Text(detail['title'] ?? ''),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: detail.entries.
-                          where((entry) => entry.key != 'title')
-                          .map((entry) => Text('${entry.key}: ${entry.value}'))
-                          .toList(),
+                          children: detail.entries
+                              .where((entry) => entry.key != 'title')
+                              .map((entry) =>
+                                  Text('${entry.key}: ${entry.value}'))
+                              .toList(),
                         ),
-                    );
-                  }).toList(),
+                      );
+                    }).toList(),
                   );
                 },
               ),
