@@ -67,9 +67,46 @@ class _GraduationScreenState extends State<GraduationScreen>{
   @override
   void initState(){
     super.initState();
-    //fetchData(); // initState에서 초기화 시점에 데이터 요청
+    fetchData(); // initState에서 초기화 시점에 데이터 요청
   }
+  Future<void> fetchData() async {
+  try {
+    final response = await http.get(Uri.parse('http://localhost:8000/submit-volunteer'));
+    if (response.statusCode == 200) {
+      setState(() {
+        final responseBody = utf8.decode(response.bodyBytes);
+        final jsonData = json.decode(responseBody);
+        if (jsonData != null && jsonData is List) {
+          List<Map<String, String>> details = jsonData.map<Map<String, String>>((item) {
+              return {
+                'title': item['title'] ?? '',
+                'period': item['모집기간'] ?? '',
+                'time': item['봉사시간'] ?? '',
+                'link': item['링크'] ?? '',
+              };
+            }).toList();
+
+            recommendations[1] = GraduationRequirement(
+              requirement: '봉사활동',
+              completed: false,
+              details: details,
+            );
+          } else {
+          print('Empty response data');
+        }
+      });
+    } else {
+      // 서버 오류 처리
+      print('Server error: ${response.statusCode}');
+    }
+  } catch (e) {
+    // 네트워크 오류 처리
+    print('Network error: $e');
+  }
+}
   
+
+
   @override
  Widget build(BuildContext context) {
     return Scaffold(
