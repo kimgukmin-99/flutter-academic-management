@@ -1,42 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'server.dart';
 
 class GraduationRequirement {
-  final String requirement;
-  final List<String> details; // 세부 정보 리스트 추가
-  final bool completed;
-
+   String requirement;
+   List<Map<String, String>> details; // 세부 정보 리스트 추가
+   bool completed;
   GraduationRequirement({required this.requirement, required this.completed,required this.details,});
 }
 
-class GraduationScreen extends StatelessWidget {
-  final List<GraduationRequirement> recommendations = [
-     GraduationRequirement(
-      requirement: '봉사 활동 1',
-      completed: true,
-      details: ['세부사항 1-1', '세부사항 1-2', '세부사항 1-3'],
-    ),
-    GraduationRequirement(
-      requirement: '봉사 활동 2',
-      completed: false,
-      details: ['세부사항 2-1', '세부사항 2-2'],
-    ),
-    GraduationRequirement(
-      requirement: '인턴십 1',
-      completed: true,
-      details: ['세부사항 인턴십 1-1', '세부사항 인턴십 1-2'],
-    ),
-    GraduationRequirement(
-      requirement: '동아리 활동',
-      completed: false,
-      details: ['세부사항 동아리 활동 1', '세부사항 동아리 활동 2'],
-    ),];
 
-  final String userName = '홍길동';
-  final String department = '컴퓨터공학과';
-  final String year = '3학년';
-  final String studentId = '20201234';
-  final int graduationScore = 750; // 졸업 진척도 예시 (750점)
-  final int maxScore = 1000; // 총점 1000점
+class GraduationScreen extends StatelessWidget {
+
+  final String userName = userProfile.userName;
+  final String department = userProfile.department;
+  final String year = "${userProfile.year[0]}학년 ${userProfile.year[2]}학기";
+  final String studentId = userProfile.studentId;
+  final int graduationScore = userProfile.graduationScore; // 졸업 진척도 예시 (750점)
+  final int maxScore = userProfile.maxScore; // 총점 1000점
 
   @override
   Widget build(BuildContext context) {
@@ -112,15 +94,28 @@ class GraduationScreen extends StatelessWidget {
                 itemCount: recommendations.length,
                 itemBuilder: (context, index) {
                   final recommendation = recommendations[index];
-                  return ListTile(
+                  return ExpansionTile(
                     title: Text(recommendation.requirement),
                     trailing: Icon(
                       recommendation.completed
                           ? Icons.check_circle
                           : Icons.cancel,
-                      color:
-                      recommendation.completed ? Colors.green : Colors.red,
+                      color: recommendation.completed
+                          ? Colors.green
+                          : Colors.red,
                     ),
+                    children: recommendation.details.map((detail) {
+                      return ListTile(
+                        title: Text(detail['title'] ?? ''),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: detail.entries.
+                          where((entry) => entry.key != 'title')
+                          .map((entry) => Text('${entry.key}: ${entry.value}'))
+                          .toList(),
+                        ),
+                    );
+                  }).toList(),
                   );
                 },
               ),
