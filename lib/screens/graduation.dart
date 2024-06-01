@@ -3,25 +3,75 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'server.dart';
 
+class GraduationScreen extends StatefulWidget {
+ @override
+ _GraduationScreenState createState() => _GraduationScreenState();
+ 
+
+}
 class GraduationRequirement {
-   String requirement;
-   List<Map<String, String>> details; // 세부 정보 리스트 추가
-   bool completed;
-  GraduationRequirement({required this.requirement, required this.completed,required this.details,});
+  final String requirement;
+  final bool completed;
+  final List<Map<String, String>> details;
+
+  GraduationRequirement({
+    required this.requirement,
+    required this.completed,
+    required this.details,
+  });
 }
 
+class _GraduationScreenState extends State<GraduationScreen>{
 
-class GraduationScreen extends StatelessWidget {
 
+  List<GraduationRequirement> recommendations = [
+  GraduationRequirement(
+    requirement: '수강신청',
+    completed: true,
+    details: [
+      ],
+  ),
+  GraduationRequirement(
+    requirement: '봉사활동',
+    completed: false,
+    details: [
+     ],
+  ),
+  GraduationRequirement(
+    requirement: '채용공고',
+    completed: true,
+    details: [
+      ],
+  ),
+  GraduationRequirement(
+    requirement: '자격증',
+    completed: false,
+    details: [
+      ],
+  ),
+  GraduationRequirement(
+    requirement: '학교활동',
+    completed: false,
+    details: [
+     
+    ],
+  ),
+];
   final String userName = userProfile.userName;
   final String department = userProfile.department;
   final String year = "${userProfile.year[0]}학년 ${userProfile.year[2]}학기";
   final String studentId = userProfile.studentId;
   final int graduationScore = userProfile.graduationScore; // 졸업 진척도 예시 (750점)
   final int maxScore = userProfile.maxScore; // 총점 1000점
-
+  
   @override
-  Widget build(BuildContext context) {
+  void initState(){
+    super.initState();
+    //fetchData(); // initState에서 초기화 시점에 데이터 요청
+  }
+  
+  @override
+ Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),

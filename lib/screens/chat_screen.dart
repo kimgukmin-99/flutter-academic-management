@@ -90,11 +90,12 @@ class _ChatScreenState extends State<ChatScreen> {
       final responseBody =
           json.decode(utf8.decode(response.bodyBytes)); // UTF-8로 디코딩
       print(responseBody);
-      text = responseBody['response_message'];
+      
+      text = responseBody;
       setState(() {
         _messages.add(
           ChatMessage(
-            text: text,
+            text: text ,
             isMe: false,
             username: 'Gookmin',
             avatarUrl: 'assets/avatar.png',
