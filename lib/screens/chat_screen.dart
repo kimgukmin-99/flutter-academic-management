@@ -179,7 +179,7 @@ class _ChatScreenState extends State<ChatScreen> {
               controller: _controller,
               onSubmitted: _handleSubmitted,
               decoration: InputDecoration.collapsed(
-                hintText: "Send a message...",
+                hintText: "   Send a message...",
                 hintStyle: TextStyle(color: Colors.grey[600]),
               ),
               style: TextStyle(color: Colors.black),

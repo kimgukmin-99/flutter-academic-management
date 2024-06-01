@@ -100,13 +100,17 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             snap: true,
             expandedHeight: 50.0,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              titlePadding:
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     '컴퓨터공학과 게시판',
-                    style: TextStyle(color: Colors.deepPurple, fontSize: 20.0),
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold),
                   ),
                   IconButton(
                     icon: Icon(Icons.add),
@@ -128,7 +132,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
+                (BuildContext context, int index) {
                   if (index >= posts.length) return null;
                   final post = posts[index];
                   return _buildPost(context, post);

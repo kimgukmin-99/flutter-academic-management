@@ -39,32 +39,20 @@ class _MainScreensState extends State<MainScreens> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Icon(
-                  Icons.local_library,
-                  color: Colors.deepPurple,
-                ),
+                SvgPicture.asset('assets/icons/logo.svg',
+                    width: 20, height: 20, color: Colors.deepPurple),
                 SizedBox(width: 3),
-                Text(
-                  'COMMAN',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: Colors.deepPurple,
-                  ),
-                ),
               ],
             ),
-            IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/alarm.svg', // SVG 파일 경로
-                //color: Colors.black, // 아이콘 색상 설정
-                width: 24, // 아이콘 너비 설정
-                height: 24, // 아이콘 높이 설정
-              ),
-              onPressed: () {
-                // 알람 아이콘 클릭 이벤트 처리
+            GestureDetector(
+              onTap: () {
                 print('Notification icon tapped!');
               },
+              child: SvgPicture.asset(
+                'assets/icons/alarm.svg',
+                width: 24,
+                height: 24,
+              ),
             )
           ],
         ),
