@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:academic_management/screens/image_screen.dart';
+import 'server.dart';
 
 class MyPageScreen extends StatefulWidget {
   @override
@@ -9,12 +10,12 @@ class MyPageScreen extends StatefulWidget {
 }
 
 class _MyPageScreenState extends State<MyPageScreen> {
-  final String userName = '홍길동';
-  final String department = '컴퓨터공학과';
-  final String year = '3학년';
-  final String studentId = '20201234';
-  int participationScore = 30;
-  final int maxScore = 150;
+  final String userName = userProfile.userName;
+  final String department = userProfile.department;
+  final String year = "${userProfile.year[0]}학년 ${userProfile.year[2]}학기";
+  final String studentId = userProfile.studentId;
+  int graduationScore = userProfile.graduationScore;
+  final int maxScore = userProfile.maxScore;
 
   final List<Map<String, String>> events = [
     {'name': '신입생 환영회', 'image': 'assets/event1.png'},
@@ -41,8 +42,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
         'image': image?.path ?? 'assets/default_event.png',
       });
       _selectedImage = null;
-      if (participationScore + 10 <= maxScore) {
-        participationScore += 10;
+      if (graduationScore + 10 <= maxScore) {
+        graduationScore+= 10;
       }
     });
     Navigator.of(context).pop();
@@ -181,13 +182,13 @@ class _MyPageScreenState extends State<MyPageScreen> {
               ),
               SizedBox(height: 10),
               LinearProgressIndicator(
-                value: participationScore / maxScore,
+                value: graduationScore / maxScore,
                 backgroundColor: Colors.grey[300],
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple),
               ),
               SizedBox(height: 10),
               Text(
-                '$participationScore / $maxScore',
+                '$graduationScore / $maxScore',
               ),
               SizedBox(height: 30),
               Text(

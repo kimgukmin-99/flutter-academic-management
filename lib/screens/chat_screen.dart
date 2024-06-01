@@ -40,7 +40,8 @@ class _ChatScreenState extends State<ChatScreen> {
   List<ChatMessage> _messages = []; // ChatMessage 객체의 리스트로 선언
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-
+  bool isLoading = false;
+  
   @override
   void initState() {
     super.initState();
@@ -55,66 +56,74 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _handleSubmitted(String text) async {
-    setState(() {
-      bool isMe = _messages.length % 2 == 1;
-      _messages.add(
-        ChatMessage(
-          text: text,
-          isMe: isMe,
-          username: isMe ? "Me" : "Gookmin",
-          avatarUrl: isMe ? null : "assets/avatar.png",
-          timestamp: DateTime.now(),
-        ),
-      );
-      _controller.clear();
-      // 새 메시지가 추가되면 스크롤을 맨 아래로 이동
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-    });
+ void _handleSubmitted(String text) async {
+  setState(() {
+    bool isMe = _messages.length % 2 == 1;
+    _messages.add(
+      ChatMessage(
+        text: text,
+        isMe: isMe,
+        username: isMe ? "Me" : "Gookmin",
+        avatarUrl: isMe ? null : "assets/avatar.png",
+        timestamp: DateTime.now(),
+      ),
+    );
+    _controller.clear();
+    isLoading = true; // 요청이 보내질 때 로딩 상태를 true로 설정
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  });
 
-    try {
-      final response = await http.post(
-        Uri.parse('http://3.25.85.108:8000/echo'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({'message': text}),
-      );
+  try {
+    final response = await http.post(
+      Uri.parse('http://localhost:8000/echo'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({'message': text}),
+    );
 
-      if (response.statusCode == 200) {
-        final responseBody =
-            json.decode(utf8.decode(response.bodyBytes)); // UTF-8로 디코딩
-        print(responseBody);
-        text = responseBody['response_message'];
-        setState(() {
-          _messages.add(
-            ChatMessage(
-              text: text,
-              isMe: false,
-              username: 'Gookmin',
-              avatarUrl: 'assets/avatar.png',
-              timestamp: DateTime.now(),
-            ),
-          );
-          _scrollController.animateTo(
-            _scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-        });
-      } else {
-        // 서버 오류 처리
-        print('Server error: ${response.statusCode}');
-      }
-    } catch (e) {
-      // 네트워크 오류 처리
-      print('Network error: $e');
+    if (response.statusCode == 200) {
+      final responseBody =
+          json.decode(utf8.decode(response.bodyBytes)); // UTF-8로 디코딩
+      print(responseBody);
+      
+      text = responseBody;
+      setState(() {
+        _messages.add(
+          ChatMessage(
+            text: text ,
+            isMe: false,
+            username: 'Gookmin',
+            avatarUrl: 'assets/avatar.png',
+            timestamp: DateTime.now(),
+          ),
+        );
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+        isLoading = false; // 응답이 올 때 로딩 상태를 false로 설정
+      });
+    } else {
+      // 서버 오류 처리
+      print('Server error: ${response.statusCode}');
+      setState(() {
+        isLoading = false; // 오류 발생 시에도 로딩 상태를 false로 설정
+      });
     }
+  } catch (e) {
+    // 네트워크 오류 처리
+    print('Network error: $e');
+    setState(() {
+      isLoading = false; // 네트워크 오류 발생 시에도 로딩 상태를 false로 설정
+    });
   }
+}
 
   Widget _buildMessageItem(ChatMessage message) {
     final alignment =
@@ -170,29 +179,31 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildTextComposer() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _controller,
-              onSubmitted: _handleSubmitted,
-              decoration: InputDecoration.collapsed(
-                hintText: "   Send a message...",
-                hintStyle: TextStyle(color: Colors.grey[600]),
-              ),
-              style: TextStyle(color: Colors.black),
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+    child: Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: _controller,
+            onSubmitted: isLoading ? null : _handleSubmitted,
+            decoration: InputDecoration.collapsed(
+              hintText: isLoading ? "   ..." : "   Send a message...", // 로딩 중일 때는 "..." 표시
+              hintStyle: TextStyle(color: Colors.grey[600]),
             ),
+            style: TextStyle(color: Colors.black),
+            enabled: !isLoading, // 로딩 중일 때 입력 창 비활성화
           ),
-          IconButton(
-            icon: Icon(Icons.send, color: Colors.blueGrey),
-            onPressed: () => _handleSubmitted(_controller.text),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+        IconButton(
+          icon: Icon(Icons.send, color: Colors.blueGrey),
+          onPressed: isLoading ? null : () => _handleSubmitted(_controller.text),
+        ),
+      ],
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
