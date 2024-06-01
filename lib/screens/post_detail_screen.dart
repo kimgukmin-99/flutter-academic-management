@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'bulletin.dart';
 
 class PostDetailScreen extends StatefulWidget {
@@ -109,12 +110,22 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                           ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          Icon(Icons.comment, color: Colors.purple),
-                          SizedBox(width: 4.0),
-                          Text('${post.comments}'),
-                        ],
+                      InkWell(
+                        onTap: () {
+                          // 좋아요 옆에 댓글 아이콘 배치
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/post_comment.svg',
+                              color: Colors.purple,
+                              width: 24,
+                              height: 24,
+                            ),
+                            SizedBox(width: 4.0),
+                            Text('${post.comments}'),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -140,9 +151,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   Widget _buildCommentsSection() {
     final List<Map<String, dynamic>> allComments = [
+      ...post.commentsList,
       {'author': '김국민', 'content': '나 국민인데 쌌다.', 'createdAt': DateTime.now().subtract(Duration(minutes: 5))},
       {'author': '이윤석', 'content': '나 윤석인데 얘는 이길거같다 ㅋㅋ', 'createdAt': DateTime.now().subtract(Duration(minutes: 10))},
-      ...post.commentsList,
     ];
 
     return Column(

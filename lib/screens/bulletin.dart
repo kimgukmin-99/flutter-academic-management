@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // flutter_svg 패키지 추가
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:academic_management/screens/post_detail_screen.dart';
 import 'package:academic_management/screens/create_post.dart';
 import 'dart:io';
@@ -70,6 +70,15 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
     });
   }
 
+  void _updatePost(Post updatedPost) {
+    setState(() {
+      int index = posts.indexWhere((post) => post.title == updatedPost.title);
+      if (index != -1) {
+        posts[index] = updatedPost;
+      }
+    });
+  }
+
   void _toggleLike(Post post) {
     setState(() {
       if (post.likes % 2 == 0) {
@@ -83,43 +92,53 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '컴퓨터공학과 게시판',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: false,
+            floating: true,
+            snap: true,
+            expandedHeight: 50.0,
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding:
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '컴퓨터공학과 게시판',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            CreatePostScreen(addPostCallback: _addPost),
-                      ),
-                    );
-                  },
-                ),
-              ],
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CreatePostScreen(addPostCallback: _addPost),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(16.0).copyWith(top: 0.0), // 상단 패딩 제거
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                final post = posts[index];
-                return _buildPost(context, post);
-              },
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  if (index >= posts.length) return null;
+                  final post = posts[index];
+                  return _buildPost(context, post);
+                },
+                childCount: posts.length,
+              ),
             ),
           ),
         ],
@@ -128,56 +147,60 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
   }
 
   Widget _buildPost(BuildContext context, Post post) {
-    return Card(
-      margin: EdgeInsets.only(bottom: 16.0),
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/user_icon.png'),
-                ),
-                SizedBox(width: 8.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      post.author,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      '@${post.author} • ${_timeAgo(post.createdAt)}',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-                Spacer(),
-                IconButton(
-                  icon: Icon(Icons.more_vert),
-                  onPressed: () {
-                    // Add your onPressed code here!
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 8.0),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PostDetailScreen(post: post),
+    return GestureDetector(
+      onTap: () async {
+        final updatedPost = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PostDetailScreen(post: post),
+          ),
+        );
+
+        if (updatedPost != null) {
+          _updatePost(updatedPost);
+        }
+      },
+      child: Card(
+        margin: EdgeInsets.only(bottom: 16.0),
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/user_icon.png'),
                   ),
-                );
-              },
-              child: Column(
+                  SizedBox(width: 8.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        post.author,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '@${post.author} • ${_timeAgo(post.createdAt)}',
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  IconButton(
+                    icon: Icon(Icons.more_vert),
+                    onPressed: () {
+                      // Add your onPressed code here!
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.0),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(post.content),
@@ -187,89 +210,89 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                   ],
                 ],
               ),
-            ),
-            SizedBox(height: 8.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () => _toggleLike(post),
-                  splashColor: Colors.transparent,
-                  child: Row(
-                    children: [
-                      Icon(
-                        post.likes % 2 == 0
-                            ? Icons.favorite_border
-                            : Icons.favorite,
-                        color: post.likes % 2 == 0 ? Colors.grey : Colors.red,
-                      ),
-                      SizedBox(width: 4.0),
-                      Text('${post.likes}'),
-                    ],
+              SizedBox(height: 8.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () => _toggleLike(post),
+                    splashColor: Colors.transparent,
+                    child: Row(
+                      children: [
+                        Icon(
+                          post.likes % 2 == 0
+                              ? Icons.favorite_border
+                              : Icons.favorite,
+                          color: post.likes % 2 == 0 ? Colors.grey : Colors.red,
+                        ),
+                        SizedBox(width: 4.0),
+                        Text('${post.likes}'),
+                      ],
+                    ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PostDetailScreen(post: post),
-                      ),
-                    );
-                  },
-                  splashColor: Colors.transparent,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/post_comment.svg',
-                        color: Colors.purple,
-                        width: 20,
-                        height: 20,
-                      ),
-                      SizedBox(width: 4.0),
-                      Text('${post.comments}'),
-                    ],
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PostDetailScreen(post: post),
+                        ),
+                      );
+                    },
+                    splashColor: Colors.transparent,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/post_comment.svg',
+                          color: Colors.purple,
+                          width: 20,
+                          height: 20,
+                        ),
+                        SizedBox(width: 4.0),
+                        Text('${post.comments}'),
+                      ],
+                    ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    // Add your onPressed code here for the bookmark action!
-                  },
-                  splashColor: Colors.transparent,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/post_save.svg',
-                        color: Colors.purple,
-                        width: 20,
-                        height: 20,
-                      ),
-                      SizedBox(width: 4.0),
-                      Text('저장'),
-                    ],
+                  InkWell(
+                    onTap: () {
+                      // Add your onPressed code here for the bookmark action!
+                    },
+                    splashColor: Colors.transparent,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/post_save.svg',
+                          color: Colors.purple,
+                          width: 20,
+                          height: 20,
+                        ),
+                        SizedBox(width: 4.0),
+                        Text('저장'),
+                      ],
+                    ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    // Add your onPressed code here for the share action!
-                  },
-                  splashColor: Colors.transparent,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/post_share.svg',
-                        color: Colors.purple,
-                        width: 20,
-                        height: 20,
-                      ),
-                      SizedBox(width: 4.0),
-                      Text('공유하기'),
-                    ],
+                  InkWell(
+                    onTap: () {
+                      // Add your onPressed code here for the share action!
+                    },
+                    splashColor: Colors.transparent,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/post_share.svg',
+                          color: Colors.purple,
+                          width: 20,
+                          height: 20,
+                        ),
+                        SizedBox(width: 4.0),
+                        Text('공유하기'),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

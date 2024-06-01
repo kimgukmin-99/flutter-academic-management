@@ -188,7 +188,7 @@ class _ChatScreenState extends State<ChatScreen> {
             controller: _controller,
             onSubmitted: isLoading ? null : _handleSubmitted,
             decoration: InputDecoration.collapsed(
-              hintText: isLoading ? "닥치세요~~^^" : "Send a message...", // 로딩 중일 때는 "..." 표시
+              hintText: isLoading ? "   ..." : "   Send a message...", // 로딩 중일 때는 "..." 표시
               hintStyle: TextStyle(color: Colors.grey[600]),
             ),
             style: TextStyle(color: Colors.black),
