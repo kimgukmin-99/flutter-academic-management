@@ -1,11 +1,13 @@
-import 'package:academic_management/providers/person.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:academic_management/screens/post_detail_screen.dart';
 import 'package:academic_management/screens/create_post.dart';
 import 'dart:io';
+import 'package:uuid/uuid.dart';
+import 'package:academic_management/providers/person.dart';
 
 class Post {
+  final String id; // 고유 ID 추가
   final String title;
   final String content;
   final String author;
@@ -24,7 +26,8 @@ class Post {
     this.comments = 0,
     this.imagePath,
     List<Map<String, dynamic>>? commentsList,
-  }) : commentsList = commentsList ?? [];
+  })  : id = Uuid().v4(), // 고유 ID 생성
+        commentsList = commentsList ?? [];
 }
 
 class BulletinBoardScreen extends StatefulWidget {
@@ -73,10 +76,16 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
 
   void _updatePost(Post updatedPost) {
     setState(() {
-      int index = posts.indexWhere((post) => post.title == updatedPost.title);
+      int index = posts.indexWhere((post) => post.id == updatedPost.id); // ID로 비교
       if (index != -1) {
         posts[index] = updatedPost;
       }
+    });
+  }
+
+  void _deletePost(String postId) {
+    setState(() {
+      posts.removeWhere((post) => post.id == postId);
     });
   }
 
@@ -102,7 +111,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             expandedHeight: 50.0,
             flexibleSpace: FlexibleSpaceBar(
               titlePadding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -133,7 +142,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+                    (BuildContext context, int index) {
                   if (index >= posts.length) return null;
                   final post = posts[index];
                   return _buildPost(context, post);
@@ -153,7 +162,14 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
         final updatedPost = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PostDetailScreen(post: post),
+            builder: (context) => PostDetailScreen(
+              post: post,
+              onUpdate: (updatedPost) {
+                setState(() {
+                  _updatePost(updatedPost);
+                });
+              },
+            ),
           ),
         );
 
@@ -162,6 +178,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
         }
       },
       child: Card(
+        color: Colors.white,
         margin: EdgeInsets.only(bottom: 16.0),
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -192,11 +209,18 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                     ],
                   ),
                   Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.more_vert),
-                    onPressed: () {
-                      // Add your onPressed code here!
+                  PopupMenuButton<String>(
+                    onSelected: (String result) {
+                      if (result == 'delete') {
+                        _confirmDelete(context, post.id);
+                      }
                     },
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                      const PopupMenuItem<String>(
+                        value: 'delete',
+                        child: Text('삭제'),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -236,7 +260,14 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PostDetailScreen(post: post),
+                          builder: (context) => PostDetailScreen(
+                            post: post,
+                            onUpdate: (updatedPost) {
+                              setState(() {
+                                _updatePost(updatedPost);
+                              });
+                            },
+                          ),
                         ),
                       );
                     },
@@ -296,6 +327,33 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _confirmDelete(BuildContext context, String postId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('게시글 삭제'),
+          content: Text('정말로 이 게시글을 삭제하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('취소'),
+            ),
+            TextButton(
+              onPressed: () {
+                _deletePost(postId);
+                Navigator.of(context).pop();
+              },
+              child: Text('삭제'),
+            ),
+          ],
+        );
+      },
     );
   }
 

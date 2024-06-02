@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'bulletin.dart';
+import 'package:academic_management/providers/person.dart'; // userProfile import 추가
 
 class PostDetailScreen extends StatefulWidget {
   final Post post;
+  final Function(Post) onUpdate; // 업데이트 콜백 추가
 
-  PostDetailScreen({required this.post});
+  PostDetailScreen({required this.post, required this.onUpdate});
 
   @override
   _PostDetailScreenState createState() => _PostDetailScreenState();
@@ -29,6 +31,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         post.likes--;
       }
     });
+    widget.onUpdate(post); // 업데이트 콜백 호출
   }
 
   void _addComment(String author, String content) {
@@ -40,6 +43,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         'createdAt': DateTime.now(),
       });
     });
+    widget.onUpdate(post); // 업데이트 콜백 호출
   }
 
   @override
@@ -73,7 +77,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             ),
                           ),
                           Text(
-                            '@${post.author} • ${_timeAgo(post.createdAt)}',
+                            '@${userProfile.studentId} • ${_timeAgo(post.createdAt)}',
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 14.0,
@@ -213,7 +217,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           ElevatedButton(
             onPressed: () {
               if (_commentController.text.isNotEmpty) {
-                _addComment('사용자', _commentController.text);
+                _addComment(userProfile.studentId, _commentController.text); // 사용자 학번으로 변경
                 _commentController.clear();
               }
             },
