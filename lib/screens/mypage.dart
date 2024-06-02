@@ -152,7 +152,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onPressed: () {},
                     child: Text('Edit Profile'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF8A50CE),
+                      backgroundColor: Color(0xFFA2A2FF),
                       foregroundColor: Colors.white,
                     ),
                   ),
@@ -160,7 +160,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onPressed: () {},
                     child: Text('Share Profile'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF8A50CE),
+                      backgroundColor: Color(0xFFA2A2FF),
                       foregroundColor: Colors.white,
                     ),
                   ),
@@ -168,7 +168,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onPressed: () {},
                     child: Text('Setting'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF8A50CE),
+                      backgroundColor: Color(0xFFA2A2FF),
                       foregroundColor: Colors.white,
                     ),
                   ),
@@ -184,7 +184,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
               LinearProgressIndicator(
                 value: graduationScore / maxScore,
                 backgroundColor: Colors.grey[300],
-                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF8A50CE)),
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFA2A2FF)),
               ),
               SizedBox(height: 10),
               Text(

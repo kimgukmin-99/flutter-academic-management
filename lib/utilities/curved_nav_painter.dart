@@ -28,7 +28,7 @@ class CurvedNavPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final circlePaint = Paint()
-      ..color = Color(0xFF8A50CE)
+      ..color = Color(0xFFA2A2FF)
       ..style = PaintingStyle.fill;
 
     final height = size.height;

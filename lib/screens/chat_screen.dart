@@ -80,7 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse(server+"echo"),
+        Uri.parse(server + "/echo"),
         headers: {
           'Content-Type': 'application/json',
         },

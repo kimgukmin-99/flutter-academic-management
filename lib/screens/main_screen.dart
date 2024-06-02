@@ -76,25 +76,25 @@ class _MainScreensState extends State<MainScreens> {
         items: [
           SvgPicture.asset(
             'assets/icons/nav_home.svg',
-            color: _currentPage == 0 ? Color(0xFF8A50CE) : Colors.grey,
+            color: _currentPage == 0 ? Color(0xFFA2A2FF) : Colors.grey,
             width: 24,
             height: 24,
           ),
           SvgPicture.asset(
             'assets/icons/nav_suggest.svg',
-            color: _currentPage == 1 ? Color(0xFF8A50CE) : Colors.grey,
+            color: _currentPage == 1 ? Color(0xFFA2A2FF) : Colors.grey,
             width: 24,
             height: 24,
           ),
           SvgPicture.asset(
             'assets/icons/nav_post.svg',
-            color: _currentPage == 2 ? Color(0xFF8A50CE) : Colors.grey,
+            color: _currentPage == 2 ? Color(0xFFA2A2FF) : Colors.grey,
             width: 24,
             height: 24,
           ),
           SvgPicture.asset(
             'assets/icons/nav_privacy.svg',
-            color: _currentPage == 3 ? Color(0xFF8A50CE) : Colors.grey,
+            color: _currentPage == 3 ? Color(0xFFA2A2FF) : Colors.grey,
             width: 24,
             height: 24,
           ),
