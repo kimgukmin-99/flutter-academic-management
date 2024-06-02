@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:academic_management/providers/person.dart';
 
+
 class GraduationScreen extends StatefulWidget {
   @override
   _GraduationScreenState createState() => _GraduationScreenState();
@@ -12,7 +13,6 @@ class GraduationRequirement {
   final String requirement;
   final bool completed;
   final List<Map<String, String>> details;
-
   GraduationRequirement({
     required this.requirement,
     required this.completed,
@@ -59,12 +59,67 @@ class _GraduationScreenState extends State<GraduationScreen> {
   void initState() {
     super.initState();
     fetchData(); // initState에서 초기화 시점에 데이터 요청
+    sendData();
+    sendData2();
+    sendData3();
   }
 
+//수강과목추천임
+ Future<void> sendData3() async {
+    try {
+      final url = Uri.parse(server + '/submit-subjects');
+      // 서버로 전송할 데이터를 정의합니다. 개인정보 받아와서 변경해야댐
+      final data = {
+  "subjects": userProfile.subjects,
+  "semester": userProfile.year,
+};
+
+      // JSON 형식으로 인코딩합니다.
+      final body = json.encode(data);
+
+      // POST 요청을 보냅니다.
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          final responseBody = utf8.decode(response.bodyBytes);
+          final List<dynamic> jsonData = json.decode(responseBody);
+          if (jsonData != null && jsonData is List) {
+            List<Map<String, String>> details = jsonData.map<Map<String, String>>((item) {
+              return {
+                '과목명': item['과목명'] ?? '',
+                '개설학기': item['개설학기'] ?? '',
+                '학수번호': item['학수번호'] ?? '',
+              };
+            }).toList();
+
+            recommendations[0] = GraduationRequirement(
+              requirement: '수강신청',
+              completed: true,
+              details: details,
+            );
+          } else {
+            print('Empty response data');
+          }
+        });
+      } else {
+        // 서버 오류 처리
+        print('Server error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // 네트워크 오류 처리
+      print('Network error: $e');
+    }
+  }
+//봉사임
   Future<void> fetchData() async {
     try {
       final response =
-          await http.get(Uri.parse('http://localhost:8000/submit-volunteer'));
+          await http.get(Uri.parse(server + '/submit-volunteer'));
       if (response.statusCode == 200) {
         setState(() {
           final responseBody = utf8.decode(response.bodyBytes);
@@ -98,6 +153,117 @@ class _GraduationScreenState extends State<GraduationScreen> {
       print('Network error: $e');
     }
   }
+//자격증임
+  Future<void> sendData() async {
+    try {
+      final url = Uri.parse(server+'/submit-certification');
+
+      // 서버로 전송할 데이터를 정의합니다. 개인정보 받아와서 변경해야댐
+      final data = {
+        "certification": {
+          "additionalProp1": true,
+          "additionalProp2": true,
+          "additionalProp3": true
+        },
+        "my_score": userProfile.graduationScore
+      };
+
+      // JSON 형식으로 인코딩합니다.
+      final body = json.encode(data);
+
+      // POST 요청을 보냅니다.
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          final responseBody = utf8.decode(response.bodyBytes);
+          final jsonData = json.decode(responseBody);
+
+          if (jsonData != null && jsonData is List) {
+            List<Map<String, String>> details =
+                jsonData.map<Map<String, String>>((item) {
+              return {
+                'name': item['name'] ?? '',
+                '점수': item['점수'] ?? '',
+              };
+            }).toList();
+
+            recommendations[3] = GraduationRequirement(
+              requirement: '자격증',
+              completed: false,
+              details: details,
+            );
+          } else {
+            print('Empty response data');
+          }
+        });
+      } else {
+        // 서버 오류 처리
+        print('Server error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // 네트워크 오류 처리
+      print('Network error: $e');
+    }
+  }
+  //채용정보임
+  Future<void> sendData2() async {
+    try {
+      final url = Uri.parse(server+'/submit-work');
+
+      // 서버로 전송할 데이터를 정의합니다. 개인정보 받아와서 변경해야댐
+      final data = {"work": userProfile.skills};
+
+      // JSON 형식으로 인코딩합니다.
+      final body = json.encode(data);
+
+      // POST 요청을 보냅니다.
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          final responseBody = utf8.decode(response.bodyBytes);
+          final jsonData = json.decode(responseBody);
+
+          if (jsonData != null && jsonData is List) {
+            List<Map<String, String>> details =
+                jsonData.map<Map<String, String>>((item) {
+              return {
+                'title': item['job_title'] ?? '',
+                'date': item['job_date'] ?? '',
+                'condition': item['job_condition'] ?? '',
+                'sector': item['job_sector'] ?? '',
+                'link': item['job_link'] ?? '',
+              };
+            }).toList();
+
+            recommendations[2] = GraduationRequirement(
+              requirement: '채용공고',
+              completed: false,
+              details: details,
+            );
+          } else {
+            print('Empty response data');
+          }
+        });
+      } else {
+        // 서버 오류 처리
+        print('Server error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // 네트워크 오류 처리
+      print('Network error: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

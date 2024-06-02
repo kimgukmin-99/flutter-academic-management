@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:academic_management/providers/person.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -79,7 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:8000/echo'),
+        Uri.parse(server+"echo"),
         headers: {
           'Content-Type': 'application/json',
         },
