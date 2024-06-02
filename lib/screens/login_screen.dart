@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:academic_management/screens/main_screen.dart';
+import 'package:academic_management/providers/person.dart';
 
 class LoginPage extends StatefulWidget {
   @override

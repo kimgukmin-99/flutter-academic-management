@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:academic_management/screens/login_screen.dart';
+import 'package:academic_management/providers/person.dart';
 
 void main() => runApp(MyApp());
 

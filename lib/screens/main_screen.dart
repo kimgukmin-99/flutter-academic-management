@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // flutter_svg 패키지 추가
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:academic_management/screens/chat_screen.dart';
 import 'package:academic_management/screens/bulletin.dart';
 import 'package:academic_management/screens/graduation.dart';
 import 'package:academic_management/screens/mypage.dart';
 import 'package:academic_management/screens/home.dart';
 import 'package:academic_management/utilities/dot_curved_bottom_nav.dart';
+import 'package:academic_management/providers/person.dart';
 
 class MainScreens extends StatefulWidget {
   @override
@@ -102,6 +103,7 @@ class _MainScreensState extends State<MainScreens> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          sendLoginRequest();
           print('Chat button pressed!');
           Navigator.push(
             context,
