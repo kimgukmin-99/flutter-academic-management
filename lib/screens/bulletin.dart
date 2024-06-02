@@ -76,7 +76,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
 
   void _updatePost(Post updatedPost) {
     setState(() {
-      int index = posts.indexWhere((post) => post.id == updatedPost.id); // ID로 비교
+      int index =
+          posts.indexWhere((post) => post.id == updatedPost.id); // ID로 비교
       if (index != -1) {
         posts[index] = updatedPost;
       }
@@ -111,7 +112,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             expandedHeight: 50.0,
             flexibleSpace: FlexibleSpaceBar(
               titlePadding:
-              EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -142,7 +143,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
+                (BuildContext context, int index) {
                   if (index >= posts.length) return null;
                   final post = posts[index];
                   return _buildPost(context, post);
@@ -215,7 +216,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                         _confirmDelete(context, post.id);
                       }
                     },
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
                       const PopupMenuItem<String>(
                         value: 'delete',
                         child: Text('삭제'),

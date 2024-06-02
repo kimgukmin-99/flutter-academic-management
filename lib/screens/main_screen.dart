@@ -103,7 +103,6 @@ class _MainScreensState extends State<MainScreens> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          sendLoginRequest();
           print('Chat button pressed!');
           Navigator.push(
             context,

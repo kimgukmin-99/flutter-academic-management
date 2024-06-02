@@ -190,7 +190,7 @@ class _ChatScreenState extends State<ChatScreen> {
               onSubmitted: isLoading ? null : _handleSubmitted,
               decoration: InputDecoration.collapsed(
                 hintText: isLoading
-                    ? "   ..."
+                    ? "   답변을 기다리는 중입니다."
                     : "   Send a message...", // 로딩 중일 때는 "..." 표시
                 hintStyle: TextStyle(color: Colors.grey[600]),
               ),
@@ -217,7 +217,7 @@ class _ChatScreenState extends State<ChatScreen> {
           child: Text(
             'Chat GookPT4o',
             style: TextStyle(
-              color: Colors.deepPurple,
+              color: Color(0xFF8A50CE),
               fontWeight: FontWeight.bold,
             ),
           ),
