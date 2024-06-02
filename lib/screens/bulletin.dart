@@ -10,7 +10,8 @@ class Post {
   final String id; // 고유 ID 추가
   final String title;
   final String content;
-  final String author;
+  final String studentId;
+  final String userName;
   final DateTime createdAt;
   int likes;
   int comments;
@@ -20,7 +21,8 @@ class Post {
   Post({
     required this.title,
     required this.content,
-    required this.author,
+    required this.userName,
+    required this.studentId,
     required this.createdAt,
     this.likes = 0,
     this.comments = 0,
@@ -40,21 +42,24 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
     Post(
       title: '제목이란거다',
       content: '게시물 이란거다',
-      author: 'ㅎㅇ',
+      userName: '사용자1',
+      studentId: '20180595',
       createdAt: DateTime.now().subtract(Duration(minutes: 2)),
       imagePath: null,
     ),
     Post(
       title: '형 가수했을때',
       content: '어느새 ~ 부터 ~ ',
-      author: '어 형이야',
+      userName: '사용자2',
+      studentId: '20180600',
       createdAt: DateTime.now().subtract(Duration(minutes: 25)),
       imagePath: 'assets/event1.png',
     ),
     Post(
       title: '형 전성기 ㅋ',
       content: '야 타',
-      author: '나 학생회장임 ㅋ',
+      userName: '사용자3',
+      studentId: '20180601',
       createdAt: DateTime.now().subtract(Duration(hours: 1)),
       imagePath: 'assets/event3.png',
     ),
@@ -67,7 +72,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
           Post(
             title: title,
             content: content,
-            author: author,
+            userName: author,
+            studentId: userProfile.studentId,
             createdAt: DateTime.now(),
             imagePath: image?.path,
           ));
@@ -110,8 +116,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             snap: true,
             expandedHeight: 50.0,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding:
-              EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              titlePadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -133,7 +138,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                         ),
                       );
                     },
-                  ),
+                  )
                 ],
               ),
             ),
@@ -195,13 +200,13 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post.author,
+                        post.userName,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        '@${userProfile.studentId} • ${_timeAgo(post.createdAt)}',
+                        '@${post.studentId} • ${_timeAgo(post.createdAt)}',
                         style: TextStyle(
                           color: Colors.grey,
                         ),
@@ -213,12 +218,18 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                     onSelected: (String result) {
                       if (result == 'delete') {
                         _confirmDelete(context, post.id);
+                      } else if (result == 'report') {
+                        _reportPost();
                       }
                     },
                     itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                       const PopupMenuItem<String>(
                         value: 'delete',
                         child: Text('삭제'),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'report',
+                        child: Text('신고'),
                       ),
                     ],
                   ),
@@ -276,7 +287,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                       children: [
                         SvgPicture.asset(
                           'assets/icons/post_comment.svg',
-                          color: Colors.purple,
+                          color: Color(0xFFA2A2FF),
                           width: 20,
                           height: 20,
                         ),
@@ -294,7 +305,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                       children: [
                         SvgPicture.asset(
                           'assets/icons/post_save.svg',
-                          color: Colors.purple,
+                          color: Color(0xFFA2A2FF),
                           width: 20,
                           height: 20,
                         ),
@@ -312,7 +323,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                       children: [
                         SvgPicture.asset(
                           'assets/icons/post_share.svg',
-                          color: Colors.purple,
+                          color: Color(0xFFA2A2FF),
                           width: 20,
                           height: 20,
                         ),
@@ -354,6 +365,46 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
           ],
         );
       },
+    );
+  }
+
+  void _reportPost() {
+    // 신고 기능 구현
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('신고'),
+        content: Text('이 게시글을 신고하시겠습니까?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('취소'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _showReportSuccessDialog();
+            },
+            child: Text('신고'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showReportSuccessDialog() {
+    // 신고 성공 메시지
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('신고되었습니다.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('확인'),
+          ),
+        ],
+      ),
     );
   }
 
