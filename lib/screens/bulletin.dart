@@ -65,6 +65,10 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
     ),
   ];
 
+  List<Post> getRecentPosts() {
+    return posts.take(3).toList();
+  }
+
   void _addPost(String title, String content, File? image, String author) {
     setState(() {
       posts.insert(
