@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:academic_management/providers/person.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -161,10 +163,19 @@ class _ChatScreenState extends State<ChatScreen> {
                   color: color,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Text(
-                  message.text,
-                  softWrap: true, // 자동 줄바꿈 활성화
-                  style: TextStyle(fontSize: 16), // 텍스트 크기 설정
+                child: MarkdownBody(
+                  data: message.text,
+                  onTapLink: (text, href, title) {
+                    if (href != null) {
+                      launch(href);
+                    }
+                  },
+                  styleSheet: MarkdownStyleSheet(
+                    a: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
                 ),
               ),
               Text(
