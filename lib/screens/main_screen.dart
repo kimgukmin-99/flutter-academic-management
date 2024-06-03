@@ -6,7 +6,6 @@ import 'package:academic_management/screens/graduation.dart';
 import 'package:academic_management/screens/mypage.dart';
 import 'package:academic_management/screens/home.dart';
 import 'package:academic_management/utilities/dot_curved_bottom_nav.dart';
-import 'package:academic_management/providers/person.dart';
 
 class MainScreens extends StatefulWidget {
   @override

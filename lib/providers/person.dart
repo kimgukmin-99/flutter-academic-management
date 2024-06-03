@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:academic_management/screens/login_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 const String server = "http://13.237.43.243:8000"; // 국민 서버
-const String server2 = "http://15.164.30.188:8080"; // 지훈 서버
+const String server2 = "http://43.202.133.222:8080"; // 지훈 서버
 
 // 유저데이터 백엔드랑 통신해서 받아올 거니까 여기다 저장 후 다른 페이지에도 적용하게끔
 class UserProfile {
@@ -16,6 +14,7 @@ class UserProfile {
   final int maxScore;
   final List<String> skills;
   final Map<String, bool> subjects;
+  final String? profileImage;
 
   UserProfile({
     required this.userName,
@@ -26,6 +25,7 @@ class UserProfile {
     required this.maxScore,
     required this.skills, // 스킬 넣는거임 ex) 파이썬 이런거
     required this.subjects, // 내가 수강한 과목 넣기!
+    this.profileImage,
   });
 
   // JSON 데이터를 UserProfile 객체로 변환하기 위한 factory constructor 추가
@@ -40,6 +40,7 @@ class UserProfile {
       skills: List<String>.from(json['skills'] ?? ["파이썬"]),
       subjects: Map<String, bool>.from(
           json['subjects'] ?? {"자료구조": true, "알고리즘": true, "캡스톤디자인": true}),
+      profileImage: json['profileImage'], // 프로필 이미지 필드 추가
     );
   }
 }
@@ -54,6 +55,7 @@ UserProfile userProfile = UserProfile(
   maxScore: 1000,
   skills: ["파이썬"],
   subjects: {"자료구조": true, "알고리즘": true, "캡스톤디자인": true},
+  profileImage: null,
 );
 
 Future<bool> sendLoginRequest(String studentId, String password) async {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:academic_management/screens/image_screen.dart';
 import 'package:academic_management/providers/person.dart';
 
 class MyPageScreen extends StatefulWidget {
