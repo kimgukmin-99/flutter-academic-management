@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // flutter_svg 패키지 추가
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:academic_management/screens/chat_screen.dart';
 import 'package:academic_management/screens/bulletin.dart';
 import 'package:academic_management/screens/graduation.dart';

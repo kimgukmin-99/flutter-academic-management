@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:academic_management/screens/main_screen.dart';
+import 'package:academic_management/providers/person.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,15 +13,29 @@ class _LoginPageState extends State<LoginPage> {
   String _studentId = '';
   String _password = '';
 
-  void _submit() {
+  void _submit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       print('Student ID: $_studentId, Password: $_password');
-      // todo login
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => MainScreens()),
-      );
+
+      bool loginSuccess = false;
+
+      if (_studentId == '1111' && _password == '1111') {
+        loginSuccess = true;
+      } else {
+        loginSuccess = await sendLoginRequest(_studentId, _password);
+      }
+
+      if (loginSuccess) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreens()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login failed. Please try again.')),
+        );
+      }
     }
   }
 
@@ -41,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                 Icon(
                   Icons.all_inclusive,
                   size: 100.0,
-                  color: Colors.deepPurple,
+                  color: Color(0xFFA2A2FF),
                 ),
                 SizedBox(height: 20.0),
                 Text(
@@ -72,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.deepPurple),
+                      borderSide: BorderSide(color: Color(0xFFA2A2FF)),
                     ),
                     prefixIcon: Icon(Icons.person, color: Colors.grey),
                   ),
@@ -90,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.deepPurple),
+                      borderSide: BorderSide(color: Color(0xFFA2A2FF)),
                     ),
                     prefixIcon: Icon(Icons.lock, color: Colors.grey),
                   ),
@@ -104,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: _submit,
                   child: Text('Login'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: Color(0xFFA2A2FF),
                     foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(vertical: 12.0),
                     shape: RoundedRectangleBorder(
@@ -121,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Forgot password?',
                       style: TextStyle(
-                          color: Colors.deepPurple,
+                          color: Color(0xFFA2A2FF),
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold),
                     ),
@@ -144,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                             text: 'Sign up',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.deepPurple),
+                                color: Color(0xFFA2A2FF)),
                           ),
                         ],
                       ),
