@@ -62,6 +62,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     sendData();
     sendData2();
     sendData3();
+    fetchData2();
   }
 
 //수강과목추천임
@@ -263,83 +264,138 @@ class _GraduationScreenState extends State<GraduationScreen> {
       print('Network error: $e');
     }
   }
+  Future<void> fetchData2() async {
+    try {
+      final response =
+          await http.get(Uri.parse(server + '/submit-activation'));
+      if (response.statusCode == 200) {
+        setState(() {
+          final responseBody = utf8.decode(response.bodyBytes);
+          final jsonData = json.decode(responseBody);
+          if (jsonData != null && jsonData is List) {
+            List<Map<String, String>> details =
+                jsonData.map<Map<String, String>>((item) {
+              return {
+                'title': item['title'] ?? '',
+                '개설학기': item['개설학기'] ?? '',
+                '혜택': item['혜택'] ?? '',
+              };
+            }).toList();
 
+            recommendations[4] = GraduationRequirement(
+              requirement: '학교활동',
+              completed: false,
+              details: details,
+            );
+          } else {
+            print('Empty response data');
+          }
+        });
+      } else {
+        // 서버 오류 처리
+        print('Server error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // 네트워크 오류 처리
+      print('Network error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Color(0xffECEFF1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      userName,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      '$department | $year | $studentId',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff546E7A),
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Graduation Progress',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    LinearProgressIndicator(
-                      value: graduationScore / maxScore,
-                      backgroundColor: Colors.grey[300],
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      '$graduationScore / $maxScore',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff546E7A),
-                      ),
-                    ),
-                  ],
-                ),
+  return Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Color(0xffECEFF1),
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
               ),
-              SizedBox(height: 16),
-              Text(
-                '추천 활동',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userName,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    '$department | $year | $studentId',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xff546E7A),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Graduation Progress',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  LinearProgressIndicator(
+                    value: graduationScore / maxScore,
+                    backgroundColor: Colors.grey[300],
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    '$graduationScore / $maxScore',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xff546E7A),
+                    ),
+                  ),
+                ],
               ),
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: recommendations.length,
-                itemBuilder: (context, index) {
-                  final recommendation = recommendations[index];
-                  return ExpansionTile(
+            ),
+            SizedBox(height: 16),
+            Text(
+              '추천 활동',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            ListView.separated(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: recommendations.length,
+              separatorBuilder: (context, index) => SizedBox(height: 8),
+              itemBuilder: (context, index) {
+                final recommendation = recommendations[index];
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 5,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: ExpansionTile(
                     title: Text(recommendation.requirement),
                     trailing: Icon(
                       recommendation.completed
@@ -361,13 +417,15 @@ class _GraduationScreenState extends State<GraduationScreen> {
                         ),
                       );
                     }).toList(),
-                  );
-                },
-              ),
-            ],
-          ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
