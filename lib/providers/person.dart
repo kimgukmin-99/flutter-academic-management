@@ -25,7 +25,7 @@ class UserProfile {
     required this.maxScore,
     required this.skills, // 스킬 넣는거임 ex) 파이썬 이런거
     required this.subjects, // 내가 수강한 과목 넣기!
-    this.profileImage,
+    required this.profileImage,
   });
 
   // JSON 데이터를 UserProfile 객체로 변환하기 위한 factory constructor 추가
@@ -40,7 +40,7 @@ class UserProfile {
       skills: List<String>.from(json['skills'] ?? ["파이썬"]),
       subjects: Map<String, bool>.from(
           json['subjects'] ?? {"자료구조": true, "알고리즘": true, "캡스톤디자인": true}),
-      profileImage: json['profileImage'], // 프로필 이미지 필드 추가
+      profileImage: json['profileImage'],
     );
   }
 }
@@ -61,8 +61,7 @@ UserProfile userProfile = UserProfile(
 Future<bool> sendLoginRequest(String studentId, String password) async {
   final url = Uri.parse('$server2/member/login');
   final headers = {"Content-Type": "application/json"};
-  final body =
-      jsonEncode({"memberStudentId": studentId, "memberPassword": password});
+  final body = jsonEncode({"studentId": studentId, "memberPassword": password});
 
   final response = await http.post(url, headers: headers, body: body);
 
@@ -70,8 +69,7 @@ Future<bool> sendLoginRequest(String studentId, String password) async {
     print('Login successful');
     final responseBody = json.decode(utf8.decode(response.bodyBytes));
     print('response : $responseBody');
-    final jsonResponse = jsonDecode(response.body);
-    userProfile = UserProfile.fromJson(jsonResponse);
+    userProfile = UserProfile.fromJson(responseBody['useData']);
     return true; // 로그인 성공 시 true 반환
   } else {
     print('Login failed: ${response.statusCode}');

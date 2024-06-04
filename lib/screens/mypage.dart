@@ -227,7 +227,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                             backgroundColor: Colors.grey[300],
                             child: Icon(Icons.add),
                           ),
-                          SizedBox(height: 5),
+                          SizedBox(height: 2),
                           Text('Add Event'),
                         ],
                       ),
