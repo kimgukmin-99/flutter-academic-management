@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'bulletin.dart';
-import 'package:academic_management/providers/person.dart'; // userProfile import 추가
+import 'package:academic_management/providers/person.dart';
 
 class PostDetailScreen extends StatefulWidget {
   final Post post;
@@ -16,6 +16,8 @@ class PostDetailScreen extends StatefulWidget {
 class _PostDetailScreenState extends State<PostDetailScreen> {
   late Post post;
   final TextEditingController _commentController = TextEditingController();
+  final FocusNode _commentFocusNode = FocusNode();
+  int? _replyToIndex; // 대댓글을 달 댓글의 인덱스
 
   @override
   void initState() {
@@ -38,91 +40,229 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     setState(() {
       post.comments++;
       post.commentsList.add({
-        'author': author,
+        'author': userProfile.userName, // 수정: 사용자 이름
+        'studentId': userProfile.studentId, // 수정: 사용자 학번
         'content': content,
         'createdAt': DateTime.now(),
+        'likes': 0,
+        'replies': [],
       });
     });
     widget.onUpdate(post); // 업데이트 콜백 호출
   }
 
+  void _addReply(int commentIndex, String author, String content) {
+    setState(() {
+      post.commentsList[commentIndex]['replies'].add({
+        'author': userProfile.userName, // 수정: 사용자 이름
+        'studentId': userProfile.studentId, // 수정: 사용자 학번
+        'content': content,
+        'createdAt': DateTime.now(),
+        'likes': 0,
+      });
+      post.comments = post.comments + 1; // 댓글 수 증가
+    });
+    widget.onUpdate(post); // 업데이트 콜백 호출
+  }
+
+  void _toggleCommentLike(int commentIndex) {
+    setState(() {
+      final comment = post.commentsList[commentIndex];
+      if (comment['likes'] % 2 == 0) {
+        comment['likes']++;
+      } else {
+        comment['likes']--;
+      }
+    });
+    widget.onUpdate(post); // 업데이트 콜백 호출
+  }
+
+  void _toggleReplyLike(int commentIndex, int replyIndex) {
+    setState(() {
+      final reply = post.commentsList[commentIndex]['replies'][replyIndex];
+      if (reply['likes'] % 2 == 0) {
+        reply['likes']++;
+      } else {
+        reply['likes']--;
+      }
+    });
+    widget.onUpdate(post); // 업데이트 콜백 호출
+  }
+
+  void _deleteComment(int index) {
+    setState(() {
+      post.comments = post.comments - 1; // 댓글 수 감소
+      post.commentsList.removeAt(index);
+    });
+    widget.onUpdate(post); // 업데이트 콜백 호출
+  }
+
+  void _deleteReply(int commentIndex, int replyIndex) {
+    setState(() {
+      post.commentsList[commentIndex]['replies'].removeAt(replyIndex);
+      post.comments = post.comments - 1; // 댓글 수 감소
+    });
+    widget.onUpdate(post); // 업데이트 콜백 호출
+  }
+
+  void _reportComment() {
+    // 신고 기능 구현
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('신고'),
+        content: Text('이 댓글을 신고하시겠습니까?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('취소'),
+          ),
+          TextButton(
+            onPressed: () {
+              // 신고 처리 로직
+              Navigator.of(context).pop();
+              _showReportSuccessDialog();
+            },
+            child: Text('신고'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _reportReply() {
+    // 신고 기능 구현
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('신고'),
+        content: Text('이 대댓글을 신고하시겠습니까?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('취소'),
+          ),
+          TextButton(
+            onPressed: () {
+              // 신고 처리 로직
+              Navigator.of(context).pop();
+              _showReportSuccessDialog();
+            },
+            child: Text('신고'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showReportSuccessDialog() {
+    // 신고 성공 메시지
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('신고되었습니다.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('확인'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(post.title),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/user_icon.png'),
-                      ),
-                      SizedBox(width: 8.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            post.author,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          Text(
-                            '@${userProfile.studentId} • ${_timeAgo(post.createdAt)}',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.0),
-                  if (post.imagePath != null)
-                    Center(
-                      child: Image.asset(post.imagePath!),
-                    ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    post.content,
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  SizedBox(height: 16.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: _toggleLike,
-                        child: Row(
+    return GestureDetector(
+      onTap: () {
+        // 화면의 다른 곳을 누르면 키보드를 숨깁니다.
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(post.title),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: AssetImage('assets/images/user_icon.png'),
+                        ),
+                        SizedBox(width: 8.0),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              post.likes % 2 == 0 ? Icons.favorite_border : Icons.favorite,
-                              color: post.likes % 2 == 0 ? Colors.grey : Colors.red,
+                            Text(
+                              post.userName, // 수정: 작성자 이름
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                              ),
                             ),
-                            SizedBox(width: 4.0),
-                            Text('${post.likes}'),
+                            Row(
+                              children: [
+                                Text(
+                                  '@${post.studentId}',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                                SizedBox(width: 4.0),
+                                Text(
+                                  '• ${_timeAgo(post.createdAt)}',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
+                      ],
+                    ),
+                    SizedBox(height: 16.0),
+                    if (post.imagePath != null)
+                      Center(
+                        child: Image.asset(post.imagePath!),
                       ),
-                      InkWell(
-                        onTap: () {
-                          // 좋아요 옆에 댓글 아이콘 배치
-                        },
-                        child: Row(
+                    SizedBox(height: 16.0),
+                    Text(
+                      post.content,
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                    SizedBox(height: 16.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: _toggleLike,
+                          child: Row(
+                            children: [
+                              Icon(
+                                post.likes % 2 == 0
+                                    ? Icons.favorite_border
+                                    : Icons.favorite,
+                                color: post.likes % 2 == 0 ? Colors.grey : Colors.red,
+                              ),
+                              SizedBox(width: 4.0),
+                              Text('${post.likes}'),
+                            ],
+                          ),
+                        ),
+                        Row(
                           children: [
                             SvgPicture.asset(
                               'assets/icons/post_comment.svg',
-                              color: Colors.purple,
+                              color: Color(0xFFA2A2FF),
                               width: 24,
                               height: 24,
                             ),
@@ -130,46 +270,205 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             Text('${post.comments}'),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.0),
-                  Divider(),
-                  SizedBox(height: 8.0),
-                  Text(
-                    '댓글',
-                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8.0),
-                  _buildCommentsSection(),
-                  SizedBox(height: 16.0),
-                ],
+                        InkWell(
+                          onTap: () {
+                            // Add your onPressed code here for the bookmark action!
+                          },
+                          splashColor: Colors.transparent,
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/post_save.svg',
+                                color: Color(0xFFA2A2FF),
+                                width: 20,
+                                height: 20,
+                              ),
+                              SizedBox(width: 4.0),
+                              Text('저장'),
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            // Add your onPressed code here for the share action!
+                          },
+                          splashColor: Colors.transparent,
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/post_share.svg',
+                                color: Color(0xFFA2A2FF),
+                                width: 20,
+                                height: 20,
+                              ),
+                              SizedBox(width: 4.0),
+                              Text('공유하기'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.0),
+                    Divider(),
+                    SizedBox(height: 8.0),
+                    Text(
+                      '댓글',
+                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8.0),
+                    _buildCommentsSection(),
+                    SizedBox(height: 16.0),
+                  ],
+                ),
               ),
             ),
-          ),
-          _buildCommentInput(),
-        ],
+            _buildCommentInput(),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildCommentsSection() {
-    final List<Map<String, dynamic>> allComments = [
-      ...post.commentsList,
-      {'author': '김국민', 'content': '나 국민인데 쌌다.', 'createdAt': DateTime.now().subtract(Duration(minutes: 5))},
-      {'author': '이윤석', 'content': '나 윤석인데 얘는 이길거같다 ㅋㅋ', 'createdAt': DateTime.now().subtract(Duration(minutes: 10))},
-    ];
-
     return Column(
-      children: allComments.map((comment) {
+      children: post.commentsList.asMap().entries.map((entry) {
+        int index = entry.key;
+        Map<String, dynamic> comment = entry.value;
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/user_icon.png'),
+                    radius: 16.0,
+                  ),
+                  SizedBox(width: 8.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          comment['author'] as String, // 수정: 작성자 이름
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14.0),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              '@${comment['studentId']}', // 수정: 작성자 학번
+                              style: TextStyle(color: Colors.grey, fontSize: 12.0),
+                            ),
+                            SizedBox(width: 4.0),
+                            Text(
+                              '• ${_timeAgo(comment['createdAt'] as DateTime)}',
+                              style: TextStyle(color: Colors.grey, fontSize: 12.0),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          comment['content'] as String,
+                          style: TextStyle(fontSize: 14.0), // 폰트 크기 조정
+                        ),
+                        SizedBox(height: 4.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () => _toggleCommentLike(index),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        comment['likes'] % 2 == 0
+                                            ? Icons.favorite_border
+                                            : Icons.favorite,
+                                        color: comment['likes'] % 2 == 0
+                                            ? Colors.grey
+                                            : Colors.red,
+                                      ),
+                                      SizedBox(width: 4.0),
+                                      Text('${comment['likes']}'),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: 16.0),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _replyToIndex = index;
+                                    });
+                                    FocusScope.of(context)
+                                        .requestFocus(_commentFocusNode);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/icons/post_comment.svg',
+                                        color: Colors.grey,
+                                        width: 24,
+                                        height: 24,
+                                      ),
+                                      SizedBox(width: 4.0),
+                                      Text('${comment['replies'].length}'), // 대댓글 수 표시
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuButton<String>(
+                    onSelected: (value) {
+                      if (value == 'delete') {
+                        _deleteComment(index);
+                      } else if (value == 'report') {
+                        // 신고 기능 추가
+                        _reportComment();
+                      }
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Text('삭제'),
+                        ),
+                        PopupMenuItem(
+                          value: 'report',
+                          child: Text('신고'),
+                        ),
+                      ];
+                    },
+                  ),
+                ],
+              ),
+            ),
+            _buildReplies(comment['replies'], index),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildReplies(List<dynamic> replies, int commentIndex) {
+    return Column(
+      children: replies.asMap().entries.map((entry) {
+        int replyIndex = entry.key;
+        Map<String, dynamic> reply = entry.value;
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.only(left: 40.0, top: 8.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(
                 backgroundImage: AssetImage('assets/images/user_icon.png'),
-                radius: 16.0,
+                radius: 12.0,
               ),
               SizedBox(width: 8.0),
               Expanded(
@@ -177,18 +476,81 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      comment['author'] as String,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                      reply['author'] as String, // 수정: 작성자 이름
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 12.0),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '@${reply['studentId']}', // 수정: 작성자 학번
+                          style:
+                          TextStyle(color: Colors.grey, fontSize: 12.0),
+                        ),
+                        SizedBox(width: 4.0),
+                        Text(
+                          '• ${_timeAgo(reply['createdAt'] as DateTime)}',
+                          style:
+                          TextStyle(color: Colors.grey, fontSize: 12.0),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      reply['content'] as String,
+                      style: TextStyle(fontSize: 14.0), // 폰트 크기 조정
                     ),
                     SizedBox(height: 4.0),
-                    Text(comment['content'] as String),
-                    SizedBox(height: 4.0),
-                    Text(
-                      _timeAgo(comment['createdAt'] as DateTime),
-                      style: TextStyle(color: Colors.grey, fontSize: 12.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () =>
+                                  _toggleReplyLike(commentIndex, replyIndex),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    reply['likes'] % 2 == 0
+                                        ? Icons.favorite_border
+                                        : Icons.favorite,
+                                    color: reply['likes'] % 2 == 0
+                                        ? Colors.grey
+                                        : Colors.red,
+                                  ),
+                                  SizedBox(width: 4.0),
+                                  Text('${reply['likes']}'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
+              ),
+              PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'delete') {
+                    _deleteReply(commentIndex, replyIndex);
+                  } else if (value == 'report') {
+                    // 신고 기능 추가
+                    _reportReply();
+                  }
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Text('삭제'),
+                    ),
+                    PopupMenuItem(
+                      value: 'report',
+                      child: Text('신고'),
+                    ),
+                  ];
+                },
               ),
             ],
           ),
@@ -205,8 +567,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           Expanded(
             child: TextField(
               controller: _commentController,
+              focusNode: _commentFocusNode,
               decoration: InputDecoration(
-                labelText: '댓글 달기',
+                labelText: _replyToIndex == null ? '댓글을 입력하세요.' : '대댓글을 입력하세요.',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -217,7 +580,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           ElevatedButton(
             onPressed: () {
               if (_commentController.text.isNotEmpty) {
-                _addComment(userProfile.studentId, _commentController.text); // 사용자 학번으로 변경
+                if (_replyToIndex == null) {
+                  _addComment(userProfile.userName, _commentController.text); // 사용자 이름으로 변경
+                } else {
+                  _addReply(_replyToIndex!, userProfile.userName,
+                      _commentController.text); // 사용자 이름으로 변경
+                  setState(() {
+                    _replyToIndex = null;
+                  });
+                }
                 _commentController.clear();
               }
             },
