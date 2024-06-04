@@ -62,6 +62,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     sendData();
     sendData2();
     sendData3();
+    fetchData2();
   }
 
 //수강과목추천임
@@ -263,7 +264,42 @@ class _GraduationScreenState extends State<GraduationScreen> {
       print('Network error: $e');
     }
   }
+  Future<void> fetchData2() async {
+    try {
+      final response =
+          await http.get(Uri.parse(server + '/submit-activation'));
+      if (response.statusCode == 200) {
+        setState(() {
+          final responseBody = utf8.decode(response.bodyBytes);
+          final jsonData = json.decode(responseBody);
+          if (jsonData != null && jsonData is List) {
+            List<Map<String, String>> details =
+                jsonData.map<Map<String, String>>((item) {
+              return {
+                'title': item['title'] ?? '',
+                '개설학기': item['개설학기'] ?? '',
+                '혜택': item['혜택'] ?? '',
+              };
+            }).toList();
 
+            recommendations[4] = GraduationRequirement(
+              requirement: '학교활동',
+              completed: false,
+              details: details,
+            );
+          } else {
+            print('Empty response data');
+          }
+        });
+      } else {
+        // 서버 오류 처리
+        print('Server error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // 네트워크 오류 처리
+      print('Network error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
