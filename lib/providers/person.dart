@@ -4,7 +4,6 @@ import 'dart:convert';
 const String server = "http://13.237.43.243:8000"; // 국민 서버
 const String server2 = "http://43.202.133.222:8080"; // 지훈 서버
 
-// 유저데이터 백엔드랑 통신해서 받아올 거니까 여기다 저장 후 다른 페이지에도 적용하게끔
 class UserProfile {
   final String userName;
   final String department;

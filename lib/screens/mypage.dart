@@ -253,6 +253,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                   );
                 },
               ),
+              SizedBox(height: 100), // 맨 아래에 여백을 추가
             ],
           ),
         ),

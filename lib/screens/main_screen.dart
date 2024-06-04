@@ -48,10 +48,15 @@ class _MainScreensState extends State<MainScreens> {
               onTap: () {
                 print('Notification icon tapped!');
               },
-              child: SvgPicture.asset(
-                'assets/icons/alarm.svg',
-                width: 24,
-                height: 24,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
+                ),
+                child: SvgPicture.asset(
+                  'assets/icons/alarm.svg',
+                  width: 24,
+                  height: 24,
+                ),
               ),
             )
           ],
@@ -71,7 +76,7 @@ class _MainScreensState extends State<MainScreens> {
         selectedIndex: _currentPage,
         indicatorSize: 5,
         borderRadius: 25,
-        height: 70,
+        height: 50,
         onTap: _onItemTapped,
         items: [
           SvgPicture.asset(
