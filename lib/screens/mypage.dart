@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:academic_management/providers/person.dart';
@@ -21,6 +22,60 @@ class _MyPageScreenState extends State<MyPageScreen> {
     {'name': 'MT', 'image': 'assets/event2.png'},
     {'name': '학술제', 'image': 'assets/event3.png'},
   ];
+  final List<String> _choices = [
+    "Python",
+    "Java",
+    "C",
+    "C++",
+    "C#",
+    "JavaScript",
+    "Visual Basic",
+    "Go",
+    "SQL",
+    "Fortran",
+    "Ruby",
+    "Swift",
+    "PHP",
+    "Rust",
+    "Kotlin",
+    "Django",
+    "Flask (Python)",
+    "Express.js (JavaScript)",
+    "React.js (JavaScript)",
+    "Angular (JavaScript/TypeScript)",
+    "Spring Boot (Java)",
+    "ASP.NET Core (C#)",
+    "Ruby on Rails (Ruby)",
+    "Laravel (PHP)",
+    "Vue.js (JavaScript)"
+  ];
+  final Map<String, String> _choiceIcons = {
+    "Python" : "assets/icons/Python.svg",
+    "Java" : "assets/icons/Java.svg",
+    "C": "assets/icons/c.svg",
+    "C++": "assets/icons/cpp.svg",
+    "C#": "assets/icons/csharp.svg",
+    "JavaScript": "assets/icons/javascript.svg",
+    "Visual Basic": "assets/icons/visualbasic.svg",
+    "Go": "assets/icons/go.svg",
+    "SQL": "assets/icons/sql.svg",
+    "Fortran": "assets/icons/fortran.svg",
+    "Ruby": "assets/icons/ruby.svg",
+    "Swift": "assets/icons/swift.svg",
+    "PHP": "assets/icons/php.svg",
+    "Rust": "assets/icons/rust.svg",
+    "Kotlin": "assets/icons/kotlin.svg",
+    "Django": "assets/icons/django.svg",
+    "Flask (Python)": "assets/icons/flask.svg",
+    "Express.js (JavaScript)": "assets/icons/express.svg",
+    "React.js (JavaScript)": "assets/icons/react.svg",
+    "Angular (JavaScript/TypeScript)": "assets/icons/angular.svg",
+    "Spring Boot (Java)": "assets/icons/spring.svg",
+    "ASP.NET Core (C#)": "assets/icons/aspnet.svg",
+    "Ruby on Rails (Ruby)": "assets/icons/rails.svg",
+    "Laravel (PHP)": "assets/icons/laravel.svg",
+    "Vue.js (JavaScript)": "assets/icons/vue.svg"
+  };
 
   File? _selectedImage;
 
@@ -253,6 +308,36 @@ class _MyPageScreenState extends State<MyPageScreen> {
                   );
                 },
               ),
+              Text(
+                'Skills',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Wrap(
+                spacing: 8.0,
+                children: _choices.map((choice) {
+                  return ChoiceChip(
+                    avatar: SvgPicture.asset(
+                      _choiceIcons[choice]!,
+                      width: 24.0,
+                      height: 24.0,
+                    ),
+                    label: Text(choice),
+                    selected: userProfile.skills.contains(choice),
+                    onSelected: (selected) {
+                      setState(() {
+                        if (selected) {
+                          userProfile.skills.add(choice);
+                        } else {
+                          userProfile.skills.remove(choice);
+                        }
+                      });
+                    },
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: 20),
+              Text('Selected Skills: ${userProfile.skills.join(', ')}'),
             ],
           ),
         ),

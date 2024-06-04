@@ -53,7 +53,7 @@ UserProfile userProfile = UserProfile(
   studentId: '20180595',
   graduationScore: 30,
   maxScore: 1000,
-  skills: ["파이썬"],
+  skills: [],
   subjects: {"자료구조": true, "알고리즘": true, "캡스톤디자인": true},
   profileImage: null,
 );

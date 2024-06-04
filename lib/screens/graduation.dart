@@ -211,7 +211,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
       print('Network error: $e');
     }
   }
-  //채용정보임
+//채용정보임
   Future<void> sendData2() async {
     try {
       final url = Uri.parse(server+'/submit-work');
