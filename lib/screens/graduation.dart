@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:academic_management/providers/person.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GraduationScreen extends StatefulWidget {
   @override
@@ -10,11 +11,9 @@ class GraduationScreen extends StatefulWidget {
 
 class GraduationRequirement {
   final String requirement;
-  final bool completed;
   final List<Map<String, String>> details;
   GraduationRequirement({
     required this.requirement,
-    required this.completed,
     required this.details,
   });
 }
@@ -23,30 +22,26 @@ class _GraduationScreenState extends State<GraduationScreen> {
   List<GraduationRequirement> recommendations = [
     GraduationRequirement(
       requirement: '수강신청',
-      completed: true,
       details: [],
     ),
     GraduationRequirement(
       requirement: '봉사활동',
-      completed: false,
       details: [],
     ),
     GraduationRequirement(
       requirement: '채용공고',
-      completed: true,
       details: [],
     ),
     GraduationRequirement(
       requirement: '자격증',
-      completed: false,
       details: [],
     ),
     GraduationRequirement(
       requirement: '학교활동',
-      completed: false,
       details: [],
     ),
   ];
+
   final String userName = userProfile.userName;
   final String department = userProfile.department;
   final String year = "${userProfile.year[0]}학년 ${userProfile.year[2]}학기";
@@ -64,7 +59,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     fetchData2();
   }
 
-//수강과목추천임
+  //수강과목추천임
   Future<void> sendData3() async {
     try {
       final url = Uri.parse(server + '/submit-subjects');
@@ -90,7 +85,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
           final List<dynamic> jsonData = json.decode(responseBody);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-                jsonData.map<Map<String, String>>((item) {
+            jsonData.map<Map<String, String>>((item) {
               return {
                 '과목명': item['과목명'] ?? '',
                 '개설학기': item['개설학기'] ?? '',
@@ -100,7 +95,6 @@ class _GraduationScreenState extends State<GraduationScreen> {
 
             recommendations[0] = GraduationRequirement(
               requirement: '수강신청',
-              completed: true,
               details: details,
             );
           } else {
@@ -117,7 +111,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     }
   }
 
-//봉사임
+  //봉사임
   Future<void> fetchData() async {
     try {
       final response = await http.get(Uri.parse(server + '/submit-volunteer'));
@@ -127,18 +121,17 @@ class _GraduationScreenState extends State<GraduationScreen> {
           final jsonData = json.decode(responseBody);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-                jsonData.map<Map<String, String>>((item) {
+            jsonData.map<Map<String, String>>((item) {
               return {
-                'title': item['title'] ?? '',
-                'period': item['모집기간'] ?? '',
-                'time': item['봉사시간'] ?? '',
-                'link': item['링크'] ?? '',
+                '제목': item['title'] ?? '',
+                '모집기간': item['모집기간'] ?? '',
+                '시간': item['봉사시간'] ?? '',
+                '링크': item['링크'] ?? '',
               };
             }).toList();
 
             recommendations[1] = GraduationRequirement(
               requirement: '봉사활동',
-              completed: false,
               details: details,
             );
           } else {
@@ -155,7 +148,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     }
   }
 
-//자격증임
+  //자격증임
   Future<void> sendData() async {
     try {
       final url = Uri.parse(server + '/submit-certification');
@@ -187,16 +180,15 @@ class _GraduationScreenState extends State<GraduationScreen> {
 
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-                jsonData.map<Map<String, String>>((item) {
+            jsonData.map<Map<String, String>>((item) {
               return {
-                'name': item['name'] ?? '',
+                '자격증 이름': item['name'] ?? '',
                 '점수': item['점수'] ?? '',
               };
             }).toList();
 
             recommendations[3] = GraduationRequirement(
               requirement: '자격증',
-              completed: false,
               details: details,
             );
           } else {
@@ -238,19 +230,18 @@ class _GraduationScreenState extends State<GraduationScreen> {
 
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-                jsonData.map<Map<String, String>>((item) {
+            jsonData.map<Map<String, String>>((item) {
               return {
-                'title': item['job_title'] ?? '',
-                'date': item['job_date'] ?? '',
-                'condition': item['job_condition'] ?? '',
-                'sector': item['job_sector'] ?? '',
-                'link': item['job_link'] ?? '',
+                '제목': item['job_title'] ?? '',
+                '날짜': item['job_date'] ?? '',
+                '조건': item['job_condition'] ?? '',
+                '모집분야': item['job_sector'] ?? '',
+                '링크': item['job_link'] ?? '',
               };
             }).toList();
 
             recommendations[2] = GraduationRequirement(
               requirement: '채용공고',
-              completed: false,
               details: details,
             );
           } else {
@@ -267,6 +258,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     }
   }
 
+  //학교활동임
   Future<void> fetchData2() async {
     try {
       final response = await http.get(Uri.parse(server + '/submit-activation'));
@@ -276,9 +268,9 @@ class _GraduationScreenState extends State<GraduationScreen> {
           final jsonData = json.decode(responseBody);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-                jsonData.map<Map<String, String>>((item) {
+            jsonData.map<Map<String, String>>((item) {
               return {
-                'title': item['title'] ?? '',
+                '활동명': item['title'] ?? '',
                 '개설학기': item['개설학기'] ?? '',
                 '혜택': item['혜택'] ?? '',
               };
@@ -286,7 +278,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
 
             recommendations[4] = GraduationRequirement(
               requirement: '학교활동',
-              completed: false,
+
               details: details,
             );
           } else {
@@ -300,6 +292,14 @@ class _GraduationScreenState extends State<GraduationScreen> {
     } catch (e) {
       // 네트워크 오류 처리
       print('Network error: $e');
+    }
+  }
+
+  Future<void> _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 
@@ -346,7 +346,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
                     ),
                     SizedBox(height: 16),
                     Text(
-                      'Graduation Progress',
+                      '졸업학점 점수',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -378,9 +378,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
-                height: 7,
-              ),
+              SizedBox(height: 7),
               ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -401,28 +399,70 @@ class _GraduationScreenState extends State<GraduationScreen> {
                       ],
                     ),
                     child: ExpansionTile(
-                      title: Text(recommendation.requirement),
-                      trailing: Icon(
-                        recommendation.completed
-                            ? Icons.check_circle
-                            : Icons.cancel,
-                        color: recommendation.completed
-                            ? Colors.green
-                            : Colors.red,
+                      title: Text(
+                        recommendation.requirement,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
-                      children: recommendation.details.map((detail) {
-                        return ListTile(
-                          title: Text(detail['title'] ?? ''),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: detail.entries
-                                .where((entry) => entry.key != 'title')
-                                .map((entry) =>
-                                    Text('${entry.key}: ${entry.value}'))
-                                .toList(),
-                          ),
+                      children: recommendation.details.isNotEmpty
+                          ? recommendation.details.map((detail) {
+                        return Column(
+                          children: [
+                            Divider(color: Color(0xFFA2A2FF)),
+                            ...detail.entries.map((entry) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 2.0),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: entry.key == '링크'
+                                      ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            _launchURL(entry.value!),
+                                        child: Text(
+                                          '바로가기',
+                                          style: TextStyle(
+                                            color: Colors.blue,
+                                            decoration: TextDecoration
+                                                .underline,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                      : Text(
+                                    '${entry.key}: ${entry.value}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            SizedBox(height: 8),
+                          ],
                         );
-                      }).toList(),
+                      }).toList()
+                          : [
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            'No details available.',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        // 내용이 없을 때 마지막에 여백 추가
+                        SizedBox(height: 8),
+                      ],
                     ),
                   );
                 },
