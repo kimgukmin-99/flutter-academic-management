@@ -16,13 +16,22 @@ class _MainScreensState extends State<MainScreens> {
   int _currentPage = 0; // 현재 선택된 탭의 인덱스를 추적합니다.
   ScrollController _scrollController = ScrollController();
 
-  // 각 탭에 해당하는 위젯을 리스트로 관리합니다.
-  final List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    GraduationScreen(),
-    BulletinBoardScreen(),
-    MyPageScreen(),
-  ];
+  late List<Widget> _widgetOptions;
+
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions = <Widget>[
+      HomeScreen(onTabTapped: (index) {
+        setState(() {
+          _currentPage = index;
+        });
+      }),
+      GraduationScreen(),
+      BulletinBoardScreen(),
+      MyPageScreen(),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {

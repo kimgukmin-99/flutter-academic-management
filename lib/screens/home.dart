@@ -4,8 +4,13 @@ import 'package:academic_management/screens/post_detail_screen.dart';
 import 'package:academic_management/screens/bulletin.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:academic_management/providers/person.dart';
+import 'package:academic_management/screens/main_screen.dart'; // 추가
 
 class HomeScreen extends StatefulWidget {
+  final Function(int) onTabTapped;
+
+  HomeScreen({required this.onTabTapped});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -57,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _buildIconSection(context),
                 Divider(color: Color(0xFF8A50CE)), // 아이콘 섹션과 게시판 섹션 구분
                 _buildNoticeBoardSection(context),
+                if (showCalendar) _buildSvgCalendar(), // showCalendar 상태에 따라 주간 시간표 SVG 표시
               ],
             ),
           ),
@@ -202,9 +208,20 @@ class _HomeScreenState extends State<HomeScreen> {
             _launchURL('https://my.hnu.kr/html/main/sso.html');
           }),
           _buildIcon('assets/icons/timetable.svg', '주간시간표', null, () {
-            setState(() {
-              showCalendar = !showCalendar;
-            });
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.8, // 화면 너비의 80%
+                        height: MediaQuery.of(context).size.height * 0.6, // 화면 높이의 60%
+                        child: _buildSvgCalendar(),
+                      )
+                  );
+                });
           }),
         ],
       ),
@@ -245,10 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => BulletinBoardScreen()),
-                );
+                widget.onTabTapped(2); // 2번 인덱스의 탭 (게시판)으로 이동
               },
               child: Text(
                 '더보기>',
@@ -292,12 +306,43 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildCalendar() {
+  Widget _buildSvgCalendar() {
     return Container(
-      height: 300,
-      color: Colors.grey[200], // 임시로 배경색 설정
-      child: Center(
-        child: Text('캘린더'),
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '주간 시간표',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF8A50CE),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.close, color: Colors.black),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          SvgPicture.asset(
+            'assets/alarm.svg',
+            width: double.infinity,
+            height: 200,
+            fit: BoxFit.contain,
+          ),
+        ],
       ),
     );
   }

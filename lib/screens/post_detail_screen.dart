@@ -91,7 +91,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   void _deleteComment(int index) {
     setState(() {
-      post.comments = post.comments - 1; // 댓글 수 감소
+      int replyCount = post.commentsList[index]['replies'].length;
+      post.comments = post.comments - 1 - replyCount; // 댓글과 대댓글 수 모두 차감
       post.commentsList.removeAt(index);
     });
     widget.onUpdate(post); // 업데이트 콜백 호출
