@@ -13,8 +13,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
   final String department = userProfile.department;
   final String year = "${userProfile.year[0]}학년 ${userProfile.year[2]}학기";
   final String studentId = userProfile.studentId;
-  int graduationScore = userProfile.graduationScore;
-  final int maxScore = userProfile.maxScore;
+  int graduationScore = 30;
+  final int maxScore = 150;
 
   final List<Map<String, String>> events = [
     {'name': '신입생 환영회', 'image': 'assets/event1.png'},
@@ -67,9 +67,10 @@ class _MyPageScreenState extends State<MyPageScreen> {
               SizedBox(height: 10),
               _selectedImage == null
                   ? TextButton(
-                    style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
-                        ),
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                            Colors.black), // 텍스트 색상 설정
+                      ),
                       onPressed: _pickImage,
                       child: Text('Select Image'),
                     )
@@ -156,7 +157,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFFA2A2FF),
                       foregroundColor: Colors.white,
-                      fixedSize: Size(105, 20), // 버튼의 최소 크기 설정 (너비, 높이)
+                      fixedSize: Size(110, 20), // 버튼의 최소 크기 설정 (너비, 높이)
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -168,7 +169,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFFA2A2FF),
                       foregroundColor: Colors.white,
-                      fixedSize: Size(105, 20),
+                      fixedSize: Size(110, 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -180,7 +181,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFFA2A2FF),
                       foregroundColor: Colors.white,
-                      fixedSize: Size(105, 20),
+                      fixedSize: Size(110, 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -190,7 +191,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
               ),
               SizedBox(height: 20),
               Text(
-                '졸업 인증 점수',
+                '학과 참여 점수',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
