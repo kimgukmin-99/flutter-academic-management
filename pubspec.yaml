@@ -83,6 +83,8 @@ flutter:
     - assets/icons/portal.svg
     - assets/icons/timetable.svg
     - assets/icons/homepage.svg
+    - assets/academic_calendar.svg
+    - assets/icons/pop.svg
   
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

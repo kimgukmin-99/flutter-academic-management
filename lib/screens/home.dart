@@ -4,7 +4,7 @@ import 'package:academic_management/screens/post_detail_screen.dart';
 import 'package:academic_management/screens/bulletin.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:academic_management/providers/person.dart';
-import 'package:academic_management/screens/main_screen.dart'; // 추가
+import 'package:academic_management/screens/main_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(int) onTabTapped;
@@ -61,6 +61,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 16), // 수업카드와 아이콘 사이의 간격
                 _buildIconSection(context),
                 Divider(color: Color(0xFF8A50CE)), // 아이콘 섹션과 게시판 섹션 구분
+                Text(
+                  '학사일정',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 16),
+                Center(
+                  child: SvgPicture.asset(
+                    'assets/academic_calendar.svg', // 정확한 파일명 사용
+                    width: double.infinity,
+                    height: 300,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                SizedBox(height: 16), // 학사일정과 게시판 사이의 간격
+                Divider(color: Color(0xFF8A50CE)), // 학사일정과 게시판 사이의 구분
                 _buildNoticeBoardSection(context),
                 if (showCalendar) _buildSvgCalendar(), // showCalendar 상태에 따라 주간 시간표 SVG 표시
               ],
@@ -254,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '게시판',
+              '최근 게시글',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -262,11 +280,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             GestureDetector(
               onTap: () {
-                widget.onTabTapped(2); // 2번 인덱스의 탭 (게시판)으로 이동
+                widget.onTabTapped(2);
               },
               child: Text(
-                '더보기>',
-                style: TextStyle(color: Color(0xFF8A50CE)),
+                '더 보기>',
               ),
             ),
           ],
@@ -277,12 +294,23 @@ class _HomeScreenState extends State<HomeScreen> {
             border: Border.all(color: Color(0xFF8A50CE)),
             borderRadius: BorderRadius.circular(10),
           ),
+          padding: EdgeInsets.symmetric(vertical: 1), // Adjust padding for Container
           child: Column(
             children: recentPosts.map((post) {
               return ListTile(
-                title: Text(post.title),
-                subtitle: Text(post.userName),
-                trailing: Text(_timeAgo(post.createdAt)),
+                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0), // Adjust padding for ListTile
+                title: Text(
+                  post.title,
+                  style: TextStyle(fontSize: 14),
+                ),
+                subtitle: Text(
+                  post.userName,
+                  style: TextStyle(fontSize: 12),
+                ),
+                trailing: Text(
+                  _timeAgo(post.createdAt),
+                  style: TextStyle(fontSize: 11),
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -306,6 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+
   Widget _buildSvgCalendar() {
     return Container(
       padding: EdgeInsets.all(16.0),
@@ -317,18 +346,14 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(
-                '주간 시간표',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF8A50CE),
-                ),
-              ),
               IconButton(
-                icon: Icon(Icons.close, color: Colors.black),
+                icon: SvgPicture.asset(
+                  'assets/icons/pop.svg', // 여기에 사용하는 SVG 파일 경로를 넣어주세요.
+                  width: 24,
+                  height: 24,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -337,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SizedBox(height: 16),
           SvgPicture.asset(
-            'assets/alarm.svg',
+            'assets/icons/alarm.svg',
             width: double.infinity,
             height: 200,
             fit: BoxFit.contain,
@@ -346,6 +371,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
 
   String _timeAgo(DateTime dateTime) {
     final Duration difference = DateTime.now().difference(dateTime);
