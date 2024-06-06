@@ -4,7 +4,7 @@ import 'package:academic_management/screens/post_detail_screen.dart';
 import 'package:academic_management/screens/bulletin.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:academic_management/providers/person.dart';
-import 'package:academic_management/screens/main_screen.dart'; // 추가
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(int) onTabTapped;
@@ -56,13 +56,30 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildUserInfo(userProfile), // userProfile 사용
+                _buildUserInfo(userProfile),
                 _buildScheduleSection(),
-                SizedBox(height: 16), // 수업카드와 아이콘 사이의 간격
+                SizedBox(height: 16),
                 _buildIconSection(context),
-                Divider(color: Color(0xFF8A50CE)), // 아이콘 섹션과 게시판 섹션 구분
+                Divider(color: Color(0xFF8A50CE), thickness: 1.0),
+                Text(
+                  '학사일정',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Center(
+                  child: SvgPicture.asset(
+                    'assets/academic_calendar.svg',
+                    width: double.infinity,
+                    height: 300,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                SizedBox(height: 16),
+                Divider(color: Color(0xFF8A50CE), thickness: 1.0),
                 _buildNoticeBoardSection(context),
-                if (showCalendar) _buildSvgCalendar(), // showCalendar 상태에 따라 주간 시간표 SVG 표시
+                if (showCalendar) _buildSvgCalendar(),
               ],
             ),
           ),
@@ -99,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         SizedBox(height: 16),
-        Divider(color: Color(0xFF8A50CE)),
+        Divider(color: Color(0xFF8A50CE), thickness: 1.0),
       ],
     );
   }
@@ -162,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
-                          overflow: TextOverflow.ellipsis, // 여기에서 텍스트 오버플로우 설정
+                          overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(height: 10),
                         Text(
@@ -209,24 +226,49 @@ class _HomeScreenState extends State<HomeScreen> {
           }),
           _buildIcon('assets/icons/timetable.svg', '주간시간표', null, () {
             showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Dialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                  backgroundColor: Colors.transparent,
+                  insetPadding: EdgeInsets.all(10),
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Image.asset(
+                          'assets/timetable_screen.png',
+                          fit: BoxFit.contain,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.height * 0.9,
+                        ),
                       ),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.8, // 화면 너비의 80%
-                        height: MediaQuery.of(context).size.height * 0.6, // 화면 높이의 60%
-                        child: _buildSvgCalendar(),
-                      )
-                  );
-                });
+                      Positioned(
+                        bottom: 96,
+                        left: 0,
+                        right: 0,
+                        child: Center(
+                          child: IconButton(
+                            icon: SvgPicture.asset(
+                              'assets/icons/pop.svg',
+                              width: 48,
+                              height: 48,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
           }),
         ],
       ),
     );
   }
+
 
   Widget _buildIcon(String assetPath, String label, Color? color, VoidCallback onTap) {
     return GestureDetector(
@@ -254,7 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '게시판',
+              '최근 게시글',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -262,11 +304,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             GestureDetector(
               onTap: () {
-                widget.onTabTapped(2); // 2번 인덱스의 탭 (게시판)으로 이동
+                widget.onTabTapped(2);
               },
               child: Text(
-                '더보기>',
-                style: TextStyle(color: Color(0xFF8A50CE)),
+                '더 보기>',
               ),
             ),
           ],
@@ -277,27 +318,48 @@ class _HomeScreenState extends State<HomeScreen> {
             border: Border.all(color: Color(0xFF8A50CE)),
             borderRadius: BorderRadius.circular(10),
           ),
+          padding: EdgeInsets.symmetric(vertical: 1),
           child: Column(
             children: recentPosts.map((post) {
-              return ListTile(
-                title: Text(post.title),
-                subtitle: Text(post.userName),
-                trailing: Text(_timeAgo(post.createdAt)),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PostDetailScreen(
-                        post: post,
-                        onUpdate: (updatedPost) {
-                          setState(() {
-                            _updatePost(updatedPost);
-                          });
-                        },
+              return Container(
+                child: ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                  title: AutoSizeText(
+                    post.title,
+                    style: TextStyle(fontSize: 14),
+                    maxLines: 1,
+                    minFontSize: 10,
+                    stepGranularity: 1, // 텍스트 크기 조정을 더 세밀하게
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: AutoSizeText(
+                    post.userName,
+                    style: TextStyle(fontSize: 12),
+                    maxLines: 1,
+                    minFontSize: 10,
+                    stepGranularity: 1, // 텍스트 크기 조정을 더 세밀하게
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: Text(
+                    _timeAgo(post.createdAt),
+                    style: TextStyle(fontSize: 11),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PostDetailScreen(
+                          post: post,
+                          onUpdate: (updatedPost) {
+                            setState(() {
+                              _updatePost(updatedPost);
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
             }).toList(),
           ),
@@ -307,43 +369,32 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSvgCalendar() {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '주간 시간표',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF8A50CE),
-                ),
+    return Stack(
+      children: [
+        SvgPicture.asset(
+          'assets/timetable_screen.svg',
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.contain,
+        ),
+        Positioned(
+          bottom: 64,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: IconButton(
+              icon: SvgPicture.asset(
+                'assets/icons/pop.svg',
+                width: 48,
+                height: 48,
               ),
-              IconButton(
-                icon: Icon(Icons.close, color: Colors.black),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ),
-          SizedBox(height: 16),
-          SvgPicture.asset(
-            'assets/alarm.svg',
-            width: double.infinity,
-            height: 200,
-            fit: BoxFit.contain,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

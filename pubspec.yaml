@@ -38,6 +38,7 @@ dependencies:
   flutter_svg: ^1.0.3
   uuid: ^3.0.4
   shared_preferences: ^2.0.6
+  auto_size_text: ^3.0.0
 
   flutter_markdown: ^0.7.1
   url_launcher: ^6.2.6
@@ -79,10 +80,14 @@ flutter:
     - assets/icons/post_save.svg
     - assets/icons/post_share.svg
     - assets/icons/logo.svg
-    - assets/icons/homepage.svg
     - assets/icons/notice.svg
     - assets/icons/portal.svg
     - assets/icons/timetable.svg
+    - assets/icons/homepage.svg
+    - assets/icons/pop.svg
+    - assets/academic_calendar.svg
+    - assets/timetable_screen.png
+    - assets/icons/send.svg
   
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

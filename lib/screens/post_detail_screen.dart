@@ -90,24 +90,93 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   }
 
   void _deleteComment(int index) {
-    setState(() {
-      int replyCount = post.commentsList[index]['replies'].length;
-      post.comments = post.comments - 1 - replyCount; // 댓글과 대댓글 수 모두 차감
-      post.commentsList.removeAt(index);
-    });
-    widget.onUpdate(post); // 업데이트 콜백 호출
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('댓글 삭제'),
+          content: Text('정말로 이 댓글을 삭제하시겠습니까?'),
+          actions: [
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('취소'),
+            ),
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              ),
+              onPressed: () {
+                setState(() {
+                  int replyCount = post.commentsList[index]['replies'].length;
+                  post.comments = post.comments - 1 - replyCount; // 댓글과 대댓글 수 모두 차감
+                  post.commentsList.removeAt(index);
+                });
+                widget.onUpdate(post); // 업데이트 콜백 호출
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('삭제되었습니다.'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              },
+              child: Text('삭제'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _deleteReply(int commentIndex, int replyIndex) {
-    setState(() {
-      post.commentsList[commentIndex]['replies'].removeAt(replyIndex);
-      post.comments = post.comments - 1; // 댓글 수 감소
-    });
-    widget.onUpdate(post); // 업데이트 콜백 호출
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('대댓글 삭제'),
+          content: Text('정말로 이 대댓글을 삭제하시겠습니까?'),
+          actions: [
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('취소'),
+            ),
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              ),
+              onPressed: () {
+                setState(() {
+                  post.commentsList[commentIndex]['replies'].removeAt(replyIndex);
+                  post.comments = post.comments - 1; // 댓글 수 감소
+                });
+                widget.onUpdate(post); // 업데이트 콜백 호출
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('삭제되었습니다.'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              },
+              child: Text('삭제'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _reportComment() {
-    // 신고 기능 구현
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -115,10 +184,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         content: Text('이 댓글을 신고하시겠습니까?'),
         actions: [
           TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 블랙으로 설정
+            ),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('취소'),
           ),
           TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 블랙으로 설정
+            ),
             onPressed: () {
               // 신고 처리 로직
               Navigator.of(context).pop();
@@ -132,7 +207,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   }
 
   void _reportReply() {
-    // 신고 기능 구현
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -140,10 +214,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         content: Text('이 대댓글을 신고하시겠습니까?'),
         actions: [
           TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 블랙으로 설정
+            ),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('취소'),
           ),
           TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 블랙으로 설정
+            ),
             onPressed: () {
               // 신고 처리 로직
               Navigator.of(context).pop();
@@ -156,14 +236,22 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     );
   }
 
+
   void _showReportSuccessDialog() {
-    // 신고 성공 메시지
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('신고되었습니다.'),
+        title: Text(
+          '신고 접수 되었습니다.',
+          style: TextStyle(
+            fontSize: 16.0, // 글씨 크기를 원하는 크기로 조절하세요
+          ),
+        ),
         actions: [
           TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+            ),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('확인'),
           ),
@@ -181,7 +269,13 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(post.title),
+          foregroundColor: Colors.black, // AppBar의 아이콘 및 텍스트 색상 설정
+          title: Text(
+            post.title,
+            style: TextStyle(
+              color: Colors.black, // 제목 텍스트 색상 설정
+            ),
+          ),
         ),
         body: Column(
           children: [
@@ -231,15 +325,17 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       ],
                     ),
                     SizedBox(height: 16.0),
-                    if (post.imagePath != null)
-                      Center(
-                        child: Image.asset(post.imagePath!),
-                      ),
-                    SizedBox(height: 16.0),
                     Text(
                       post.content,
                       style: TextStyle(fontSize: 16.0),
                     ),
+                    if (post.imagePath != null) ...[
+                      SizedBox(height: 8.0), // 이미지가 있을 때 간격을 8로 설정
+                      Center(
+                        child: Image.asset(post.imagePath!),
+                      ),
+                    ] else
+                      SizedBox(height: 0.0), // 이미지가 없을 때 간격을 0으로 설정
                     SizedBox(height: 16.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -310,7 +406,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       ],
                     ),
                     SizedBox(height: 16.0),
-                    Divider(),
+                    Divider(color: Colors.grey, thickness: 1.0),
                     SizedBox(height: 8.0),
                     Text(
                       '댓글',
@@ -571,34 +667,44 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               focusNode: _commentFocusNode,
               decoration: InputDecoration(
                 labelText: _replyToIndex == null ? '댓글을 입력하세요.' : '대댓글을 입력하세요.',
+                labelStyle: TextStyle(color: Colors.black54),
+                floatingLabelStyle: TextStyle(color: Colors.black54),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                suffixIcon: IconButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/send.svg',
+                    width: 24,
+                    height: 24,
+                  ),
+                  onPressed: () {
+                    if (_commentController.text.isNotEmpty) {
+                      if (_replyToIndex == null) {
+                        _addComment(userProfile.userName, _commentController.text); // 사용자 이름으로 변경
+                      } else {
+                        _addReply(_replyToIndex!, userProfile.userName, _commentController.text); // 사용자 이름으로 변경
+                        setState(() {
+                          _replyToIndex = null;
+                        });
+                      }
+                      _commentController.clear();
+                    }
+                  },
+                ),
               ),
-            ),
-          ),
-          SizedBox(width: 8.0),
-          ElevatedButton(
-            onPressed: () {
-              if (_commentController.text.isNotEmpty) {
-                if (_replyToIndex == null) {
-                  _addComment(userProfile.userName, _commentController.text); // 사용자 이름으로 변경
-                } else {
-                  _addReply(_replyToIndex!, userProfile.userName,
-                      _commentController.text); // 사용자 이름으로 변경
-                  setState(() {
-                    _replyToIndex = null;
-                  });
-                }
-                _commentController.clear();
-              }
-            },
-            child: Icon(Icons.send),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepPurple, // 버튼 배경색 딥퍼플
-              foregroundColor: Colors.white, // 버튼 글씨 색상 흰색
-              shape: CircleBorder(), // 원형 버튼
-              padding: EdgeInsets.all(16.0),
             ),
           ),
         ],
@@ -606,7 +712,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     );
   }
 
-  String _timeAgo(DateTime dateTime) {
+
+
+        String _timeAgo(DateTime dateTime) {
     final Duration difference = DateTime.now().difference(dateTime);
     if (difference.inMinutes < 1) {
       return '${difference.inSeconds}s 전';
