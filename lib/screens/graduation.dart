@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:academic_management/providers/person.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class GraduationScreen extends StatefulWidget {
   @override
@@ -59,7 +60,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     fetchData2();
   }
 
-  //수강과목추천임
+
   Future<void> sendData3() async {
     try {
       final url = Uri.parse(server + '/submit-subjects');
@@ -111,14 +112,13 @@ class _GraduationScreenState extends State<GraduationScreen> {
     }
   }
 
-  //봉사임
   Future<void> fetchData() async {
     try {
       final response = await http.get(Uri.parse(server + '/submit-volunteer'));
       if (response.statusCode == 200) {
         setState(() {
           final responseBody = utf8.decode(response.bodyBytes);
-          final jsonData = json.decode(responseBody);
+          final jsonData = json.decode(response.body);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
             jsonData.map<Map<String, String>>((item) {
@@ -148,7 +148,6 @@ class _GraduationScreenState extends State<GraduationScreen> {
     }
   }
 
-  //자격증임
   Future<void> sendData() async {
     try {
       final url = Uri.parse(server + '/submit-certification');
@@ -176,7 +175,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
       if (response.statusCode == 200) {
         setState(() {
           final responseBody = utf8.decode(response.bodyBytes);
-          final jsonData = json.decode(responseBody);
+          final jsonData = json.decode(response.body);
 
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
@@ -205,7 +204,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     }
   }
 
-  //채용정보임
+  // 채용정보임
   Future<void> sendData2() async {
     try {
       final url = Uri.parse(server + '/submit-work');
@@ -226,7 +225,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
       if (response.statusCode == 200) {
         setState(() {
           final responseBody = utf8.decode(response.bodyBytes);
-          final jsonData = json.decode(responseBody);
+          final jsonData = json.decode(response.body);
 
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
@@ -265,7 +264,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
       if (response.statusCode == 200) {
         setState(() {
           final responseBody = utf8.decode(response.bodyBytes);
-          final jsonData = json.decode(responseBody);
+          final jsonData = json.decode(response.body);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
             jsonData.map<Map<String, String>>((item) {
@@ -344,7 +343,14 @@ class _GraduationScreenState extends State<GraduationScreen> {
                         color: Color(0xff546E7A),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    Text(
+                      '기술 스택: ${userProfile.skills.join(', ')}',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xff546E7A),
+                      ),
+                    ),
+                    SizedBox(height: 10),
                     Text(
                       '졸업학점 점수',
                       style: TextStyle(
@@ -357,7 +363,8 @@ class _GraduationScreenState extends State<GraduationScreen> {
                     LinearProgressIndicator(
                       value: graduationScore / maxScore,
                       backgroundColor: Colors.grey[300],
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xFFA2A2FF)),
                     ),
                     SizedBox(height: 8),
                     Text(

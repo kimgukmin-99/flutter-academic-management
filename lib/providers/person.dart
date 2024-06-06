@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 const String server = "http://13.237.43.243:8000"; // 국민 서버
@@ -68,6 +69,13 @@ Future<bool> sendLoginRequest(String studentId, String password) async {
     print('Login successful');
     final responseBody = json.decode(utf8.decode(response.bodyBytes));
     print('response : $responseBody');
+
+    final token = response.headers['authorization'];
+    if (token != null) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+      print('Token saved: $token');
+    }
     userProfile = UserProfile.fromJson(responseBody['useData']);
     return true; // 로그인 성공 시 true 반환
   } else {
