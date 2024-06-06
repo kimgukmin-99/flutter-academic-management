@@ -191,8 +191,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
         }
       },
       child: Card(
-        elevation: 0,
-        color: Theme.of(context).primaryColor,
+        elevation: 3,
+        color: Colors.white,
         margin: EdgeInsets.only(bottom: 16.0),
         child: Padding(
           padding: EdgeInsets.all(16.0),

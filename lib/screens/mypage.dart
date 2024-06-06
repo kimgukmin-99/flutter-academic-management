@@ -154,9 +154,9 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onPressed: () {},
                     child: Text('Edit Profile'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF8A50CE),
+                      backgroundColor: Color(0xFFA2A2FF),
                       foregroundColor: Colors.white,
-                      fixedSize: Size(115, 20), // 버튼의 최소 크기 설정 (너비, 높이)
+                      fixedSize: Size(105, 20), // 버튼의 최소 크기 설정 (너비, 높이)
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -164,11 +164,11 @@ class _MyPageScreenState extends State<MyPageScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {},
-                    child: Text('Share Profile'),
+                    child: Text('Share'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF8A50CE),
+                      backgroundColor: Color(0xFFA2A2FF),
                       foregroundColor: Colors.white,
-                      fixedSize: Size(115, 20),
+                      fixedSize: Size(105, 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -178,9 +178,9 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onPressed: () {},
                     child: Text('Setting'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF8A50CE),
+                      backgroundColor: Color(0xFFA2A2FF),
                       foregroundColor: Colors.white,
-                      fixedSize: Size(115, 20),
+                      fixedSize: Size(105, 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -189,7 +189,6 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 ],
               ),
               SizedBox(height: 20),
-              Divider(color: Color(0xFF8A50CE), thickness: 1.0),
               Text(
                 '졸업 인증 점수',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

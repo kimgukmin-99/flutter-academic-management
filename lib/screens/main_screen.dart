@@ -13,7 +13,7 @@ class MainScreens extends StatefulWidget {
 }
 
 class _MainScreensState extends State<MainScreens> {
-  int _currentPage = 0; // 현재 선택된 탭의 인덱스를 추적합니다.
+  int _currentPage = 0;
   ScrollController _scrollController = ScrollController();
 
   late List<Widget> _widgetOptions;
@@ -80,7 +80,7 @@ class _MainScreensState extends State<MainScreens> {
         scrollController: _scrollController,
         hideOnScroll: true,
         indicatorColor: Colors.black,
-        backgroundColor: Color(0xFFF7F7F7),
+        backgroundColor: Colors.white,
         animationDuration: const Duration(milliseconds: 300),
         animationCurve: Curves.ease,
         selectedIndex: _currentPage,
