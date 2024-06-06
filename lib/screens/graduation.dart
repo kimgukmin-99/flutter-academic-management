@@ -60,7 +60,6 @@ class _GraduationScreenState extends State<GraduationScreen> {
     fetchData2();
   }
 
-
   Future<void> sendData3() async {
     try {
       final url = Uri.parse(server + '/submit-subjects');
@@ -86,7 +85,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
           final List<dynamic> jsonData = json.decode(responseBody);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-            jsonData.map<Map<String, String>>((item) {
+                jsonData.map<Map<String, String>>((item) {
               return {
                 '과목명': item['과목명'] ?? '',
                 '개설학기': item['개설학기'] ?? '',
@@ -118,10 +117,10 @@ class _GraduationScreenState extends State<GraduationScreen> {
       if (response.statusCode == 200) {
         setState(() {
           final responseBody = utf8.decode(response.bodyBytes);
-          final jsonData = json.decode(response.body);
+          final jsonData = json.decode(responseBody);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-            jsonData.map<Map<String, String>>((item) {
+                jsonData.map<Map<String, String>>((item) {
               return {
                 '제목': item['title'] ?? '',
                 '모집기간': item['모집기간'] ?? '',
@@ -175,11 +174,11 @@ class _GraduationScreenState extends State<GraduationScreen> {
       if (response.statusCode == 200) {
         setState(() {
           final responseBody = utf8.decode(response.bodyBytes);
-          final jsonData = json.decode(response.body);
+          final jsonData = json.decode(responseBody);
 
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-            jsonData.map<Map<String, String>>((item) {
+                jsonData.map<Map<String, String>>((item) {
               return {
                 '자격증 이름': item['name'] ?? '',
                 '점수': item['점수'] ?? '',
@@ -225,11 +224,11 @@ class _GraduationScreenState extends State<GraduationScreen> {
       if (response.statusCode == 200) {
         setState(() {
           final responseBody = utf8.decode(response.bodyBytes);
-          final jsonData = json.decode(response.body);
+          final jsonData = json.decode(responseBody);
 
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-            jsonData.map<Map<String, String>>((item) {
+                jsonData.map<Map<String, String>>((item) {
               return {
                 '제목': item['job_title'] ?? '',
                 '날짜': item['job_date'] ?? '',
@@ -264,10 +263,10 @@ class _GraduationScreenState extends State<GraduationScreen> {
       if (response.statusCode == 200) {
         setState(() {
           final responseBody = utf8.decode(response.bodyBytes);
-          final jsonData = json.decode(response.body);
+          final jsonData = json.decode(responseBody);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-            jsonData.map<Map<String, String>>((item) {
+                jsonData.map<Map<String, String>>((item) {
               return {
                 '활동명': item['title'] ?? '',
                 '개설학기': item['개설학기'] ?? '',
@@ -277,7 +276,6 @@ class _GraduationScreenState extends State<GraduationScreen> {
 
             recommendations[4] = GraduationRequirement(
               requirement: '학교활동',
-
               details: details,
             );
           } else {
@@ -415,61 +413,63 @@ class _GraduationScreenState extends State<GraduationScreen> {
                       ),
                       children: recommendation.details.isNotEmpty
                           ? recommendation.details.map((detail) {
-                        return Column(
-                          children: [
-                            Divider(color: Color(0xFFA2A2FF)),
-                            ...detail.entries.map((entry) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 2.0),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: entry.key == '링크'
-                                      ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            _launchURL(entry.value!),
-                                        child: Text(
-                                          '바로가기',
-                                          style: TextStyle(
-                                            color: Colors.blue,
-                                            decoration: TextDecoration
-                                                .underline,
-                                          ),
-                                        ),
+                              return Column(
+                                children: [
+                                  Divider(color: Color(0xFFA2A2FF)),
+                                  ...detail.entries.map((entry) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0, vertical: 2.0),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: entry.key == '링크'
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () => _launchURL(
+                                                        entry.value!),
+                                                    child: Text(
+                                                      '바로가기',
+                                                      style: TextStyle(
+                                                        color: Colors.blue,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .underline,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : Text(
+                                                '${entry.key}: ${entry.value}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
                                       ),
-                                    ],
-                                  )
-                                      : Text(
-                                    '${entry.key}: ${entry.value}',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
+                                    );
+                                  }).toList(),
+                                  SizedBox(height: 8),
+                                ],
+                              );
+                            }).toList()
+                          : [
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  'No details available.',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
                                   ),
                                 ),
-                              );
-                            }).toList(),
-                            SizedBox(height: 8),
-                          ],
-                        );
-                      }).toList()
-                          : [
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            'No details available.',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        // 내용이 없을 때 마지막에 여백 추가
-                        SizedBox(height: 8),
-                      ],
+                              ),
+                              // 내용이 없을 때 마지막에 여백 추가
+                              SizedBox(height: 8),
+                            ],
                     ),
                   );
                 },
