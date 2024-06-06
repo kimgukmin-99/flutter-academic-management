@@ -66,7 +66,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('게시글 작성'),
+        title: Text('게시글 작성',
+          style: TextStyle(color: Colors.black), // 텍스트 색상
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.black, // 아이콘 색상
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -93,9 +98,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             SizedBox(height: 10),
             _selectedImage == null
                 ? TextButton.icon(
+                  style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+                  ),
                     onPressed: _pickImage,
                     icon: Icon(Icons.photo,
-                        color: Colors.deepPurple), // 사진 모양 아이콘
+                        color: Color(0xFF8A50CE)), // 사진 모양 아이콘
                     label: Text('이미지 첨부'),
                   )
                 : Image.file(
@@ -111,9 +119,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF8A50CE),
                   foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                 ),
               ),
             ),
+            )
           ],
         ),
       ),

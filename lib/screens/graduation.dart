@@ -350,7 +350,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      '졸업학점 점수',
+                      '졸업 인증 점수',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

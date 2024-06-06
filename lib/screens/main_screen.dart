@@ -35,7 +35,7 @@ class _MainScreensState extends State<MainScreens> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _currentPage = index; // 사용자가 탭을 선택하면 인덱스를 업데이트합니다.
+      _currentPage = index;
     });
   }
 
@@ -43,6 +43,8 @@ class _MainScreensState extends State<MainScreens> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -72,14 +74,13 @@ class _MainScreensState extends State<MainScreens> {
         ),
       ),
       body: Center(
-        // 선택된 탭에 해당하는 위젯을 표시합니다.
         child: _widgetOptions.elementAt(_currentPage),
       ),
       bottomNavigationBar: DotCurvedBottomNav(
         scrollController: _scrollController,
         hideOnScroll: true,
         indicatorColor: Colors.black,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFF7F7F7),
         animationDuration: const Duration(milliseconds: 300),
         animationCurve: Curves.ease,
         selectedIndex: _currentPage,

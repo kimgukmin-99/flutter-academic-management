@@ -116,6 +116,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            scrolledUnderElevation: 0,
             pinned: false,
             floating: true,
             snap: true,
@@ -190,7 +191,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
         }
       },
       child: Card(
-        color: Colors.white,
+        elevation: 0,
+        color: Theme.of(context).primaryColor,
         margin: EdgeInsets.only(bottom: 16.0),
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -200,7 +202,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/user_icon.png'),
+                    backgroundImage: AssetImage('assets/avatar.png'),
                   ),
                   SizedBox(width: 8.0),
                   Column(
@@ -358,15 +360,27 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
           content: Text('정말로 이 게시글을 삭제하시겠습니까?'),
           actions: [
             TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: Text('취소'),
             ),
             TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              ),
               onPressed: () {
                 _deletePost(postId);
                 Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('삭제되었습니다.'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
               },
               child: Text('삭제'),
             ),
@@ -385,10 +399,16 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
         content: Text('이 게시글을 신고하시겠습니까?'),
         actions: [
           TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+            ),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('취소'),
           ),
           TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+            ),
             onPressed: () {
               Navigator.of(context).pop();
               _showReportSuccessDialog();
@@ -401,13 +421,20 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
   }
 
   void _showReportSuccessDialog() {
-    // 신고 성공 메시지
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('신고되었습니다.'),
+        title: Text(
+          '신고 접수 되었습니다.',
+          style: TextStyle(
+            fontSize: 16.0, // 글씨 크기를 원하는 크기로 조절하세요
+          ),
+        ),
         actions: [
           TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+            ),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('확인'),
           ),
@@ -415,6 +442,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
       ),
     );
   }
+
 
   String _timeAgo(DateTime dateTime) {
     final Duration difference = DateTime.now().difference(dateTime);
