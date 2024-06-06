@@ -687,6 +687,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 suffixIcon: IconButton(
                   icon: SvgPicture.asset(
                     'assets/icons/send.svg',
+                    color: Colors.grey,
                     width: 24,
                     height: 24,
                   ),

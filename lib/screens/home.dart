@@ -321,44 +321,33 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.symmetric(vertical: 1),
           child: Column(
             children: recentPosts.map((post) {
-              return Container(
-                child: ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                  title: AutoSizeText(
-                    post.title,
-                    style: TextStyle(fontSize: 14),
-                    maxLines: 1,
-                    minFontSize: 10,
-                    stepGranularity: 1, // 텍스트 크기 조정을 더 세밀하게
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: AutoSizeText(
-                    post.userName,
-                    style: TextStyle(fontSize: 12),
-                    maxLines: 1,
-                    minFontSize: 10,
-                    stepGranularity: 1, // 텍스트 크기 조정을 더 세밀하게
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: Text(
-                    _timeAgo(post.createdAt),
-                    style: TextStyle(fontSize: 11),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PostDetailScreen(
-                          post: post,
-                          onUpdate: (updatedPost) {
-                            setState(() {
-                              _updatePost(updatedPost);
-                            });
-                          },
-                        ),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AutoSizeText(
+                      post.title,
+                      style: TextStyle(fontSize: 14),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    AutoSizeText(
+                      post.userName,
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: AutoSizeText(
+                        _timeAgo(post.createdAt),
+                        style: TextStyle(fontSize: 11, color: Colors.grey),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               );
             }).toList(),
