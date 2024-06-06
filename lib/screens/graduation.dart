@@ -232,7 +232,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
               return {
                 '제목': item['job_title'] ?? '',
                 '날짜': item['job_date'] ?? '',
-                '조건': item['job_condition'] ?? '',
+                '조건': (item['job_condition'] ?? '').replaceAll('\n', ', '),
                 '모집분야': item['job_sector'] ?? '',
                 '링크': item['job_link'] ?? '',
               };
@@ -467,7 +467,6 @@ class _GraduationScreenState extends State<GraduationScreen> {
                                   ),
                                 ),
                               ),
-                              // 내용이 없을 때 마지막에 여백 추가
                               SizedBox(height: 8),
                             ],
                     ),
