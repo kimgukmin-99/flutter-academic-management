@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'bulletin.dart';
@@ -101,7 +100,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           actions: [
             TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+                foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -110,12 +110,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             ),
             TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+                foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
               ),
               onPressed: () {
                 setState(() {
                   int replyCount = post.commentsList[index]['replies'].length;
-                  post.comments = post.comments - 1 - replyCount; // 댓글과 대댓글 수 모두 차감
+                  post.comments =
+                      post.comments - 1 - replyCount; // 댓글과 대댓글 수 모두 차감
                   post.commentsList.removeAt(index);
                 });
                 widget.onUpdate(post); // 업데이트 콜백 호출
@@ -145,7 +147,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           actions: [
             TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+                foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -154,11 +157,13 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             ),
             TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+                foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
               ),
               onPressed: () {
                 setState(() {
-                  post.commentsList[commentIndex]['replies'].removeAt(replyIndex);
+                  post.commentsList[commentIndex]['replies']
+                      .removeAt(replyIndex);
                   post.comments = post.comments - 1; // 댓글 수 감소
                 });
                 widget.onUpdate(post); // 업데이트 콜백 호출
@@ -187,14 +192,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         actions: [
           TextButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 블랙으로 설정
+              foregroundColor: MaterialStateProperty.all<Color>(
+                  Colors.black), // 텍스트 색상 블랙으로 설정
             ),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('취소'),
           ),
           TextButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 블랙으로 설정
+              foregroundColor: MaterialStateProperty.all<Color>(
+                  Colors.black), // 텍스트 색상 블랙으로 설정
             ),
             onPressed: () {
               // 신고 처리 로직
@@ -217,14 +224,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         actions: [
           TextButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 블랙으로 설정
+              foregroundColor: MaterialStateProperty.all<Color>(
+                  Colors.black), // 텍스트 색상 블랙으로 설정
             ),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('취소'),
           ),
           TextButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 블랙으로 설정
+              foregroundColor: MaterialStateProperty.all<Color>(
+                  Colors.black), // 텍스트 색상 블랙으로 설정
             ),
             onPressed: () {
               // 신고 처리 로직
@@ -237,7 +246,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       ),
     );
   }
-
 
   void _showReportSuccessDialog() {
     showDialog(
@@ -252,7 +260,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         actions: [
           TextButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              foregroundColor:
+                  MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
             ),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('확인'),
@@ -290,7 +299,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: AssetImage('assets/images/user_icon.png'),
+                          backgroundImage:
+                              AssetImage('assets/images/user_icon.png'),
                         ),
                         SizedBox(width: 8.0),
                         Column(
@@ -352,7 +362,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 post.likes % 2 == 0
                                     ? Icons.favorite_border
                                     : Icons.favorite,
-                                color: post.likes % 2 == 0 ? Colors.grey : Colors.red,
+                                color: post.likes % 2 == 0
+                                    ? Colors.grey
+                                    : Colors.red,
                               ),
                               SizedBox(width: 4.0),
                               Text('${post.likes}'),
@@ -414,7 +426,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     SizedBox(height: 8.0),
                     Text(
                       '댓글',
-                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8.0),
                     _buildCommentsSection(),
@@ -460,12 +473,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                           children: [
                             Text(
                               '@${comment['studentId']}', // 수정: 작성자 학번
-                              style: TextStyle(color: Colors.grey, fontSize: 12.0),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12.0),
                             ),
                             SizedBox(width: 4.0),
                             Text(
                               '• ${_timeAgo(comment['createdAt'] as DateTime)}',
-                              style: TextStyle(color: Colors.grey, fontSize: 12.0),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12.0),
                             ),
                           ],
                         ),
@@ -514,7 +529,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                         height: 24,
                                       ),
                                       SizedBox(width: 4.0),
-                                      Text('${comment['replies'].length}'), // 대댓글 수 표시
+                                      Text(
+                                          '${comment['replies'].length}'), // 대댓글 수 표시
                                     ],
                                   ),
                                 ),
@@ -585,14 +601,12 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       children: [
                         Text(
                           '@${reply['studentId']}', // 수정: 작성자 학번
-                          style:
-                          TextStyle(color: Colors.grey, fontSize: 12.0),
+                          style: TextStyle(color: Colors.grey, fontSize: 12.0),
                         ),
                         SizedBox(width: 4.0),
                         Text(
                           '• ${_timeAgo(reply['createdAt'] as DateTime)}',
-                          style:
-                          TextStyle(color: Colors.grey, fontSize: 12.0),
+                          style: TextStyle(color: Colors.grey, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -698,9 +712,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   onPressed: () {
                     if (_commentController.text.isNotEmpty) {
                       if (_replyToIndex == null) {
-                        _addComment(userProfile.userName, _commentController.text); // 사용자 이름으로 변경
+                        _addComment(userProfile.userName,
+                            _commentController.text); // 사용자 이름으로 변경
                       } else {
-                        _addReply(_replyToIndex!, userProfile.userName, _commentController.text); // 사용자 이름으로 변경
+                        _addReply(_replyToIndex!, userProfile.userName,
+                            _commentController.text); // 사용자 이름으로 변경
                         setState(() {
                           _replyToIndex = null;
                         });
@@ -717,9 +733,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     );
   }
 
-
-
-        String _timeAgo(DateTime dateTime) {
+  String _timeAgo(DateTime dateTime) {
     final Duration difference = DateTime.now().difference(dateTime);
     if (difference.inMinutes < 1) {
       return '${difference.inSeconds}s 전';
