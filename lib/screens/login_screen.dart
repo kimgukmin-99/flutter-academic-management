@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 SizedBox(height: 120.0),
                 SvgPicture.asset(
-                  'assets/icons/login_rogo.svg',
+                  'assets/icons/login_logo.svg',
                   color: Color(0xFFA2A2FF),
                   width: 72,
                   height: 72,
