@@ -4,7 +4,7 @@ import 'package:academic_management/providers/person.dart';
 import 'dart:io';
 
 class CreatePostScreen extends StatefulWidget {
-  final Function(String, String, File?, String) addPostCallback;
+  final Function(String, String, String?, String) addPostCallback; // String?로 변경
 
   CreatePostScreen({required this.addPostCallback});
 
@@ -41,7 +41,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       widget.addPostCallback(
         _titleController.text,
         _contentController.text,
-        _selectedImage,
+        _selectedImage?.path, // File? 대신 String? 사용
         _authorController.text,
       );
       Navigator.of(context).pop();
@@ -66,12 +66,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('게시글 작성',
-          style: TextStyle(color: Colors.black), // 텍스트 색상
-        ),
-        iconTheme: IconThemeData(
-          color: Colors.black, // 아이콘 색상
-        ),
+        elevation: 0,
+        title: Text('게시글 작성', style: TextStyle(color: Colors.black)),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -80,7 +77,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: '제목'),
+              decoration: InputDecoration(
+                labelText: '제목',
+                labelStyle: TextStyle(color: Colors.grey),
+                floatingLabelStyle: TextStyle(color: Color(0xFF8A50CE)),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF8A50CE)),
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+              ),
             ),
             TextField(
               controller: _authorController,
@@ -90,7 +97,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             Expanded(
               child: TextField(
                 controller: _contentController,
-                decoration: InputDecoration(labelText: '내용'),
+                decoration: InputDecoration(
+                  labelText: '내용',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  floatingLabelStyle: TextStyle(color: Color(0xFF8A50CE)),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF8A50CE)),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                ),
                 maxLines: null,
                 expands: true,
               ),
@@ -98,19 +115,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             SizedBox(height: 10),
             _selectedImage == null
                 ? TextButton.icon(
-                  style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
-                  ),
-                    onPressed: _pickImage,
-                    icon: Icon(Icons.photo,
-                        color: Color(0xFF8A50CE)), // 사진 모양 아이콘
-                    label: Text('이미지 첨부'),
-                  )
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              ),
+              onPressed: _pickImage,
+              icon: Icon(Icons.photo, color: Color(0xFF8A50CE)), // 사진 모양 아이콘
+              label: Text('이미지 첨부'),
+            )
                 : Image.file(
-                    _selectedImage!,
-                    height: 100,
-                    width: 100,
-                  ),
+              _selectedImage!,
+              height: 100,
+              width: 100,
+            ),
             SizedBox(height: 20),
             Center(
               child: ElevatedButton(
@@ -121,9 +137,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
               ),
-            ),
             )
           ],
         ),

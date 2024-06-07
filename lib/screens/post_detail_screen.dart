@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'bulletin.dart';
@@ -264,16 +266,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // 화면의 다른 곳을 누르면 키보드를 숨깁니다.
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         appBar: AppBar(
-          foregroundColor: Colors.black, // AppBar의 아이콘 및 텍스트 색상 설정
+          elevation: 0,
+          foregroundColor: Colors.black,
           title: Text(
             post.title,
             style: TextStyle(
-              color: Colors.black, // 제목 텍스트 색상 설정
+              color: Colors.black,
             ),
           ),
         ),
@@ -332,7 +334,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     if (post.imagePath != null) ...[
                       SizedBox(height: 8.0), // 이미지가 있을 때 간격을 8로 설정
                       Center(
-                        child: Image.asset(post.imagePath!),
+                        child: post.imagePath!.startsWith('assets/')
+                            ? Image.asset(post.imagePath!)
+                            : Image.file(File(post.imagePath!)),
                       ),
                     ] else
                       SizedBox(height: 0.0), // 이미지가 없을 때 간격을 0으로 설정
