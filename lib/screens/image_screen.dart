@@ -11,11 +11,28 @@ class ImageDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(eventName),
+        title: Text(eventName,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.black, // 백버튼 색상 설정
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
       body: Center(
-        child: Image.file(File(imagePath)),
+        child: _getImageProvider(imagePath),
       ),
     );
+  }
+
+  Widget _getImageProvider(String imagePath) {
+    if (imagePath.startsWith('assets/')) {
+      return Image.asset(imagePath);
+    } else {
+      return Image.file(File(imagePath));
+    }
   }
 }

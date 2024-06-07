@@ -69,7 +69,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
     return posts.take(3).toList();
   }
 
-  void _addPost(String title, String content, File? image, String author) {
+  void _addPost(String title, String content, String? imagePath, String author) {
     setState(() {
       posts.insert(
           0,
@@ -79,7 +79,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             userName: author,
             studentId: userProfile.studentId,
             createdAt: DateTime.now(),
-            imagePath: image?.path,
+            imagePath: imagePath,
           ));
     });
   }
@@ -87,7 +87,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
   void _updatePost(Post updatedPost) {
     setState(() {
       int index =
-          posts.indexWhere((post) => post.id == updatedPost.id); // ID로 비교
+      posts.indexWhere((post) => post.id == updatedPost.id); // ID로 비교
       if (index != -1) {
         posts[index] = updatedPost;
       }
@@ -122,9 +122,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             snap: true,
             expandedHeight: 50.0,
             flexibleSpace: FlexibleSpaceBar(
-
               titlePadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -155,7 +153,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+                    (BuildContext context, int index) {
                   if (index >= posts.length) return null;
                   final post = posts[index];
                   return _buildPost(context, post);
@@ -232,7 +230,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                       }
                     },
                     itemBuilder: (BuildContext context) =>
-                        <PopupMenuEntry<String>>[
+                    <PopupMenuEntry<String>>[
                       const PopupMenuItem<String>(
                         value: 'delete',
                         child: Text('삭제'),
@@ -245,15 +243,20 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 8.0),
+              SizedBox(height: 4.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(post.content),
                   if (post.imagePath != null) ...[
-                    SizedBox(height: 8.0),
-                    Image.asset(post.imagePath!),
-                  ],
+                    SizedBox(height: 12.0),
+                    Center(
+                      child: post.imagePath!.startsWith('assets/')
+                          ? Image.asset(post.imagePath!)
+                          : Image.file(File(post.imagePath!)),
+                    ),
+                  ] else
+                    SizedBox(height: 0.0),
                 ],
               ),
               SizedBox(height: 8.0),

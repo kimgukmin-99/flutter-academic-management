@@ -88,6 +88,7 @@ flutter:
     - assets/academic_calendar.svg
     - assets/timetable_screen.png
     - assets/icons/send.svg
+    - assets/icons/login_rogo.svg
   
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

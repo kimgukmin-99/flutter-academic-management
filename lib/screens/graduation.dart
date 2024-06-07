@@ -410,6 +410,8 @@ class _GraduationScreenState extends State<GraduationScreen> {
                           fontSize: 16,
                         ),
                       ),
+                      textColor: Colors.black, // 글씨 색상 지정
+                      iconColor: Color(0xFF8A50CE), // 화살표 색상 지정
                       children: recommendation.details.isNotEmpty
                           ? recommendation.details.map((detail) {
                               return Column(
