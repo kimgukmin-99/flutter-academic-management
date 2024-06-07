@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:academic_management/screens/main_screen.dart';
 import 'package:academic_management/providers/person.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -42,7 +43,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -53,10 +53,11 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 SizedBox(height: 120.0),
-                Icon(
-                  Icons.all_inclusive,
-                  size: 100.0,
+                SvgPicture.asset(
+                  'assets/icons/login_rogo.svg',
                   color: Color(0xFFA2A2FF),
+                  width: 72,
+                  height: 72,
                 ),
                 SizedBox(height: 20.0),
                 Text(
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     prefixIcon: Icon(Icons.person, color: Colors.grey),
                   ),
                   validator: (value) =>
-                      value!.isEmpty ? 'Please enter your student ID' : null,
+                  value!.isEmpty ? 'Please enter your student ID' : null,
                   onSaved: (value) => _studentId = value!,
                 ),
                 SizedBox(height: 10.0),
@@ -111,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   obscureText: true,
                   validator: (value) =>
-                      value!.isEmpty ? 'Please enter your password' : null,
+                  value!.isEmpty ? 'Please enter your password' : null,
                   onSaved: (value) => _password = value!,
                 ),
                 SizedBox(height: 20.0),

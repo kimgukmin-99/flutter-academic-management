@@ -12,8 +12,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: false,
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: Colors.white, // 여기에 배경색을 지정합니다.
-          background: Colors.white, // 배경색을 지정합니다.
+          primary: Colors.white,
+          background: Colors.white,
         ),
         scaffoldBackgroundColor: Colors.white,
         primaryColor: Colors.white,
