@@ -321,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.grey.withOpacity(0.2),
                 spreadRadius: 2,
                 blurRadius: 10,
-                offset: Offset(0, 5), // 그림자의 위치 조정
+                offset: Offset(0, 5),
               ),
             ],
             border: Border.all(
@@ -329,67 +329,68 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 1,
             ),
           ),
-          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16), // 컨테이너의 상하좌우 여백 조정
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: Column(
             children: recentPosts.asMap().entries.map((entry) {
               int index = entry.key;
               Post post = entry.value;
-              return Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PostDetailScreen(
-                            post: post,
-                            onUpdate: _updatePost,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AutoSizeText(
-                                    post.title,
-                                    style: TextStyle(fontSize: 14),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 4), // title과 username 사이의 간격 조정
-                                  AutoSizeText(
-                                    post.userName,
-                                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 8), // title과 시간 사이의 간격 조정
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: AutoSizeText(
-                                _timeAgo(post.createdAt),
-                                style: TextStyle(fontSize: 11, color: Colors.grey),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostDetailScreen(
+                        post: post,
+                        onUpdate: _updatePost,
+                      ),
                     ),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                  decoration: BoxDecoration(
+                    border: Border(), // border none = 해야 지정됌
                   ),
-                  if (index < recentPosts.length - 1) SizedBox(height: 8), // 마지막 게시글에는 여백 추가 안 함
-                ],
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AutoSizeText(
+                                  post.title,
+                                  style: TextStyle(fontSize: 14),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 4),
+                                AutoSizeText(
+                                  post.userName,
+                                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: AutoSizeText(
+                              _timeAgo(post.createdAt),
+                              style: TextStyle(fontSize: 11, color: Colors.grey),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ), // 항목 사이에 구분선 추가
+                    ],
+                  ),
+                ),
               );
             }).toList(),
           ),

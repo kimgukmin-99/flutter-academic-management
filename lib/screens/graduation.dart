@@ -59,6 +59,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     fetchData2();
   }
 
+  //수강신청
   Future<void> sendData3() async {
     try {
       final url = Uri.parse(server + '/submit-subjects');
@@ -84,7 +85,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
           final List<dynamic> jsonData = json.decode(responseBody);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-                jsonData.map<Map<String, String>>((item) {
+            jsonData.map<Map<String, String>>((item) {
               return {
                 '과목명': item['과목명'] ?? '',
                 '개설학기': item['개설학기'] ?? '',
@@ -110,6 +111,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     }
   }
 
+  //봉사활동
   Future<void> fetchData() async {
     try {
       final response = await http.get(Uri.parse(server + '/submit-volunteer'));
@@ -119,7 +121,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
           final jsonData = json.decode(responseBody);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-                jsonData.map<Map<String, String>>((item) {
+            jsonData.map<Map<String, String>>((item) {
               return {
                 '제목': item['title'] ?? '',
                 '모집기간': item['모집기간'] ?? '',
@@ -146,6 +148,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     }
   }
 
+  //자격증
   Future<void> sendData() async {
     try {
       final url = Uri.parse(server + '/submit-certification');
@@ -177,7 +180,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
 
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-                jsonData.map<Map<String, String>>((item) {
+            jsonData.map<Map<String, String>>((item) {
               return {
                 '자격증 이름': item['name'] ?? '',
                 '점수': item['점수'] ?? '',
@@ -202,7 +205,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     }
   }
 
-  // 채용정보임
+  //채용정보
   Future<void> sendData2() async {
     try {
       final url = Uri.parse(server + '/submit-work');
@@ -227,7 +230,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
 
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-                jsonData.map<Map<String, String>>((item) {
+            jsonData.map<Map<String, String>>((item) {
               return {
                 '제목': item['job_title'] ?? '',
                 '날짜': item['job_date'] ?? '',
@@ -255,7 +258,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
     }
   }
 
-  //학교활동임
+  //학교활동
   Future<void> fetchData2() async {
     try {
       final response = await http.get(Uri.parse(server + '/submit-activation'));
@@ -265,7 +268,7 @@ class _GraduationScreenState extends State<GraduationScreen> {
           final jsonData = json.decode(responseBody);
           if (jsonData != null && jsonData is List) {
             List<Map<String, String>> details =
-                jsonData.map<Map<String, String>>((item) {
+            jsonData.map<Map<String, String>>((item) {
               return {
                 '활동명': item['title'] ?? '',
                 '개설학기': item['개설학기'] ?? '',
@@ -308,176 +311,196 @@ class _GraduationScreenState extends State<GraduationScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Color(0xffECEFF1),
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      userName,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      '$department | $year | $studentId',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff546E7A),
-                      ),
-                    ),
-                    Text(
-                      '기술 스택: ${userProfile.skills.join(', ')}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff546E7A),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '졸업 인증 점수',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    LinearProgressIndicator(
-                      value: graduationScore / maxScore,
-                      backgroundColor: Colors.grey[300],
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Color(0xFFA2A2FF)),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      '$graduationScore / $maxScore',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff546E7A),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _buildProfileSection(),
               SizedBox(height: 16),
-              Text(
-                '추천 활동',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 7),
-              ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: recommendations.length,
-                separatorBuilder: (context, index) => SizedBox(height: 8),
-                itemBuilder: (context, index) {
-                  final recommendation = recommendations[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 5,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: ExpansionTile(
-                      title: Text(
-                        recommendation.requirement,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      textColor: Colors.black, // 글씨 색상 지정
-                      iconColor: Color(0xFF8A50CE), // 화살표 색상 지정
-                      children: recommendation.details.isNotEmpty
-                          ? recommendation.details.map((detail) {
-                              return Column(
-                                children: [
-                                  Divider(color: Color(0xFFA2A2FF)),
-                                  ...detail.entries.map((entry) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0, vertical: 2.0),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: entry.key == '링크'
-                                            ? Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  TextButton(
-                                                    onPressed: () => _launchURL(
-                                                        entry.value!),
-                                                    child: Text(
-                                                      '바로가기',
-                                                      style: TextStyle(
-                                                        color: Colors.blue,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                '${entry.key}: ${entry.value}',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  SizedBox(height: 8),
-                                ],
-                              );
-                            }).toList()
-                          : [
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Text(
-                                  'No details available.',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                            ],
-                    ),
-                  );
-                },
-              ),
+              _buildRecommendationsSection(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildProfileSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0xffECEFF1),
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              offset: Offset(0, 4),
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              userName,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              '$department | $year | $studentId',
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xff546E7A),
+              ),
+            ),
+            Text(
+              '기술 스택: ${userProfile.skills.join(', ')}',
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xff546E7A),
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              '졸업 인증 점수',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 8),
+            LinearProgressIndicator(
+              value: graduationScore / maxScore,
+              backgroundColor: Colors.grey[300],
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFA2A2FF)),
+            ),
+            SizedBox(height: 8),
+            Text(
+              '$graduationScore / $maxScore',
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xff546E7A),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecommendationsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '추천 활동',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 8),
+        ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: recommendations.length,
+          separatorBuilder: (context, index) => SizedBox(height: 8),
+          itemBuilder: (context, index) {
+            final recommendation = recommendations[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 5,
+                      offset: Offset(0, 2),
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: ExpansionTile(
+                  title: Text(
+                    recommendation.requirement,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  textColor: Colors.black,
+                  iconColor: Color(0xFF8A50CE),
+                  children: recommendation.details.isNotEmpty
+                      ? recommendation.details.map((detail) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Divider(color: Color(0xFFA2A2FF)),
+                        ...detail.entries.map((entry) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 4.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: entry.key == '링크'
+                                  ? Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        _launchURL(entry.value!),
+                                    child: Text(
+                                      '바로가기',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        decoration:
+                                        TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                                  : Text(
+                                '${entry.key}: ${entry.value}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        SizedBox(height: 8),
+                      ],
+                    );
+                  }).toList()
+                      : [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        'No details available.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
