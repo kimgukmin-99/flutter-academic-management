@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -30,6 +31,7 @@ class ChatMessage {
   String? username;
   String? avatarUrl;
   DateTime timestamp;
+  bool isTypingIndicator;
 
   ChatMessage({
     required this.text,
@@ -37,6 +39,7 @@ class ChatMessage {
     this.username,
     this.avatarUrl,
     required this.timestamp,
+    this.isTypingIndicator = false,
   });
 }
 
@@ -45,51 +48,31 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool isLoading = false;
-  String typingIndicator = '';
-  Timer? typingTimer;
 
   @override
   void dispose() {
     _controller.dispose();
-    typingTimer?.cancel();
     super.dispose();
   }
 
   void _startTypingIndicator() {
-    typingTimer?.cancel();
-    typingIndicator = '·';
-    _messages.add(
-      ChatMessage(
-        text: typingIndicator,
-        isMe: false,
-        username: 'GookPT4',
-        avatarUrl: 'assets/avatar.png',
-        timestamp: DateTime.now(),
-      ),
-    );
-    typingTimer = Timer.periodic(Duration(milliseconds: 500), (timer) {
-      setState(() {
-        if (typingIndicator == '···') {
-          typingIndicator = '·';
-        } else {
-          typingIndicator += '·';
-        }
-        _messages[_messages.length - 1] = ChatMessage(
-          text: typingIndicator,
+    setState(() {
+      _messages.add(
+        ChatMessage(
+          text: '',
           isMe: false,
           username: 'GookPT4',
           avatarUrl: 'assets/avatar.png',
           timestamp: DateTime.now(),
-        );
-      });
+          isTypingIndicator: true,
+        ),
+      );
     });
   }
 
   void _stopTypingIndicator() {
-    typingTimer?.cancel();
     setState(() {
-      typingIndicator = '';
-      if (_messages.isNotEmpty && _messages.last.text.contains('·')) {
+      if (_messages.isNotEmpty && _messages.last.isTypingIndicator) {
         _messages.removeLast();
       }
     });
@@ -111,13 +94,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _handleSubmitted(String text) async {
     setState(() {
-      bool isMe = true;
       _messages.add(
         ChatMessage(
           text: text,
-          isMe: isMe,
-          username: isMe ? "Me" : "GookPT4",
-          avatarUrl: isMe ? null : "assets/avatar.png",
+          isMe: true,
+          username: "Me",
+          avatarUrl: null,
           timestamp: DateTime.now(),
         ),
       );
@@ -133,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse(server + "/echo"), // 서버 URL을 올바르게 설정하세요
+        Uri.parse(server + '/echo'), // 서버 URL을 올바르게 설정하세요
         headers: {
           'Content-Type': 'application/json',
         },
@@ -144,12 +126,11 @@ class _ChatScreenState extends State<ChatScreen> {
         final responseBody = json.decode(utf8.decode(response.bodyBytes));
         print(responseBody);
 
-        text = responseBody;
         setState(() {
           _stopTypingIndicator();
           _messages.add(
             ChatMessage(
-              text: text,
+              text: responseBody,
               isMe: false,
               username: 'GookPT4',
               avatarUrl: 'assets/avatar.png',
@@ -164,8 +145,6 @@ class _ChatScreenState extends State<ChatScreen> {
           isLoading = false;
         });
       } else {
-        print('Server error: ${response.statusCode}');
-        print('Response body: ${response.body}');
         setState(() {
           _stopTypingIndicator();
           _messages.add(
@@ -181,7 +160,6 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       }
     } catch (e) {
-      print('Network error: $e');
       setState(() {
         _stopTypingIndicator();
         _messages.add(
@@ -199,10 +177,14 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildMessageItem(ChatMessage message) {
+    if (message.isTypingIndicator) {
+      return _buildTypingIndicator();
+    }
+
     final alignment =
-    message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
+        message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
     final messageAlignment =
-    message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start;
+        message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start;
     final color = message.isMe ? Colors.blue[100] : Colors.grey[200];
     final timeFormat = DateFormat('HH:mm');
 
@@ -227,7 +209,7 @@ class _ChatScreenState extends State<ChatScreen> {
               Container(
                 margin: const EdgeInsets.all(4.0),
                 padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
                 decoration: BoxDecoration(
                   color: color,
                   borderRadius: BorderRadius.circular(12),
@@ -259,6 +241,25 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  Widget _buildTypingIndicator() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            backgroundImage: AssetImage('assets/avatar.png'),
+          ),
+          SizedBox(width: 10),
+          SpinKitThreeBounce(
+            color: Colors.grey,
+            size: 20.0,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildTextComposer() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -269,9 +270,8 @@ class _ChatScreenState extends State<ChatScreen> {
               controller: _controller,
               onSubmitted: isLoading ? null : _handleSubmitted,
               decoration: InputDecoration.collapsed(
-                hintText: isLoading
-                    ? "   답변을 기다리는 중입니다."
-                    : "   Send a message...",
+                hintText:
+                    isLoading ? "   답변을 기다리는 중입니다." : "   Send a message...",
                 hintStyle: TextStyle(color: Colors.grey[600]),
               ),
               style: TextStyle(color: Colors.black),
@@ -281,7 +281,7 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             icon: Icon(Icons.send, color: Colors.blueGrey),
             onPressed:
-            isLoading ? null : () => _handleSubmitted(_controller.text),
+                isLoading ? null : () => _handleSubmitted(_controller.text),
           ),
         ],
       ),
@@ -312,7 +312,8 @@ class _ChatScreenState extends State<ChatScreen> {
             child: ListView.builder(
               controller: _scrollController,
               padding: const EdgeInsets.all(8.0),
-              itemBuilder: (_, int index) => _buildMessageItem(_messages[index]),
+              itemBuilder: (_, int index) =>
+                  _buildMessageItem(_messages[index]),
               itemCount: _messages.length,
             ),
           ),
