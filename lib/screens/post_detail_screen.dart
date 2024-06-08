@@ -299,8 +299,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/images/user_icon.png'),
+                          backgroundImage: AssetImage(
+                              post.avatarUrl ?? 'assets/images/user_icon.png'),
                         ),
                         SizedBox(width: 8.0),
                         Column(

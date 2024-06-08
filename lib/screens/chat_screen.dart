@@ -61,8 +61,8 @@ class _ChatScreenState extends State<ChatScreen> {
         ChatMessage(
           text: '',
           isMe: false,
-          username: 'GookPT4',
-          avatarUrl: 'assets/avatar.png',
+          username: 'Seongmin',
+          avatarUrl: 'assets/avatar3.png',
           timestamp: DateTime.now(),
           isTypingIndicator: true,
         ),
@@ -83,10 +83,10 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     _messages.add(
       ChatMessage(
-        text: '안녕, 나는 컴퓨터공학과 4학년 국민이야. 한남대학교에 궁금한게 있으면 뭐든지 물어봐!',
+        text: '안녕, 나는 컴퓨터공학과 4학년 성민이야. 한남대학교에 궁금한게 있으면 뭐든지 물어봐!',
         isMe: false,
-        username: 'GookPT4',
-        avatarUrl: 'assets/avatar.png',
+        username: 'Seongmin',
+        avatarUrl: 'assets/avatar3.png',
         timestamp: DateTime.now(),
       ),
     );

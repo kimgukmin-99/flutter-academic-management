@@ -16,6 +16,7 @@ class Post {
   int likes;
   int comments;
   final String? imagePath;
+  final String? avatarUrl; // 아바타 URL 추가
   List<Map<String, dynamic>> commentsList;
 
   Post({
@@ -27,6 +28,7 @@ class Post {
     this.likes = 0,
     this.comments = 0,
     this.imagePath,
+    this.avatarUrl, // 아바타 URL 초기화
     List<Map<String, dynamic>>? commentsList,
   })  : id = Uuid().v4(), // 고유 ID 생성
         commentsList = commentsList ?? [];
@@ -40,28 +42,31 @@ class BulletinBoardScreen extends StatefulWidget {
 class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
   List<Post> posts = [
     Post(
-      title: '제목이란거다',
-      content: '게시물 이란거다',
-      userName: '사용자1',
-      studentId: '20180595',
+      title: '포스트1',
+      content: '오늘 알고리즘 수업 있음?',
+      userName: '김국민',
+      studentId: '20180600',
       createdAt: DateTime.now().subtract(Duration(minutes: 2)),
       imagePath: null,
+      avatarUrl: 'assets/avatar.png',
     ),
     Post(
-      title: '형 가수했을때',
-      content: '어느새 ~ 부터 ~ ',
-      userName: '사용자2',
-      studentId: '20180600',
+      title: '포스트2',
+      content: '코드마스터 경시대회 많관부~',
+      userName: '김성민',
+      studentId: '20180595',
       createdAt: DateTime.now().subtract(Duration(minutes: 25)),
-      imagePath: 'assets/event1.png',
+      imagePath: 'assets/post1.png',
+      avatarUrl: 'assets/avatar1.png',
     ),
     Post(
-      title: '형 전성기 ㅋ',
-      content: '야 타',
-      userName: '사용자3',
-      studentId: '20180601',
+      title: '포스트3',
+      content: 'MT때 고기 지리더라',
+      userName: '변지훈',
+      studentId: '20210231',
       createdAt: DateTime.now().subtract(Duration(hours: 1)),
-      imagePath: 'assets/event3.png',
+      imagePath: 'assets/post2.png',
+      avatarUrl: 'assets/avatar2.png',
     ),
   ];
 
@@ -69,7 +74,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
     return posts.take(3).toList();
   }
 
-  void _addPost(String title, String content, String? imagePath, String author) {
+  void _addPost(
+      String title, String content, String? imagePath, String author) {
     setState(() {
       posts.insert(
           0,
@@ -80,6 +86,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             studentId: userProfile.studentId,
             createdAt: DateTime.now(),
             imagePath: imagePath,
+            avatarUrl: 'assets/profile_placeholder.png',
           ));
     });
   }
@@ -87,7 +94,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
   void _updatePost(Post updatedPost) {
     setState(() {
       int index =
-      posts.indexWhere((post) => post.id == updatedPost.id); // ID로 비교
+          posts.indexWhere((post) => post.id == updatedPost.id); // ID로 비교
       if (index != -1) {
         posts[index] = updatedPost;
       }
@@ -122,7 +129,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             snap: true,
             expandedHeight: 50.0,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              titlePadding:
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -153,7 +161,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
+                (BuildContext context, int index) {
                   if (index >= posts.length) return null;
                   final post = posts[index];
                   return _buildPost(context, post);
@@ -200,7 +208,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('assets/avatar.png'),
+                    backgroundImage:
+                        AssetImage(post.avatarUrl ?? 'assets/avatar.png'),
                   ),
                   SizedBox(width: 8.0),
                   Column(
@@ -230,7 +239,7 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
                       }
                     },
                     itemBuilder: (BuildContext context) =>
-                    <PopupMenuEntry<String>>[
+                        <PopupMenuEntry<String>>[
                       const PopupMenuItem<String>(
                         value: 'delete',
                         child: Text('삭제'),
@@ -364,7 +373,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
           actions: [
             TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+                foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -373,7 +383,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
             ),
             TextButton(
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+                foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
               ),
               onPressed: () {
                 _deletePost(postId);
@@ -403,14 +414,16 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
         actions: [
           TextButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              foregroundColor:
+                  MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
             ),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('취소'),
           ),
           TextButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              foregroundColor:
+                  MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
             ),
             onPressed: () {
               Navigator.of(context).pop();
@@ -436,7 +449,8 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
         actions: [
           TextButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
+              foregroundColor:
+                  MaterialStateProperty.all<Color>(Colors.black), // 텍스트 색상 설정
             ),
             onPressed: () => Navigator.of(context).pop(),
             child: Text('확인'),
@@ -445,7 +459,6 @@ class _BulletinBoardScreenState extends State<BulletinBoardScreen> {
       ),
     );
   }
-
 
   String _timeAgo(DateTime dateTime) {
     final Duration difference = DateTime.now().difference(dateTime);

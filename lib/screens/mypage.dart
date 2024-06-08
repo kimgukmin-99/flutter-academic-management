@@ -19,16 +19,17 @@ class _MyPageScreenState extends State<MyPageScreen> {
   final int maxScore = 150;
 
   final List<Map<String, String>> events = [
-    {'name': '신입생 환영회', 'image': 'assets/event1.png'},
-    {'name': 'MT', 'image': 'assets/event2.png'},
-    {'name': '학술제', 'image': 'assets/event3.png'},
+    {'name': 'MT', 'image': 'assets/event1.png'},
+    {'name': '체육대회', 'image': 'assets/event2.png'},
+    {'name': '프로그래밍 대회', 'image': 'assets/event3.png'},
   ];
 
   File? _selectedImage;
   bool isDeleteMode = false;
 
   void _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
@@ -79,17 +80,18 @@ class _MyPageScreenState extends State<MyPageScreen> {
               SizedBox(height: 10),
               _selectedImage == null
                   ? TextButton(
-                style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                ),
-                onPressed: _pickImage,
-                child: Text('Select Image'),
-              )
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.black),
+                      ),
+                      onPressed: _pickImage,
+                      child: Text('Select Image'),
+                    )
                   : Image.file(
-                _selectedImage!,
-                height: 100,
-                width: 100,
-              ),
+                      _selectedImage!,
+                      height: 100,
+                      width: 100,
+                    ),
             ],
           ),
           actions: [
@@ -179,14 +181,16 @@ class _MyPageScreenState extends State<MyPageScreen> {
                   Center(
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage('assets/profile_placeholder.png'),
+                      backgroundImage:
+                          AssetImage('assets/profile_placeholder.png'),
                     ),
                   ),
                   SizedBox(height: 20),
                   Center(
                     child: Text(
                       userName,
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -248,7 +252,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
                   LinearProgressIndicator(
                     value: graduationScore / maxScore,
                     backgroundColor: Colors.grey[300],
-                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFA2A2FF)),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Color(0xFFA2A2FF)),
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -290,7 +295,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
                               CircleAvatar(
                                 radius: 30,
                                 backgroundColor: Colors.grey[350],
-                                child: Icon(Icons.add,
+                                child: Icon(
+                                  Icons.add,
                                   color: Colors.white,
                                 ),
                               ),
@@ -314,12 +320,14 @@ class _MyPageScreenState extends State<MyPageScreen> {
                           ),
                         ),
                         child: GestureDetector(
-                          onTap: () => _viewImage(event['image']!, event['name']!),
+                          onTap: () =>
+                              _viewImage(event['image']!, event['name']!),
                           child: Column(
                             children: [
                               CircleAvatar(
                                 radius: 30,
-                                backgroundImage: _getImageProvider(event['image']!),
+                                backgroundImage:
+                                    _getImageProvider(event['image']!),
                               ),
                               SizedBox(height: 5),
                               Text(

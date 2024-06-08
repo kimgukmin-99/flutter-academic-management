@@ -66,9 +66,14 @@ dev_dependencies:
 flutter:
   assets:
     - assets/avatar.png
+    - assets/avatar1.png
+    - assets/avatar2.png
+    - assets/avatar3.png
     - assets/event1.png
     - assets/event2.png
     - assets/event3.png
+    - assets/post1.png
+    - assets/post2.png
     - assets/profile_placeholder.png
     - assets/icons/alarm.svg
     - assets/icons/chat_button.svg
