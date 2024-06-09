@@ -1,6 +1,6 @@
 # ✋COMMAN
 
-### *"Application for the Graduation and Curriculum of Computer Engineering Students"*
+<h3 align="center"><i>"Application for the Graduation and Curriculum of Computer Engineering Students"</i></h3>
 
 ## 🐈 Stacks
 
