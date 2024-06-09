@@ -5,6 +5,8 @@
 ## 🐈 Stacks
 
 ![Generic badge](https://img.shields.io/badge/flutter-3.19.5-blue.svg)
+![Generic badge](https://img.shields.io/badge/AndroidStudio-Jellyfish-green.svg)
+![Generic badge](https://img.shields.io/badge/Dart-3.3.3-blue.svg)
 
 ## 👨‍👨‍👦‍👦 Team 26.2
 <br>
