@@ -132,8 +132,8 @@ class _ChatScreenState extends State<ChatScreen> {
             ChatMessage(
               text: responseBody,
               isMe: false,
-              username: 'GookPT4',
-              avatarUrl: 'assets/avatar.png',
+              username: 'Seongmin',
+              avatarUrl: 'assets/avatar3.png',
               timestamp: DateTime.now(),
             ),
           );
@@ -151,8 +151,8 @@ class _ChatScreenState extends State<ChatScreen> {
             ChatMessage(
               text: '서버 오류가 발생했습니다. 다시 시도해주세요.',
               isMe: false,
-              username: 'GookPT4',
-              avatarUrl: 'assets/avatar.png',
+              username: 'Seongmin',
+              avatarUrl: 'assets/avatar3.png',
               timestamp: DateTime.now(),
             ),
           );
@@ -166,8 +166,8 @@ class _ChatScreenState extends State<ChatScreen> {
           ChatMessage(
             text: '네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.',
             isMe: false,
-            username: 'GookPT4',
-            avatarUrl: 'assets/avatar.png',
+            username: 'Seongmin',
+            avatarUrl: 'assets/avatar3.png',
             timestamp: DateTime.now(),
           ),
         );
@@ -195,7 +195,7 @@ class _ChatScreenState extends State<ChatScreen> {
           CircleAvatar(
             backgroundImage: message.avatarUrl != null
                 ? AssetImage(message.avatarUrl!)
-                : AssetImage('assets/avatar.png'),
+                : AssetImage('assets/avatar3.png'),
           ),
           SizedBox(width: 10),
         ],
@@ -248,7 +248,7 @@ class _ChatScreenState extends State<ChatScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CircleAvatar(
-            backgroundImage: AssetImage('assets/avatar.png'),
+            backgroundImage: AssetImage('assets/avatar3.png'),
           ),
           SizedBox(width: 10),
           SpinKitThreeBounce(
